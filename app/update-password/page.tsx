@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
@@ -10,6 +10,17 @@ export default function UpdatePassword() {
 
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(true)
+
+  // 🔥 VERY IMPORTANT: Initialize recovery session
+  useEffect(() => {
+    const initSession = async () => {
+      await supabase.auth.getSession()
+      setLoading(false)
+    }
+
+    initSession()
+  }, [])
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,6 +37,10 @@ export default function UpdatePassword() {
         router.push('/admin-login')
       }, 1500)
     }
+  }
+
+  if (loading) {
+    return <div style={{ margin: '80px auto', maxWidth: '400px' }}>Loading...</div>
   }
 
   return (
