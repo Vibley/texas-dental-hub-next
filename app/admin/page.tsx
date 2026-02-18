@@ -47,7 +47,7 @@ export default async function AdminDashboard() {
 
       <br />
 
-      <form action="/admin/logout" method="post">
+      <form action="/api/admin/logout" method="get">
         <button type="submit">Logout</button>
       </form>
 
