@@ -1,10 +1,6 @@
 import { supabase } from '@/lib/supabase'
-
-/* ---------- Helpers ---------- */
-
-function cleanCity(city: string) {
-  return city.replace('-tx', '').replace(/-/g, ' ')
-}
+import AppointmentForm from '@/app/components/AppointmentForm'
+import ClinicCTA from './ClinicCTA'   // ✅ YOU NEED THIS
 
 function slugify(text: string) {
   return text
@@ -13,196 +9,101 @@ function slugify(text: string) {
     .replace(/(^-|-$)/g, '')
 }
 
-/* ---------- Opening Hours Parser ---------- */
-function normalizeHours(hours: any): string | undefined {
-  if (!hours) return undefined
-
-  // Already a string
-  if (typeof hours === 'string') return hours
-
-  // If object with raw property
-  if (typeof hours === 'object' && hours.raw) {
-    try {
-      const parsed = JSON.parse(hours.raw)
-      if (parsed.text) return parsed.text
-    } catch {
-      return hours.raw
-    }
-  }
-
-  return undefined
-}
-
-function parseOpeningHours(hours: any) {
-  const hoursText = normalizeHours(hours)
-  if (!hoursText) return undefined
-
-  const dayMap: Record<string, string> = {
-    M: "Monday",
-    Mon: "Monday",
-    T: "Tuesday",
-    Tu: "Tuesday",
-    W: "Wednesday",
-    Th: "Thursday",
-    F: "Friday",
-    Sat: "Saturday",
-    Sun: "Sunday",
-  }
-
-  const results: any[] = []
-  const parts = hoursText.split(',').map(p => p.trim())
-
-  parts.forEach(part => {
-    const match = part.match(/([A-Za-z\-]+):\s*(\d{1,2})a-(\d{1,2})p/i)
-    if (!match) return
-
-    let days = match[1]
-    const openHour = parseInt(match[2])
-    const closeHour = parseInt(match[3]) + 12
-
-    const openTime = `${openHour.toString().padStart(2, '0')}:00`
-    const closeTime = `${closeHour.toString().padStart(2, '0')}:00`
-
-    if (days.includes('-')) {
-      const [start, end] = days.split('-')
-      results.push({
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [dayMap[start], dayMap[end]],
-        opens: openTime,
-        closes: closeTime
-      })
-    } else {
-      results.push({
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: dayMap[days],
-        opens: openTime,
-        closes: closeTime
-      })
-    }
-  })
-
-  return results.length ? results : undefined
-}
-/* ---------- SEO Metadata ---------- */
-
-export async function generateMetadata({
+export default async function ClinicDetail({
   params,
 }: {
   params: Promise<{ city: string; slug: string }>
 }) {
-  const { city, slug } = await params
-  const cityName = cleanCity(city)
+  const { slug, city } = await params
+
+  const cityName = city.replace('-tx', '').replace(/-/g, ' ')
 
   const { data: clinics } = await supabase
     .from('clinics')
     .select('*')
-    .ilike('city', `%${cityName}%`)
+    .ilike('city', cityName)
 
-  const clinic = clinics?.find(
-    (c) => slugify(c.name) === slug
-  )
-
-  const clinicName = clinic?.name || slug.replace(/-/g, ' ')
-
-  return {
-    title: `${clinicName} | Dentist in ${cityName}, TX | TexasDentalHub`,
-    description: `${clinicName} is a verified dental clinic in ${cityName}, Texas. View address, services, phone number, and contact details.`,
+  if (!clinics) {
+    return <div style={{ padding: 40 }}>Clinic Not Found</div>
   }
-}
 
-/* ---------- Page Component ---------- */
-
-export default async function ClinicPage({
-  params,
-}: {
-  params: Promise<{ city: string; slug: string }>
-}) {
-  const { city, slug } = await params
-  const cityName = cleanCity(city)
-
-  const { data: clinics } = await supabase
-    .from('clinics')
-    .select('*')
-    .ilike('city', `%${cityName}%`)
-
-  const clinic = clinics?.find(
+  const clinic = clinics.find(
     (c) => slugify(c.name) === slug
   )
 
   if (!clinic) {
-    return (
-      <div style={{ padding: 40 }}>
-        <h1>Clinic Not Found</h1>
-      </div>
-    )
+    return <div style={{ padding: 40 }}>Clinic Not Found</div>
   }
 
-  /* ---------- JSON-LD Schema ---------- */
+  const services = Array.isArray(clinic.services)
+    ? clinic.services
+    : []
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Dentist",
-    name: clinic.name,
-    url: `https://texasdentalhub.com/dentists/${city}/clinic/${slug}`,
-    telephone: clinic.phone || undefined,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: clinic.address,
-      addressLocality: cityName,
-      addressRegion: "TX",
-      postalCode: clinic.zip || undefined,
-      addressCountry: "US",
-    },
-    areaServed: cityName,
-    medicalSpecialty: clinic.services || undefined,
-    openingHoursSpecification: parseOpeningHours(clinic.hours),
-  }
+  const insurances = Array.isArray(clinic.insurances)
+    ? clinic.insurances
+    : []
+
+  const hours =
+    typeof clinic.hours === 'string'
+      ? clinic.hours
+      : clinic.hours?.raw || ''
 
   return (
-    <div style={{ padding: 40 }}>
-      <h1>{clinic.name}</h1>
+    <div className="clinic-detail">
 
-      <p>
-        <strong>Address:</strong> {clinic.address}
-      </p>
+      <div className="clinic-header">
+        <h1 className="clinic-title">{clinic.name}</h1>
+        <div className="clinic-title-divider"></div>
+        <div className="clinic-subtitle">
+          {cityName}, TX
+        </div>
+      </div>
 
-      {clinic.phone && (
-        <p>
-          <strong>Phone:</strong> {clinic.phone}
-        </p>
-      )}
+      <div className="clinic-card">
 
-      {clinic.services?.length > 0 && (
-        <p>
-          <strong>Services:</strong> {clinic.services.join(', ')}
-        </p>
-      )}
+        <div className="info-row">
+          <strong>Address</strong>
+          <span>{clinic.address}</span>
+        </div>
 
-      {clinic.insurances?.length > 0 && (
-        <p>
-          <strong>Insurance:</strong> {clinic.insurances.join(', ')}
-        </p>
-      )}
+        {services.length > 0 && (
+          <div className="info-row">
+            <strong>Services</strong>
+            <span>{services.join(', ')}</span>
+          </div>
+        )}
 
-    {normalizeHours(clinic.hours) && (
-  <p>
-    <strong>Hours:</strong> {normalizeHours(clinic.hours)}
-  </p>
-)}
+        {insurances.length > 0 && (
+          <div className="info-row">
+            <strong>Insurance</strong>
+            <span>{insurances.join(', ')}</span>
+          </div>
+        )}
 
-      <p style={{ marginTop: 20 }}>
-        <a href={`/dentists/${city}`}>
-          ← Back to dentists in {cityName}
-        </a>
-      </p>
+        {hours && (
+          <div className="info-row">
+            <strong>Hours</strong>
+            <span>{hours}</span>
+          </div>
+        )}
 
-      {/* JSON-LD Injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schema),
-        }}
-      />
+      </div>
+
+      {/* ✅ CLIENT COMPONENT HANDLES BUTTON LOGIC */}
+     <ClinicCTA
+  phone={clinic.phone}
+  city={city}
+ 
+  clinicName={clinic.name}
+/>
+
+
+<div className="back-link" style={{ marginTop: 30 }}>
+  <a href={`/dentists/${city}`}>
+    ← Browse more dentists in {cityName}
+  </a>
+</div>
+
     </div>
   )
 }
