@@ -8,5 +8,5 @@ export async function POST(request: Request) {
   const supabase = await createClient()
   await supabase.from('leads').delete().eq('id', id)
 
-  return NextResponse.redirect(new URL('/admin/leads', 'http://localhost:3000'))
+  return NextResponse.redirect(new URL('/admin/leads', request.url))
 }
