@@ -43,10 +43,24 @@ export default async function ClinicDetail({
     ? clinic.insurances
     : []
 
-  const hours =
-    typeof clinic.hours === 'string'
-      ? clinic.hours
-      : clinic.hours?.raw || ''
+const hours = (() => {
+  if (!clinic.hours) return ''
+
+  // If hours is already a string
+  if (typeof clinic.hours === 'string') return clinic.hours
+
+  // If raw exists
+  if (clinic.hours.raw) {
+    try {
+      const parsed = JSON.parse(clinic.hours.raw)
+      return parsed.text || clinic.hours.raw
+    } catch {
+      return clinic.hours.raw
+    }
+  }
+
+  return ''
+})()
 
   return (
     <div className="clinic-detail">

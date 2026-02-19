@@ -30,39 +30,73 @@ export default function CityClient({
     <div className="container">
 
       {/* HERO */}
-    <div className="hero hero-expanded">
+          {/* HERO */}
+      
 
-  <h3>Dentists in {cityName}, TX</h3>
+<div className="hero hero-expanded">
 
+  {cityName !== "Houston" && (
+    <>
+      <h2>Dentists in {cityName}, TX</h2>
 
-  <p>
-    Finding a trusted dentist in {cityName} doesn’t have to be complicated.
-    TexasDentalHub connects patients with verified local dental clinics
-    offering general, family, cosmetic, and emergency dental care throughout
-    the {cityName} area.
-  </p>
+      <p>
+        Finding a trusted dentist in {cityName} doesn’t have to be complicated.
+        TexasDentalHub connects patients with verified local dental clinics
+        offering general, family, cosmetic, and emergency dental care throughout
+        the {cityName} area.
+      </p>
 
-  <p>
-    Whether you’re new to the {cityName} or simply looking for a better dental
-    provider, our directory makes it easy to discover nearby clinics,
-    explore available services, and contact dental offices directly —
-    without third-party booking fees or misleading listings.
-  </p>
+      <p>
+        Whether you’re new to {cityName} or simply looking for a better dental
+        provider, our directory makes it easy to discover nearby clinics,
+        explore available services, and contact dental offices directly —
+        without third-party booking fees or misleading listings.
+      </p>
+    </>
+  )}
 
-  <p>
-    Every clinic listed on TexasDentalHub is reviewed for accuracy and
-    location, helping patients find reliable dental care within their
-    local community. We focus on real providers serving {cityName}
-    and surrounding neighborhoods, not national lead-generation networks.
-  </p>
+  {cityName === "Houston" && (
+    <>
+      <h2>Comprehensive Dental Care Across Houston</h2>
 
-  <p>
-    Common dental services offered by {cityName} clinics include preventive
-    care, routine cleanings, fillings, cosmetic dentistry, emergency dental
-    treatment, and family dental care.
-  </p>
+      <p>
+        Finding a trusted dentist in Houston doesn’t have to be complicated.
+        TexasDentalHub connects patients with verified local dental clinics
+        offering general, family, cosmetic, and emergency dental care
+        throughout the Houston area.
+      </p>
+
+      <p>
+        As one of the largest metropolitan areas in Texas, Houston serves
+        diverse communities across neighborhoods such as The Heights,
+        Midtown, Galleria, Westchase, Katy, Sugar Land, Cypress,
+        Pearland, and The Woodlands.
+      </p>
+
+      <h2>Family Dentists in Houston</h2>
+      <p>
+        Family dental clinics provide routine cleanings, fillings, crowns, fluoride treatments, and long-term oral health care for children and adults. Many Houston practices offer flexible scheduling and bilingual staff.
+      </p>
+
+      <h2>Emergency Dentists in Houston</h2>
+      <p>
+     Dental emergencies such as severe tooth pain, broken teeth, abscesses, and knocked-out teeth require immediate attention. Many Houston dental offices provide same-day emergency appointments and rapid pain relief.
+      </p>
+
+      <h2>Cosmetic & Implant Dentistry in Houston</h2>
+      <p>
+        Cosmetic procedures including Invisalign, veneers, professional whitening, and dental implants are widely available throughout Houston. Many clinics use modern digital imaging and advanced restorative techniques.
+      </p>
+
+      <h2>Insurance & Payment Options</h2>
+      <p>
+      Most Houston dental clinics accept major PPO insurance plans and may offer flexible financing options for cosmetic or implant procedures. To find clinics that match your specific plan, select your insurance provider from the filter dropdown below.
+      </p>
+    </>
+  )}
 
 </div>
+
 
       {/* FILTER BAR */}
       <FilterBar
@@ -102,6 +136,10 @@ export default function CityClient({
   </div>
 )}
 
+
+
+
+
               {/* 🔥 Unified CTA Logic */}
               <CardCTA
                 phone={clinic.phone}
@@ -113,6 +151,9 @@ export default function CityClient({
           ))}
         </div>
       </div>
+
+
+
     </div>
   )
 }
