@@ -17,7 +17,7 @@ export default function CitySelector({ cities }: { cities: string[] }) {
       className="city-select"
       onChange={(e) => {
         if (e.target.value) {
-          router.push(`/dentists/${toCityKey(e.target.value)}-tx`)
+          router.push(`/dentists/${toCityKey(e.target.value)}`)
         }
       }}
     >

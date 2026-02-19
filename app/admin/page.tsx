@@ -40,6 +40,27 @@ export default async function AdminDashboard() {
     supabase.from('call_clicks').select('*', { count: 'exact', head: true }).gte('created_at', isoDate),
   ])
 
+const { data: settings } = await supabase
+  .from('admin_settings')
+  .select('*')
+  .single()
+async function updateSettings(formData: FormData) {
+  'use server'
+
+  const supabase = await createClient()
+
+  await supabase.from('admin_settings').update({
+    notification_email: formData.get('notification_email'),
+    notifications_enabled: formData.get('notifications_enabled') === 'on',
+    notify_leads: formData.get('notify_leads') === 'on',
+    notify_contact_messages: formData.get('notify_contact_messages') === 'on',
+    notify_call_clicks: formData.get('notify_call_clicks') === 'on',
+    updated_at: new Date().toISOString()
+  })
+
+  redirect('/admin')
+}
+
   return (
     <div>
       <h1 style={{ marginBottom: '10px' }}>Admin Dashboard</h1>
@@ -50,6 +71,7 @@ export default async function AdminDashboard() {
       <form action="/api/admin/logout" method="get">
         <button type="submit">Logout</button>
       </form>
+
 
       <hr style={{ margin: '30px 0' }} />
 
@@ -65,6 +87,9 @@ export default async function AdminDashboard() {
       <hr style={{ margin: '40px 0' }} />
 
       <h2 style={{ marginBottom: '20px' }}>All Time</h2>
+<hr style={{ margin: '40px 0' }} />
+
+
 
       <StatsGrid>
         <StatCard title="Total Leads" value={totalLeads.count || 0} />
@@ -107,3 +132,4 @@ function StatCard({ title, value }: { title: string; value: number }) {
     </div>
   )
 }
+

@@ -25,7 +25,7 @@ export default function Header({ cities }: { cities: string[] }) {
           className="city-select"
           onChange={(e) => {
             if (!e.target.value) return
-            router.push(`/dentists/${toCityKey(e.target.value)}-tx`)
+            router.push(`/dentists/${toCityKey(e.target.value)}`)
           }}
         >
           <option value="">Houston</option>

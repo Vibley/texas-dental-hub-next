@@ -29,7 +29,7 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
     const clinicSlug = slugify(clinic.name)
 
     router.push(
-      `/dentists/${citySlug}-tx/clinic/${clinicSlug}`
+      `/dentists/${citySlug}/clinic/${clinicSlug}`
     )
   }
 
@@ -65,7 +65,7 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
       {/* 🔥 Unified CTA Logic */}
       <CardCTA
         phone={clinic.phone}
-        city={`${clinic.city.toLowerCase().replace(/\s+/g, '-')}-tx`}
+        city={`${clinic.city.toLowerCase().replace(/\s+/g, '-')}`}
         clinicName={clinic.name}
       />
     </div>

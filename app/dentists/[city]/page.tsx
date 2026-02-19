@@ -44,8 +44,12 @@ export default async function CityPage({
   const cityName = cleanCity(city)
 
   // 🔥 Fix case sensitivity to match DB ("Houston")
-  const formattedCity =
-    cityName.charAt(0).toUpperCase() + cityName.slice(1)
+
+const formattedCity = cityName
+  .split(" ")
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ")
+
 
   const { data: clinics } = await supabase
     .from("clinics")
