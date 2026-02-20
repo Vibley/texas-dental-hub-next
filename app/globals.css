@@ -1890,3 +1890,79 @@ body.city-view .hero h1 {
     font-size: 22px;
   }
 }
+
+
+/* Desktop: expanded by default */
+@media (min-width: 769px) {
+  .houston-details {
+    display: block;
+  }
+
+  .houston-details > summary {
+    display: none;
+  }
+
+  .houston-details[open] .houston-content,
+  .houston-details .houston-content {
+    display: block;
+  }
+}
+
+/* Mobile: collapsed by default */
+@media (max-width: 768px) {
+  .houston-details {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+  }
+
+  .houston-summary {
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    color: #2563eb;
+    padding: 10px 0;
+  }
+
+  .houston-content {
+    margin-top: 10px;
+  }
+}
+
+.nearby-cities {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.city-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  justify-content: flex-start;   /* 🔥 force left */
+  align-items: flex-start;       /* 🔥 prevent vertical centering */
+}
+
+.city-link {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  text-decoration: none;
+  font-size: 14px;
+  color: #1d4ed8;
+  transition: 0.2s ease;
+}
+
+.city-link:hover {
+  background: #e2e8f0;
+}
+
+.nearby-cities {
+  text-align: left;   /* 🔥 override any container centering */
+}
+
+.nearby-cities {
+  margin-top: 18px;   /* reduced from 40px */
+  padding-top: 8px;  /* reduced from 20px */
+  border-top: 1px solid #e5e7eb;
+}
