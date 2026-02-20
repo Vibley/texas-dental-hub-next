@@ -163,17 +163,17 @@ export default function CityClient({
       </div>
 
       {/* 🔥 Internal Linking Cluster */}
-      <div className="section nearby-cities" style={{ textAlign: "center", paddingTop: "6px"}}>
+      <div className="section nearby-cities" style={{ textAlign: "center", paddingTop: "6px" }}>
         <h3>Explore Dentists in Nearby Cities</h3>
 
-        <div className="city-links">
+        <div className="city-links" style={{width: "100%" }}>
           {metroCities
             .filter((c) => c !== cityName)
             .map((c) => (
               <a
                 key={c}
                 href={`/dentists/${slugify(c)}`}
-                className="city-link"
+                className="city-links"
               >
                 {c}
               </a>
