@@ -1,0 +1,16 @@
+function TexasIcon({ size = 28 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 512 512"
+      fill="none"
+      stroke="#2563EB"
+      strokeWidth="28"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M75 140 L170 50 L340 60 L460 190 L380 270 L400 350 L310 420 L250 380 L180 400 L160 320 L100 300 L75 220 Z" />
+    </svg>
+  )
+}

@@ -1966,3 +1966,52 @@ body.city-view .hero h1 {
   padding-top: 8px;  /* reduced from 20px */
   border-top: 1px solid #e5e7eb;
 }
+
+
+.site-header {
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-main {
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.brand-accent {
+  color: #2563eb;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.brand-tagline {
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.brand-icon {
+  width: 26px;
+  height: 26px;
+  display: block;
+  color: #2563EB; /* only works if svg uses currentColor */
+}
