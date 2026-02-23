@@ -46,7 +46,7 @@ export default function CityClient({
       {/* HERO */}
       <div className="hero hero-expanded">
 
-        {cityName !== "Houston" && (
+        {cityName !== "Houston_backup02232026" && (
           <>
             <h2>Dentists in {cityName}, TX</h2>
 
@@ -66,7 +66,7 @@ export default function CityClient({
           </>
         )}
 
-        {cityName === "Houston" && (
+        {cityName === "Houston_backup02232026" && (
           <>
             <h2>Comprehensive Dental Care Across Houston</h2>
 
