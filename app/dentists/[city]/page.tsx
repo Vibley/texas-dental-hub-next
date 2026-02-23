@@ -5,6 +5,8 @@ function cleanCity(city: string) {
   return city.replace("-tx", "").replace(/-/g, " ")
 }
 
+
+
 export async function generateStaticParams() {
   const { data } = await supabase
     .from("clinics")
@@ -29,9 +31,14 @@ export async function generateMetadata({
   const { city } = await params
   const cityName = cleanCity(city)
 
+  const canonicalUrl = `https://texasdentalhub.com/dentists/${city}`
+
   return {
     title: `Best dentists in ${cityName}, TX | TexasDentalHub`,
     description: `Find top-rated family, cosmetic, and emergency dentists in ${cityName}, Texas.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
   }
 }
 
