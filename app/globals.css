@@ -2090,4 +2090,28 @@ body.city-view .hero h1 {
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 14px;
+
+.hero-details {
+  margin-top: 16px;
+}
+
+.hero-summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #2563eb;
+  list-style: none;
+}
+
+.hero-summary::-webkit-details-marker {
+  display: none;
+}
+
+.hero-summary::after {
+  content: " +";
+  margin-left: 6px;
+}
+
+.hero-details[open] .hero-summary::after {
+  content: " −";
+}
 }

@@ -81,26 +81,33 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-    <div className="hero hero-expanded">
 
-             <h2>Comprehensive Dental Care Across Houston</h2>
 
-            <p>
+
+<div className="hero hero-expanded">
+
+  <h1>Comprehensive Dental Care Across Houston</h1>
+
+  <p>
   Finding a trusted dentist in Houston doesn’t have to be complicated.
   TexasDentalHub connects patients with verified local dental clinics
   offering general, family, cosmetic, and emergency dental care
   throughout the Houston area.
-</p>
-
-<p>
   As one of the largest metropolitan areas in Texas, Houston serves
   diverse communities across neighborhoods such as The Heights,
   Midtown, Galleria, Westchase, Katy, Sugar Land, Cypress,
   Pearland, and The Woodlands. Patients can compare experienced
   providers offering preventive, restorative, cosmetic,
   and emergency dental treatments near their home or workplace.
-</p>
+  </p>
 
+  <details className="hero-details">
+    <summary className="hero-summary">
+      Learn more about Houston dental services
+    </summary>
+
+    <div className="hero-content">
+    
             <h2>Family Dentists in Houston</h2>
             <p>
               Family dental clinics provide routine cleanings, fillings,
@@ -134,7 +141,13 @@ export default function HomePage() {
 </p>
 
 
+    </div>
+  </details>
+
 </div>
+
+
+
 
 
 
