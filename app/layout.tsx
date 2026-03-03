@@ -1,5 +1,5 @@
 
-
+import Script from "next/script";
 import "./globals.css";
 import { supabase } from "@/lib/supabase";
 import Header from "./components/Header";
@@ -26,6 +26,21 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+
+{/* Google Analytics */}
+  <Script
+    src="https://www.googletagmanager.com/gtag/js?id=G-T4C8X1JRLZ"
+    strategy="afterInteractive"
+  />
+  <Script id="google-analytics" strategy="afterInteractive">
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-T4C8X1JRLZ');
+    `}
+  </Script>
       <body>
 
         {/* Header with City Dropdown */}
