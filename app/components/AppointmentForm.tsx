@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { trackEvent } from "@/lib/analytics";
 
 export default function AppointmentForm({
   clinicName,
@@ -36,10 +37,20 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
   setLoading(false)
 
-  if (response.ok) {
-    setSuccess(true)
-    form.reset()   // ✅ now safe
-  } else {
+if (response.ok) {
+
+  // 🔥 GA conversion tracking
+  trackEvent("appointment_submit", {
+    clinic_name: clinicName,
+    city,
+  })
+
+  setSuccess(true)
+  form.reset()
+}
+
+
+else {
     const result = await response.json()
     console.error(result)
     alert('Something went wrong submitting your request.')

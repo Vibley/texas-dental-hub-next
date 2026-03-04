@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import AppointmentForm from '@/app/components/AppointmentForm'
+import { trackEvent } from "@/lib/analytics";
 
 export default function ClinicCTA({
   phone,
@@ -32,13 +33,21 @@ export default function ClinicCTA({
     }).catch(() => {})
   }
 
-  const handleCallClick = () => {
-    trackCall()
+ const handleCallClick = () => {
+  // GA tracking
+  trackEvent("call_click", {
+    clinic_name: clinicName,
+    city,
+    page_path: window.location.pathname,
+  })
 
-    if (!isMobile) {
-      setShowCallPopup(true)
-    }
+  // Existing DB tracking (DO NOT REMOVE)
+  trackCall()
+
+  if (!isMobile) {
+    setShowCallPopup(true)
   }
+}
 
   // 🔥 Auto-close popup after 6 seconds
   useEffect(() => {
