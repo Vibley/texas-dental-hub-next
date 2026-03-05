@@ -38,6 +38,16 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
   setLoading(false)
 
 if (response.ok) {
+await fetch("/api/track-call", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    clinic_name: clinicName,
+    city,
+    source_page: window.location.pathname,
+    source_position: "appointment_submit",
+  }),
+});
 
   // 🔥 GA conversion tracking
   trackEvent("appointment_submit", {

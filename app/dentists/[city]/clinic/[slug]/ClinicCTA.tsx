@@ -107,7 +107,26 @@ export default function ClinicCTA({
         {/* Appointment Button */}
         <button
           className="btn secondary"
-          onClick={() => setShowModal(true)}
+         onClick={() => {
+  trackEvent("appointment_modal_open", {
+    clinic_name: clinicName,
+    city,
+    page_path: window.location.pathname,
+  });
+
+  fetch("/api/track-call", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      clinic_name: clinicName,
+      city,
+      source_page: window.location.pathname,
+      source_position: "appointment_modal_open",
+    }),
+  });
+
+  setShowModal(true);
+}}
         >
           Request Appointment
         </button>
