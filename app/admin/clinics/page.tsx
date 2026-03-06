@@ -1,15 +1,10 @@
 export const dynamic = "force-dynamic"
 
-import { createClient } from "@supabase/supabase-js"
+import { supabaseAdmin } from "@/lib/supabase/admin"
 import UpgradeButton from "@/app/components/UpgradeButton"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
 export default async function ClinicsPage() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("clinics")
     .select("*")
     .order("city")
@@ -44,8 +39,6 @@ export default async function ClinicsPage() {
                 <th style={thStyle}>Actions</th>
               </tr>
             </thead>
-
-            {/* Force stable rendering */}
             <tbody>
               {clinics.map((clinic) => (
                 <tr key={clinic.id}>
