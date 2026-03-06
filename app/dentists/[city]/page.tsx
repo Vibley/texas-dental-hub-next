@@ -62,6 +62,8 @@ const formattedCity = cityName
     .from("clinics")
     .select("id, name, address, phone, city, services, insurances, weekend_open, zip")
     .eq("city", formattedCity)
+  .order('featured', { ascending: false })
+  .order('name', { ascending: true })
 
   const clinicList = clinics || []
 

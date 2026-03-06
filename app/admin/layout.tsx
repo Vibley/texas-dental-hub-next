@@ -1,34 +1,12 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 
-const ADMIN_EMAIL = 'hintsahagosllc@gmail.com' // 🔒 change if needed
-
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // 🔒 Not logged in
-  if (!user) {
-    redirect('/admin-login')
-  }
-
-  // 🔒 Logged in but NOT your email
-  if (user.email !== ADMIN_EMAIL) {
-    redirect('/admin-login')
-  }
-
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
-      
-      {/* Sidebar */}
       <aside
         style={{
           width: '240px',
@@ -45,10 +23,10 @@ export default async function AdminLayout({
           <Link href="/admin/contact-messages" style={{ color: 'white' }}>Contact Messages</Link>
           <Link href="/admin/contact-leads" style={{ color: 'white' }}>Contact Leads</Link>
           <Link href="/admin/call-clicks" style={{ color: 'white' }}>Call Clicks</Link>
+          <Link href="/admin/clinics" style={{ color: 'white' }}>Clinics</Link>
         </nav>
       </aside>
 
-      {/* Main content */}
       <main style={{ flex: 1, padding: '40px', background: '#f1f5f9' }}>
         {children}
       </main>
