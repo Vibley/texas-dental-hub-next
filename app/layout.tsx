@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import { supabase } from "@/lib/supabase";
 import Header from "./components/Header";
+import PageViewTracker from './components/PageViewTracker'
 
 export const metadata = {
   title: "TexasDentalHub",
@@ -42,6 +43,7 @@ export default async function RootLayout({
     `}
   </Script>
       <body>
+ 	<PageViewTracker />
 
         {/* Header with City Dropdown */}
         <Header cities={cities} />
