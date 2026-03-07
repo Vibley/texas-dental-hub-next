@@ -5,9 +5,11 @@ import UpgradeButton from "@/app/components/UpgradeButton"
 
 export default async function ClinicsPage({ searchParams }: any) {
 
-  const city = searchParams?.city || ""
-  const search = searchParams?.search || ""
-  const featured = searchParams?.featured || ""
+  const params = await searchParams
+
+const city = params?.city || ""
+const search = params?.search || ""
+const featured = params?.featured || ""
 
   let query = supabaseAdmin
     .from("clinics")
@@ -62,7 +64,7 @@ export default async function ClinicsPage({ searchParams }: any) {
         </select>
 
         <button style={{ padding: "6px 12px" }}>
-          Filter
+          Search
         </button>
       </form>
 
