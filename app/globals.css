@@ -2189,3 +2189,13 @@ box-shadow:0 8px 20px rgba(0,0,0,0.08);
 background:#2563eb;
 color:white;
 }
+
+
+.featured-title {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.featured-card {
+  border: 2px solid #2563eb;
+}

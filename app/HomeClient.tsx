@@ -10,6 +10,8 @@ import type { Clinic } from '@/app/types'
 export default function HomePage() {
   const [clinics, setClinics] = useState<Clinic[]>([])
   const [filteredClinics, setFilteredClinics] = useState<Clinic[]>([])
+const featuredClinics = filteredClinics.filter((c) => c.featured === true)
+const regularClinics = filteredClinics.filter((c) => c.featured !== true)
   const [services, setServices] = useState<string[]>([])
   const [insurances, setInsurances] = useState<string[]>([])
 
@@ -160,10 +162,34 @@ export default function HomePage() {
 
 
       {/* Clinics */}
-   <div className="grid">
-  {filteredClinics.map((clinic) => (
-    <ClinicCard key={clinic.id} clinic={clinic} />
-  ))}
+{/* ⭐ Featured Dentists */}
+
+{featuredClinics.length > 0 && (
+  <div className="section">
+    <h2 className="featured-title">
+      ⭐ Featured Dentists in Houston
+    </h2>
+
+    <div className="grid">
+      {featuredClinics.map((clinic) => (
+        <ClinicCard key={clinic.id} clinic={clinic} />
+      ))}
+    </div>
+  </div>
+)}
+
+{/* All Dentists */}
+
+<div className="section">
+  <h2 className="all-dentists-title">
+    All Dentists in Houston
+  </h2>
+
+  <div className="grid">
+    {regularClinics.map((clinic) => (
+      <ClinicCard key={clinic.id} clinic={clinic} />
+    ))}
+  </div>
 </div>
     </>
   )
