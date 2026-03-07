@@ -1,10 +1,41 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 
-export default function AdminLayout({
+const ADMIN_EMAIL = 'hintsahagosllc@gmail.com'
+
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const cookieStore = cookies()
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name) {
+          return cookieStore.get(name)?.value
+        },
+      },
+    }
+  )
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/admin-login')
+  }
+
+  if (user.email !== ADMIN_EMAIL) {
+    redirect('/admin-login')
+  }
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <aside
