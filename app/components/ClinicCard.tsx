@@ -9,6 +9,7 @@ type Clinic = {
   address: string
   phone?: string
   city: string
+ featured?: boolean
 }
 
 function slugify(text: string) {
@@ -36,7 +37,9 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
   return (
   
 <div
-  className="card"
+  className={`card ${clinic.featured ? 'featured-card' : ''}`}
+
+
   onClick={(e) => {
     // Only navigate if clicking directly on card,
     // not inside buttons or modal
@@ -45,6 +48,9 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
   }}
   style={{ cursor: 'pointer' }}
 >
+ {clinic.featured && (
+    <span className="featured-badge">⭐ Featured</span>
+  )}
 
       <h3>{clinic.name}</h3>
 

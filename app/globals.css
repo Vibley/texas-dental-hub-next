@@ -2199,3 +2199,19 @@ color:white;
 .featured-card {
   border: 2px solid #2563eb;
 }
+
+
+.featured-card {
+  border: 2px solid #2563eb;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+}
+
+.featured-badge {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
