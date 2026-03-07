@@ -1,10 +1,31 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
 
-export default function AdminLayout({
+const ADMIN_EMAIL = 'hintsahagosllc@gmail.com'
+
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // Not logged in
+  if (!user) {
+    redirect('/admin-login')
+  }
+
+  // Logged in but not admin email
+  if (user.email !== ADMIN_EMAIL) {
+    redirect('/admin-login')
+  }
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <aside
