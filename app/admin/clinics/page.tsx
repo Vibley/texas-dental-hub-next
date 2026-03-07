@@ -1,14 +1,32 @@
-
 export const dynamic = "force-dynamic"
 
 import { supabaseAdmin } from "@/lib/supabase/admin"
 import UpgradeButton from "@/app/components/UpgradeButton"
 
-export default async function ClinicsPage() {
-  const { data, error } = await supabaseAdmin
+export default async function ClinicsPage({ searchParams }: any) {
+
+  const city = searchParams?.city || ""
+  const search = searchParams?.search || ""
+  const featured = searchParams?.featured || ""
+
+  let query = supabaseAdmin
     .from("clinics")
     .select("*")
     .order("city")
+
+  if (city) {
+    query = query.eq("city", city)
+  }
+
+  if (search) {
+    query = query.ilike("name", `%${search}%`)
+  }
+
+  if (featured === "true") {
+    query = query.eq("featured", true)
+  }
+
+  const { data, error } = await query
 
   if (error) {
     console.error("Clinics fetch error:", error)
@@ -20,6 +38,33 @@ export default async function ClinicsPage() {
   return (
     <div>
       <h1 style={{ marginBottom: "20px" }}>Clinics</h1>
+
+      {/* FILTER BAR */}
+
+      <form method="GET" style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+        <input
+          name="search"
+          placeholder="Search clinic name"
+          defaultValue={search}
+          style={{ padding: "6px" }}
+        />
+
+        <input
+          name="city"
+          placeholder="City"
+          defaultValue={city}
+          style={{ padding: "6px" }}
+        />
+
+        <select name="featured" defaultValue={featured} style={{ padding: "6px" }}>
+          <option value="">All</option>
+          <option value="true">Featured Only</option>
+        </select>
+
+        <button style={{ padding: "6px 12px" }}>
+          Filter
+        </button>
+      </form>
 
       {clinics.length === 0 ? (
         <p>No clinics found.</p>
@@ -40,6 +85,7 @@ export default async function ClinicsPage() {
                 <th style={thStyle}>Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {clinics.map((clinic) => (
                 <tr key={clinic.id}>
@@ -48,6 +94,7 @@ export default async function ClinicsPage() {
                   <td style={tdStyle}>
                     {clinic.featured ? "✅ Yes" : "No"}
                   </td>
+
                   <td style={tdStyle}>
                     {!clinic.featured && (
                       <UpgradeButton
