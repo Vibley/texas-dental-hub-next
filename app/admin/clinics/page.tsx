@@ -1,30 +1,14 @@
+
 export const dynamic = "force-dynamic"
 
-import { createClient } from "@supabase/supabase-js"
+import { supabaseAdmin } from "@/lib/supabase/admin"
 import UpgradeButton from "@/app/components/UpgradeButton"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
-export default async function ClinicsPage({
-  searchParams,
-}: {
-  searchParams?: { city?: string }
-}) {
-  const cityFilter = searchParams?.city
-
-  let query = supabase
+export default async function ClinicsPage() {
+  const { data, error } = await supabaseAdmin
     .from("clinics")
     .select("*")
     .order("city")
-
-  if (cityFilter) {
-    query = query.eq("city", cityFilter)
-  }
-
-  const { data, error } = await query
 
   if (error) {
     console.error("Clinics fetch error:", error)
@@ -36,20 +20,6 @@ export default async function ClinicsPage({
   return (
     <div>
       <h1 style={{ marginBottom: "20px" }}>Clinics</h1>
-
-      {/* City Filter */}
-      <form method="GET" style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          name="city"
-          placeholder="Filter by city..."
-          defaultValue={cityFilter || ""}
-          style={{ padding: "6px", marginRight: "10px" }}
-        />
-        <button type="submit" style={{ padding: "6px 12px" }}>
-          Filter
-        </button>
-      </form>
 
       {clinics.length === 0 ? (
         <p>No clinics found.</p>
@@ -70,7 +40,6 @@ export default async function ClinicsPage({
                 <th style={thStyle}>Actions</th>
               </tr>
             </thead>
-
             <tbody>
               {clinics.map((clinic) => (
                 <tr key={clinic.id}>
