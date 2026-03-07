@@ -8,4 +8,5 @@ export type Clinic = {
   insurances?: string[]
   weekend_open?: string
   zip?: string
+featured?: boolean 
 }

@@ -60,7 +60,7 @@ const formattedCity = cityName
 
   const { data: clinics } = await supabase
     .from("clinics")
-    .select("id, name, address, phone, city, services, insurances, weekend_open, zip")
+    .select("id, name, address, phone, city, services, insurances, weekend_open, zip, featured")
     .eq("city", formattedCity)
   .order('featured', { ascending: false })
   .order('name', { ascending: true })

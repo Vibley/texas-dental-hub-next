@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+
 import { useRouter } from "next/navigation"
 import FilterBar from "@/app/components/FilterBar"
 import CardCTA from "@/app/components/CardCTA"
@@ -24,6 +25,8 @@ export default function CityClient({
 }) {
   const router = useRouter()
   const [filteredClinics, setFilteredClinics] = useState(clinics)
+const featuredClinics = filteredClinics.filter((c) => c.featured === true)
+const regularClinics = filteredClinics.filter((c) => c.featured !== true)
 
   // 🔥 Houston Metro Internal Linking Cluster
   const metroCities = [
@@ -121,46 +124,110 @@ export default function CityClient({
       />
 
       {/* GRID */}
-      <div className="section">
-        <div className="grid">
-          {filteredClinics.map((clinic) => (
-            <div
-              key={clinic.id}
-              className="card"
-              onClick={() =>
-                router.push(
-                  `/dentists/${city}/clinic/${slugify(clinic.name)}`
-                )
-              }
-              style={{ cursor: "pointer" }}
-            >
-              <span className="badge">Clinic</span>
+    
+{/* ⭐ Featured Dentists */}
 
-              <h3>{clinic.name}</h3>
+{featuredClinics.length > 0 && (
+  <div className="section">
+    <h2 className="featured-title">
+      ⭐ Featured Dentists in {cityName}
+    </h2>
 
-              {clinic.address && (
-                <div className="address-text">
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="map-link"
-                  >
-                    {clinic.address}
-                  </a>
-                </div>
-              )}
+    <div className="grid">
+      {featuredClinics.map((clinic) => (
+        <div
+          key={clinic.id}
+          className="card featured-card"
+          onClick={() =>
+            router.push(
+              `/dentists/${city}/clinic/${slugify(clinic.name)}`
+            )
+          }
+          style={{ cursor: "pointer" }}
+        >
+         <span className="badge featured-badge">⭐ Featured</span>
 
-              <CardCTA
-                phone={clinic.phone}
-                city={city}
-                clinicName={clinic.name}
-              />
+          <h3>{clinic.name}</h3>
+
+          {clinic.address && (
+            <div className="address-text">
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  clinic.address
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="map-link"
+              >
+                {clinic.address}
+              </a>
             </div>
-          ))}
+          )}
+
+          <CardCTA
+            phone={clinic.phone}
+            city={city}
+            clinicName={clinic.name}
+          />
         </div>
+      ))}
+    </div>
+  </div>
+)}
+
+{/* All Dentists */}
+
+<div className="section">
+  <h2 className="all-dentists-title">
+    All Dentists in {cityName}
+  </h2>
+
+  <div className="grid">
+    {regularClinics.map((clinic) => (
+      <div
+        key={clinic.id}
+        className="card"
+        onClick={() =>
+          router.push(
+            `/dentists/${city}/clinic/${slugify(clinic.name)}`
+          )
+        }
+        style={{ cursor: "pointer" }}
+      >
+        <span className="badge">Clinic</span>
+
+        <h3>{clinic.name}</h3>
+
+        {clinic.address && (
+          <div className="address-text">
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                clinic.address
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="map-link"
+            >
+              {clinic.address}
+            </a>
+          </div>
+        )}
+
+        <CardCTA
+          phone={clinic.phone}
+          city={city}
+          clinicName={clinic.name}
+        />
       </div>
+    ))}
+  </div>
+</div>
+
+
+
+
 
       {/* 🔥 Internal Linking Cluster */}
       <div className="section nearby-cities" style={{ textAlign: "center", paddingTop: "6px" }}>

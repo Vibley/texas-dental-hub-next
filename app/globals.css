@@ -2115,3 +2115,77 @@ body.city-view .hero h1 {
   content: " −";
 }
 }
+
+
+
+
+/* Claim Listing Section */
+
+.claim-listing-box {
+  margin-top: 30px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.claim-listing-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.claim-listing-text {
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.claim-listing-btn {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.claim-listing-btn:hover {
+  background: #1d4ed8;
+}
+
+
+
+/* Featured Dentists */
+
+.featured-title {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.all-dentists-title {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.featured-card {
+  border: 2px solid #2563eb;
+  background: #f8fbff;
+}
+
+
+.featured-card{
+border:2px solid #2563eb;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.featured-badge{
+background:#2563eb;
+color:white;
+}

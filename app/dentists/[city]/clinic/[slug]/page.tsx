@@ -62,62 +62,85 @@ const hours = (() => {
   return ''
 })()
 
-  return (
-    <div className="clinic-detail">
 
-      <div className="clinic-header">
-        <h1 className="clinic-title">{clinic.name}</h1>
-        <div className="clinic-title-divider"></div>
-        <div className="clinic-subtitle">
-          {cityName}, TX
-        </div>
+return (
+  <div className="clinic-detail">
+
+    <div className="clinic-header">
+      <h1 className="clinic-title">{clinic.name}</h1>
+      <div className="clinic-title-divider"></div>
+      <div className="clinic-subtitle">
+        {cityName}, TX
+      </div>
+    </div>
+
+    <div className="clinic-card">
+
+      <div className="info-row">
+        <strong>Address</strong>
+        <span>{clinic.address}</span>
       </div>
 
-      <div className="clinic-card">
-
+      {services.length > 0 && (
         <div className="info-row">
-          <strong>Address</strong>
-          <span>{clinic.address}</span>
+          <strong>Services</strong>
+          <span>{services.join(', ')}</span>
         </div>
+      )}
 
-        {services.length > 0 && (
-          <div className="info-row">
-            <strong>Services</strong>
-            <span>{services.join(', ')}</span>
-          </div>
-        )}
+      {insurances.length > 0 && (
+        <div className="info-row">
+          <strong>Insurance</strong>
+          <span>{insurances.join(', ')}</span>
+        </div>
+      )}
 
-        {insurances.length > 0 && (
-          <div className="info-row">
-            <strong>Insurance</strong>
-            <span>{insurances.join(', ')}</span>
-          </div>
-        )}
-
-        {hours && (
-          <div className="info-row">
-            <strong>Hours</strong>
-            <span>{hours}</span>
-          </div>
-        )}
-
-      </div>
-
-      {/* ✅ CLIENT COMPONENT HANDLES BUTTON LOGIC */}
-     <ClinicCTA
-  phone={clinic.phone}
-  city={city}
- 
-  clinicName={clinic.name}
-/>
-
-
-<div className="back-link" style={{ marginTop: 30 }}>
-  <a href={`/dentists/${city}`}>
-    ← Browse more dentists in {cityName}
-  </a>
-</div>
+      {hours && (
+        <div className="info-row">
+          <strong>Hours</strong>
+          <span>{hours}</span>
+        </div>
+      )}
 
     </div>
-  )
+
+    {/* Patient Actions */}
+    <ClinicCTA
+      phone={clinic.phone}
+      city={city}
+      clinicName={clinic.name}
+    />
+
+    {/* Claim Listing Section */}
+<div className="claim-listing-box">
+
+  <div className="claim-listing-title">
+    Own this dental practice?
+  </div>
+
+  <div className="claim-listing-text">
+    Claim this listing to update your information, receive appointment requests
+    directly, and promote your practice to more patients in {cityName}.
+  </div>
+
+  <a
+    href={`/contact?type=Claim%20Listing&clinic=${encodeURIComponent(clinic.name)}`}
+    className="claim-listing-btn"
+  >
+    Claim This Listing
+  </a>
+
+</div>
+
+    <div className="back-link" style={{ marginTop: 30 }}>
+      <a href={`/dentists/${city}`}>
+        ← Browse more dentists in {cityName}
+      </a>
+    </div>
+
+  </div>
+)
+
+
+
 }
