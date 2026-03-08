@@ -7,9 +7,25 @@ export default async function ClinicsPage({ searchParams }: any) {
 
   const params = await searchParams
 
-const city = params?.city || ""
-const search = params?.search || ""
-const featured = params?.featured || ""
+  const city = params?.city || ""
+  const search = params?.search || ""
+  const featured = params?.featured || ""
+
+  /* ---------------------------------
+     Fetch Cities Dynamically
+  --------------------------------- */
+
+  const { data: cityData } = await supabaseAdmin
+    .from("clinics")
+    .select("city")
+
+  const cities = [
+    ...new Set(cityData?.map((c) => c.city).filter(Boolean))
+  ].sort()
+
+  /* ---------------------------------
+     Build Query
+  --------------------------------- */
 
   let query = supabaseAdmin
     .from("clinics")
@@ -43,7 +59,17 @@ const featured = params?.featured || ""
 
       {/* FILTER BAR */}
 
-      <form method="GET" style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+      <form
+        method="GET"
+        style={{
+          marginBottom: "20px",
+          display: "flex",
+          gap: "10px",
+          flexWrap: "wrap",
+        }}
+      >
+
+        {/* Search */}
         <input
           name="search"
           placeholder="Search clinic name"
@@ -51,14 +77,27 @@ const featured = params?.featured || ""
           style={{ padding: "6px" }}
         />
 
-        <input
+        {/* City Dropdown */}
+        <select
           name="city"
-          placeholder="City"
           defaultValue={city}
           style={{ padding: "6px" }}
-        />
+        >
+          <option value="">All Cities</option>
 
-        <select name="featured" defaultValue={featured} style={{ padding: "6px" }}>
+          {cities.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+
+        {/* Featured */}
+        <select
+          name="featured"
+          defaultValue={featured}
+          style={{ padding: "6px" }}
+        >
           <option value="">All</option>
           <option value="true">Featured Only</option>
         </select>
@@ -66,6 +105,7 @@ const featured = params?.featured || ""
         <button style={{ padding: "6px 12px" }}>
           Search
         </button>
+
       </form>
 
       {clinics.length === 0 ? (
@@ -93,6 +133,7 @@ const featured = params?.featured || ""
                 <tr key={clinic.id}>
                   <td style={tdStyle}>{clinic.name}</td>
                   <td style={tdStyle}>{clinic.city}</td>
+
                   <td style={tdStyle}>
                     {clinic.featured ? "✅ Yes" : "No"}
                   </td>
@@ -105,9 +146,11 @@ const featured = params?.featured || ""
                       />
                     )}
                   </td>
+
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       )}
