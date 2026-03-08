@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { supabaseAdmin } from "@/lib/supabase/admin"
 import UpgradeButton from "@/app/components/UpgradeButton"
+import DowngradeButton from "@/app/components/DowngradeButton"
 
 export default async function ClinicsPage({ searchParams }: any) {
 
@@ -138,14 +139,21 @@ export default async function ClinicsPage({ searchParams }: any) {
                     {clinic.featured ? "✅ Yes" : "No"}
                   </td>
 
-                  <td style={tdStyle}>
-                    {!clinic.featured && (
-                      <UpgradeButton
-                        clinicId={clinic.id}
-                        clinicName={clinic.name}
-                      />
-                    )}
-                  </td>
+
+                <td style={tdStyle}>
+
+  {clinic.featured ? (
+    <DowngradeButton clinicId={clinic.id} />
+  ) : (
+    <UpgradeButton
+      clinicId={clinic.id}
+      clinicName={clinic.name}
+    />
+  )}
+
+</td>
+
+
 
                 </tr>
               ))}
