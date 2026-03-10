@@ -2236,3 +2236,18 @@ color:white;
 .city-link:hover {
   background: #e2e8f0;
 }
+
+@media (max-width: 768px) {
+
+  .site-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .city-selector {
+    align-self: flex-end;
+  }
+
+}
