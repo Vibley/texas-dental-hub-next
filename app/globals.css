@@ -2237,17 +2237,31 @@ color:white;
   background: #e2e8f0;
 }
 
-@media (max-width: 768px) {
+.topbar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
 
-  .site-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+/* Mobile layout */
+@media (max-width:768px){
+
+  .topbar-inner{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
   }
 
-  .city-selector {
-    align-self: flex-end;
+  .city-select{
+    align-self:flex-end;
+  }
+
+}
+@media (max-width:768px){
+
+  .city-select{
+    font-size:14px;
+    padding:6px 10px;
   }
 
 }
