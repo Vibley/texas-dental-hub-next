@@ -149,7 +149,7 @@ const { data: cities } = await supabase
         cityName={formattedCity}
         clinics={clinicList}
         citySeo={citySeo}
-        cities={cities}
+        cities={cities || []}
       />
     </>
   )
