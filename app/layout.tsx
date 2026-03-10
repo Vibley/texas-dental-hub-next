@@ -124,7 +124,7 @@ export default async function RootLayout({
   </div>
 
   <div className="footer-bottom">
-    © {new Date().getFullYear()} TexasDentalHub. Operated by Hintsa Hagos LLC. All rights reserved.
+    © {new Date().getFullYear()} TexasDentalHub. All rights reserved.
   </div>
 
 </footer>

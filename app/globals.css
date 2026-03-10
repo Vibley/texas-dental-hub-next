@@ -2215,3 +2215,24 @@ color:white;
   border-radius: 20px;
   margin-bottom: 8px;
 }
+
+
+.city-links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.city-link {
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #2563eb;
+  font-size: 14px;
+}
+
+.city-link:hover {
+  background: #e2e8f0;
+}

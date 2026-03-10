@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-
 import { useRouter } from "next/navigation"
 import FilterBar from "@/app/components/FilterBar"
 import CardCTA from "@/app/components/CardCTA"
@@ -14,34 +13,45 @@ function slugify(text: string) {
     .replace(/(^-|-$)/g, "")
 }
 
+type CitySeo = {
+  intro_paragraph1: string | null
+  intro_paragraph2: string | null
+  meta_title: string | null
+  meta_description: string | null
+}
+
 export default function CityClient({
   city,
   cityName,
   clinics,
+  citySeo,
+  cities,
 }: {
   city: string
   cityName: string
   clinics: Clinic[]
-}) {
+  citySeo: CitySeo | null
+  cities: { city_name: string; city_slug: string }[]
+})
+
+{
   const router = useRouter()
   const [filteredClinics, setFilteredClinics] = useState(clinics)
-const featuredClinics = filteredClinics.filter((c) => c.featured === true)
-const regularClinics = filteredClinics.filter((c) => c.featured !== true)
 
-  // 🔥 Houston Metro Internal Linking Cluster
-  const metroCities = [
-    "Houston",
-    "Katy",
-    "Sugar Land",
-    "Cypress",
-    "Pearland",
-    "The Woodlands",
-    "League City",
-    "Missouri City",
-    "Richmond",
-    "Rosenberg"
-    
-  ]
+  const featuredClinics = filteredClinics.filter((c) => c.featured === true)
+  const regularClinics = filteredClinics.filter((c) => c.featured !== true)
+
+function trimToMultipleOfThree(list: Clinic[]) {
+  const remainder = list.length % 3
+  return remainder === 0 ? list : list.slice(0, list.length - remainder)
+}
+
+const trimmedFeatured = trimToMultipleOfThree(featuredClinics)
+const trimmedRegular = trimToMultipleOfThree(regularClinics)
+
+
+const nearbyCities =
+  cities?.filter((c) => c.city_name !== cityName).slice(0, 8) || []
 
   return (
     <div className="container">
@@ -49,202 +59,143 @@ const regularClinics = filteredClinics.filter((c) => c.featured !== true)
       {/* HERO */}
       <div className="hero hero-expanded">
 
-        {cityName !== "Houston_backup02232026" && (
-          <>
-            <h2>Dentists in {cityName}, TX</h2>
+        <h1>Dentists in {cityName}, TX</h1>
 
-            <p>
-              Finding a trusted dentist in {cityName} doesn’t have to be complicated.
-              TexasDentalHub connects patients with verified local dental clinics
-              offering general, family, cosmetic, and emergency dental care throughout
-              the {cityName} area.
-            </p>
+        <p>
+          {citySeo?.intro_paragraph1 ||
+            `TexasDentalHub helps patients find trusted dental clinics in ${cityName}, TX.`}
+        </p>
 
-            <p>
-              Whether you’re new to {cityName} or simply looking for a better dental
-              provider, our directory makes it easy to discover nearby clinics,
-              explore available services, and contact dental offices directly —
-              without third-party booking fees or misleading listings.
-            </p>
-          </>
-        )}
+        <p>
+          {citySeo?.intro_paragraph2 ||
+            `Explore local dental services, compare providers, and connect directly with dental offices in the ${cityName} area.`}
+        </p>
 
-        {cityName === "Houston_backup02232026" && (
-          <>
-            <h2>Comprehensive Dental Care Across Houston</h2>
-
-            <p>
-              Finding a trusted dentist in Houston doesn’t have to be complicated.
-              TexasDentalHub connects patients with verified local dental clinics
-              offering general, family, cosmetic, and emergency dental care
-              throughout the Houston area.
-            </p>
-
-            <p>
-              As one of the largest metropolitan areas in Texas, Houston serves
-              diverse communities across neighborhoods such as The Heights,
-              Midtown, Galleria, Westchase, Katy, Sugar Land, Cypress,
-              Pearland, and The Woodlands.
-            </p>
-
-            <h2>Family Dentists in Houston</h2>
-            <p>
-              Family dental clinics provide routine cleanings, fillings, crowns,
-              fluoride treatments, and long-term oral health care for children
-              and adults. Many Houston practices offer flexible scheduling.
-            </p>
-
-            <h2>Emergency Dentists in Houston</h2>
-            <p>
-              Dental emergencies such as severe tooth pain, broken teeth,
-              abscesses, and knocked-out teeth require immediate attention.
-              Many Houston dental offices provide same-day emergency appointments.
-            </p>
-
-            <h2>Cosmetic & Implant Dentistry in Houston</h2>
-            <p>
-              Cosmetic procedures including Invisalign, veneers,
-              professional whitening, and dental implants are widely available
-              throughout Houston.
-            </p>
-
-            <h2>Insurance & Payment Options</h2>
-            <p>
-              Most Houston dental clinics accept major PPO insurance plans.
-              Use the insurance filter below to find clinics that match your plan.
-            </p>
-          </>
-        )}
       </div>
 
       {/* FILTER BAR */}
-      <FilterBar
-        clinics={clinics}
-        onFilter={setFilteredClinics}
-      />
+      <FilterBar clinics={clinics} onFilter={setFilteredClinics} />
 
-      {/* GRID */}
-    
-{/* ⭐ Featured Dentists */}
+      {/* ⭐ Featured Dentists */}
 
-{featuredClinics.length > 0 && (
-  <div className="section">
-    <h2 className="featured-title">
-      ⭐ Featured Dentists in {cityName}
-    </h2>
+      {featuredClinics.length > 0 && (
+        <div className="section">
+          <h2 className="featured-title">
+            ⭐ Featured Dentists in {cityName}
+          </h2>
 
-    <div className="grid">
-      {featuredClinics.map((clinic) => (
-        <div
-          key={clinic.id}
-          className="card featured-card"
-          onClick={() =>
-            router.push(
-              `/dentists/${city}/clinic/${slugify(clinic.name)}`
-            )
-          }
-          style={{ cursor: "pointer" }}
-        >
-         <span className="badge featured-badge">⭐ Featured</span>
-
-          <h3>{clinic.name}</h3>
-
-          {clinic.address && (
-            <div className="address-text">
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  clinic.address
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="map-link"
+          <div className="grid">
+            {trimmedFeatured.map((clinic) => (
+              <div
+                key={clinic.id}
+                className="card featured-card"
+                onClick={() =>
+                  router.push(
+                    `/dentists/${city}/clinic/${slugify(clinic.name)}`
+                  )
+                }
+                style={{ cursor: "pointer" }}
               >
-                {clinic.address}
-              </a>
-            </div>
-          )}
+                <span className="badge featured-badge">⭐ Featured</span>
 
-          <CardCTA
-            phone={clinic.phone}
-            city={city}
-            clinicName={clinic.name}
-          />
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+                <h3>{clinic.name}</h3>
 
-{/* All Dentists */}
+                {clinic.address && (
+                  <div className="address-text">
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        clinic.address
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="map-link"
+                    >
+                      {clinic.address}
+                    </a>
+                  </div>
+                )}
 
-<div className="section">
-  <h2 className="all-dentists-title">
-    All Dentists in {cityName}
-  </h2>
-
-  <div className="grid">
-    {regularClinics.map((clinic) => (
-      <div
-        key={clinic.id}
-        className="card"
-        onClick={() =>
-          router.push(
-            `/dentists/${city}/clinic/${slugify(clinic.name)}`
-          )
-        }
-        style={{ cursor: "pointer" }}
-      >
-        <span className="badge">Clinic</span>
-
-        <h3>{clinic.name}</h3>
-
-        {clinic.address && (
-          <div className="address-text">
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                clinic.address
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="map-link"
-            >
-              {clinic.address}
-            </a>
+                <CardCTA
+                  phone={clinic.phone}
+                  city={city}
+                  clinicName={clinic.name}
+                />
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+      )}
 
-        <CardCTA
-          phone={clinic.phone}
-          city={city}
-          clinicName={clinic.name}
-        />
+      {/* All Dentists */}
+
+      <div className="section">
+        <h2 className="all-dentists-title">
+          All Dentists in {cityName}
+        </h2>
+
+        <div className="grid">
+         {trimmedRegular.map((clinic) => (
+            <div
+              key={clinic.id}
+              className="card"
+              onClick={() =>
+                router.push(
+                  `/dentists/${city}/clinic/${slugify(clinic.name)}`
+                )
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <span className="badge">Clinic</span>
+
+              <h3>{clinic.name}</h3>
+
+              {clinic.address && (
+                <div className="address-text">
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      clinic.address
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="map-link"
+                  >
+                    {clinic.address}
+                  </a>
+                </div>
+              )}
+
+              <CardCTA
+                phone={clinic.phone}
+                city={city}
+                clinicName={clinic.name}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
 
-
-
-
-
-      {/* 🔥 Internal Linking Cluster */}
-      <div className="section nearby-cities" style={{ textAlign: "center", paddingTop: "6px" }}>
+      {/*Internal Linking Cluster */}
+      <div
+        className="section nearby-cities"
+        
+      >
         <h3>Explore Dentists in Nearby Cities</h3>
 
-        <div className="city-links" style={{width: "100%" }}>
-          {metroCities
-            .filter((c) => c !== cityName)
-            .map((c) => (
-              <a
-                key={c}
-                href={`/dentists/${slugify(c)}`}
-                className="city-links"
-              >
-                {c}
-              </a>
-            ))}
+        <div className="city-links-grid">
+          
+{nearbyCities.map((c) => (
+  <a
+    key={c.city_slug}
+    href={`/dentists/${c.city_slug}`}
+    className="city-link"
+  >
+    Dentists in {c.city_name}
+  </a>
+))}
+
+
         </div>
       </div>
 

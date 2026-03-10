@@ -7,7 +7,11 @@ import FilterBar from './components/FilterBar'
 import type { Clinic } from '@/app/types'
 
 
-export default function HomePage() {
+export default function HomePage({
+  cities,
+}: {
+  cities: { city_name: string; city_slug: string }[]
+}) {
   const [clinics, setClinics] = useState<Clinic[]>([])
   const [filteredClinics, setFilteredClinics] = useState<Clinic[]>([])
 const featuredClinics = filteredClinics.filter((c) => c.featured === true)
@@ -191,6 +195,30 @@ const regularClinics = filteredClinics.filter((c) => c.featured !== true)
     ))}
   </div>
 </div>
+
+
+{/* Explore Cities */}
+
+<div className="section city-directory">
+
+  <h2>Explore Dentists in Nearby Cities</h2>
+
+  <div className="city-links-grid">
+
+    {cities?.map((c) => (
+      <a
+        key={c.city_slug}
+        href={`/dentists/${c.city_slug}`}
+        className="city-link"
+      >
+        Dentists in {c.city_name}
+      </a>
+    ))}
+
+  </div>
+
+</div>
+
     </>
   )
 }
