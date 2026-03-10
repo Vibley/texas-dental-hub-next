@@ -132,7 +132,7 @@ return (
 
 </div>
 
-    <div className="back-link" style={{ marginTop: 30 }}>
+    <div className="back-link">
       <a href={`/dentists/${city}`}>
         ← Browse more dentists in {cityName}
       </a>

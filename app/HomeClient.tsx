@@ -210,8 +210,10 @@ const regularClinics = filteredClinics.filter((c) => c.featured !== true)
         key={c.city_slug}
         href={`/dentists/${c.city_slug}`}
         className="city-link"
+       title={`Dentists in ${c.city_slug}`}
+       aria-label={`Dentists in ${c.city_slug}`}
       >
-        Dentists in {c.city_name}
+        {c.city_name}
       </a>
     ))}
 
