@@ -39,39 +39,55 @@ export default function HomePage({
 
       <div className="hero hero-expanded">
 
-        <h1>Comprehensive Dental Care Across Houston</h1>
+        <h1>Find Trusted Dentists in Houston, TX</h1>
 
-        <p>
-          Finding a trusted dentist in Houston doesn’t have to be complicated.
-          TexasDentalHub connects patients with verified local dental clinics
-          offering general, family, cosmetic, and emergency dental care
-          throughout the Houston area.
-        </p>
+<p>
+  Finding a trusted dentist in Houston, TX doesn’t have to be complicated.
+  TexasDentalHub helps patients discover verified dental clinics offering
+  general, family, cosmetic, and emergency dental care throughout the
+  Houston area. Compare local dentists, explore available services, and
+  connect directly with dental offices serving neighborhoods such as
+  The Heights, Midtown, Galleria, Westchase, Katy, Sugar Land,
+  Cypress, Pearland, and The Woodlands.
+</p>
+
+<p className="hero-cta">
+  Browse dentists below or use the filters to find clinics
+  offering the services and insurance plans you need.
+</p>
 
         <details className="hero-details">
           <summary className="hero-summary">
-            Learn more about Houston dental services
+            Explore dental services available in Houston
           </summary>
 
           <div className="hero-content">
 
             <h2>Family Dentists in Houston</h2>
-            <p>
-              Family dental clinics provide routine cleanings, fillings,
-              crowns, fluoride treatments, and long-term oral health care.
-            </p>
+<p>
+  Family dentists in Houston provide routine cleanings, fillings,
+  crowns, fluoride treatments, and preventive dental care for
+  children and adults. Many dental clinics offer flexible
+  scheduling and comprehensive oral health services designed
+  to support long-term dental wellness.
+</p>
 
             <h2>Emergency Dentists in Houston</h2>
-            <p>
-              Dental emergencies such as severe tooth pain, broken teeth,
-              abscesses, and knocked-out teeth require immediate attention.
-            </p>
+           <p>
+  Dental emergencies such as severe tooth pain, broken teeth,
+  infections, abscesses, or knocked-out teeth require immediate
+  attention. Many Houston dental clinics provide same-day emergency
+  appointments to relieve pain and prevent further complications.
+</p>
 
             <h2>Cosmetic & Implant Dentistry in Houston</h2>
-            <p>
-              Cosmetic procedures including Invisalign, veneers,
-              professional whitening, and dental implants are widely available.
-            </p>
+          <p>
+  Cosmetic dental services including Invisalign, porcelain veneers,
+  professional teeth whitening, and dental implants are widely
+  available across Houston. Many clinics use modern digital imaging
+  and advanced restorative techniques to improve both function
+  and appearance.
+</p>
 
             <h2>Insurance & Payment Options</h2>
             <p>
