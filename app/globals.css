@@ -239,9 +239,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .clear-filters {
-    grid-column: span 2; /* Reset button full width */
-  }
+  
 }
 
 .filters select {
@@ -301,9 +299,7 @@
   padding: 0;
 }
 
-.clear-filters:hover {
-  text-decoration: underline;
-}
+
     
 .sticky-filter {
   position: sticky;
@@ -2438,7 +2434,7 @@ body {
 }
 .city-links-grid{
   display:grid;
-  grid-template-columns:repeat(6,1fr);
+  grid-template-columns:repeat(8,1fr);
   gap:12px;
   justify-items:start;   /* prevents stretching */
 }
@@ -2449,4 +2445,65 @@ body {
     gap:8px;
   }
 
+}
+
+
+.active-filters{
+  margin-top:10px;
+}
+
+.filter-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:14px;
+  background:#eef2ff;
+  font-size:13px;
+  margin-right:6px;
+}
+
+.filter-chip button{
+  border:none;
+  background:none;
+  cursor:pointer;
+}
+
+.filter-wrapper{
+  position:sticky;
+  top:0;
+  background:white;
+  z-index:10;
+}
+
+.clear-filters{
+  grid-column:auto;
+  justify-self:start;   /* prevents grid stretching */
+  width:auto;
+  padding:4px 10px;
+  font-size:13px;
+}
+
+
+.no-results{
+  text-align:center;
+  padding:30px 10px;
+  color:#475569;
+}
+
+.no-results h3{
+  margin-bottom:8px;
+}
+
+.filler-card{
+  visibility:hidden;
+  pointer-events:none;
+  border:none;
+  background:transparent;
+}
+
+.no-results{
+  text-align:center;
+  padding:40px 10px;
+  color:#64748b;
 }

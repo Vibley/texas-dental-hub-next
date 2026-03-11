@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-
 import type { Clinic } from '@/app/types'
 
 type Props = {
@@ -63,6 +62,7 @@ export default function FilterBar({ clinics, onFilter }: Props) {
     }
 
     onFilter(results)
+
   }, [
     clinics,
     serviceFilter,
@@ -95,6 +95,7 @@ export default function FilterBar({ clinics, onFilter }: Props) {
 
   return (
     <div className="filter-wrapper">
+
       <div className="filter-row">
 
         <select
@@ -137,16 +138,66 @@ export default function FilterBar({ clinics, onFilter }: Props) {
           onChange={(e) => setZipFilter(e.target.value)}
         />
 
-        {hasActiveFilters && (
+     
+
+      </div>
+
+      {/* =============================
+         Active Filter Chips
+      ============================== */}
+
+      {hasActiveFilters && (
+        <div className="active-filters">
+
+          {serviceFilter && (
+            <span className="filter-chip">
+              {serviceFilter}
+              <button onClick={() => setServiceFilter('')}>
+                ×
+              </button>
+            </span>
+          )}
+
+          {insuranceFilter && (
+            <span className="filter-chip">
+              {insuranceFilter}
+              <button onClick={() => setInsuranceFilter('')}>
+                ×
+              </button>
+            </span>
+          )}
+
+          {availabilityFilter && (
+            <span className="filter-chip">
+              {availabilityFilter}
+              <button onClick={() => setAvailabilityFilter('')}>
+                ×
+              </button>
+            </span>
+          )}
+
+          {zipFilter && (
+            <span className="filter-chip">
+              ZIP: {zipFilter}
+              <button onClick={() => setZipFilter('')}>
+                ×
+              </button>
+            </span>
+          )}
+
+
+   {hasActiveFilters && (
           <button
             className="clear-filters"
             onClick={clearFilters}
           >
-            Reset Filters
+            Reset all filters
           </button>
         )}
 
-      </div>
+        </div>
+      )}
+
     </div>
   )
 }
