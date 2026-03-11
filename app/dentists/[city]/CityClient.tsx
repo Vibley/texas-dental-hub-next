@@ -189,7 +189,7 @@ export default function CityClient({
 
       {/* Internal Linking Cluster */}
       <div className="section city-directory">
-        <h3>Explore Dentists in Nearby Cities</h3>
+        <h3>Find Dentists in Nearby Cities</h3>
 
         <div className="city-links-grid">
 
@@ -201,7 +201,7 @@ export default function CityClient({
               title={`Dentists in ${c.city_slug}`}
               aria-label={`Dentists in ${c.city_slug}`}
             >
-              {c.city_name}
+             Dentists in {c.city_name}
             </a>
           ))}
 

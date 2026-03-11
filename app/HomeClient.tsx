@@ -39,22 +39,24 @@ export default function HomePage({
 
       <div className="hero hero-expanded">
 
+   
         <h1>Find Trusted Dentists in Houston, TX</h1>
 
 <p>
-  Finding a trusted dentist in Houston, TX doesn’t have to be complicated.
-  TexasDentalHub helps patients discover verified dental clinics offering
-  general, family, cosmetic, and emergency dental care throughout the
-  Houston area. Compare local dentists, explore available services, and
-  connect directly with dental offices serving neighborhoods such as
-  The Heights, Midtown, Galleria, Westchase, Katy, Sugar Land,
-  Cypress, Pearland, and The Woodlands.
+    TexasDentalHub helps patients discover trusted dentists across the
+    Houston metropolitan area. Our directory includes dentists serving communities across Greater Houston, including Katy, Sugar Land, Pearland, Cypress, The Woodlands, League City, Missouri City, Richmond, Rosenberg, Spring, Tomball, and nearby neighborhoods.
 </p>
+ <p>
+   Whether you are searching for a family dentist, cosmetic dentist,
+emergency dental care, or dental implants, you can explore verified
+Houston dental clinics and connect directly with local providers.
+  </p>
 
 <p className="hero-cta">
   Browse dentists below or use the filters to find clinics
   offering the services and insurance plans you need.
 </p>
+
 
         <details className="hero-details">
           <summary className="hero-summary">
@@ -163,7 +165,7 @@ export default function HomePage({
 
       <div className="section city-directory">
 
-        <h2>Explore Dentists in Nearby Cities</h2>
+        <h2>Find Dentists in Nearby Houston Cities</h2>
 
         <div className="city-links-grid">
 
@@ -175,7 +177,7 @@ export default function HomePage({
               title={`Dentists in ${c.city_name}`}
               aria-label={`Dentists in ${c.city_name}`}
             >
-              {c.city_name}
+              Dentists in {c.city_name}
             </a>
           ))}
 
