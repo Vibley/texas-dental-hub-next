@@ -9,13 +9,12 @@ function slugify(text: string) {
 }
 
 function cityToSlug(city: string) {
-  return `${slugify(city)}-tx`
+  return slugify(city)
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://texasdentalhub.com'
 
-  // Fetch all clinics
   const { data: clinics } = await supabase
     .from('clinics')
     .select('name, city')
@@ -31,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 1,
   })
 
-  // Collect unique cities
+  // Unique cities
   const uniqueCities = Array.from(
     new Set(clinics.map(c => c.city).filter(Boolean))
   )
