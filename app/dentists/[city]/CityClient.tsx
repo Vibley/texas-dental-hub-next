@@ -13,6 +13,105 @@ function slugify(text: string) {
     .replace(/(^-|-$)/g, "")
 }
 
+
+const cityClusters: Record<string, string[]> = {
+
+  /* Houston Metro */
+
+  houston: [
+    "katy",
+    "sugar-land",
+    "pearland",
+    "cypress",
+    "the-woodlands",
+    "league-city",
+    "missouri-city",
+    "richmond",
+    "rosenberg",
+    "stafford",
+    "pasadena",
+    "kingwood",
+    "baytown",
+    "galveston",
+    "texas-city",
+    "humble",
+    "conroe",
+    "spring",
+    "tomball"
+  ],
+
+  /* Dallas–Fort Worth */
+
+  dallas: [
+    "plano",
+    "arlington",
+    "fort-worth"
+  ],
+
+  "fort-worth": [
+    "dallas",
+    "plano",
+    "arlington"
+  ],
+
+  plano: [
+    "dallas",
+    "arlington",
+    "fort-worth"
+  ],
+
+  arlington: [
+    "dallas",
+    "plano",
+    "fort-worth"
+  ],
+
+  /* Central Texas */
+
+  austin: [
+    "san-antonio"
+  ],
+
+  "san-antonio": [
+    "austin"
+  ],
+
+  /* West Texas */
+
+  midland: [
+    "lubbock",
+    "amarillo",
+    "el-paso"
+  ],
+
+  lubbock: [
+    "midland",
+    "amarillo"
+  ],
+
+  amarillo: [
+    "lubbock",
+    "midland"
+  ],
+
+  "el-paso": [
+    "midland",
+    "lubbock"
+  ],
+
+  /* Gulf Coast */
+
+  "corpus-christi": [
+    "galveston",
+    "texas-city"
+  ]
+
+}
+
+
+
+
+
 type CitySeo = {
   intro_paragraph1: string | null
   intro_paragraph2: string | null
@@ -48,8 +147,25 @@ export default function CityClient({
   const trimmedFeatured = trimToMultipleOfThree(featuredClinics)
   const trimmedRegular = trimToMultipleOfThree(regularClinics)
 
-  const nearbyCities =
-    cities?.filter((c) => c.city_name !== cityName).slice(0, 8) || []
+
+let cluster: string[] = []
+
+for (const key in cityClusters) {
+  if (key === city || cityClusters[key].includes(city)) {
+    cluster = [key, ...cityClusters[key]]
+    break
+  }
+}
+
+const nearbyCities = cities
+  ?.filter(
+    (c) =>
+      cluster.includes(c.city_slug) &&
+      c.city_slug !== city
+  )
+  .slice(0, 8) || []
+
+
 
   return (
     <div className="container">
@@ -189,7 +305,7 @@ export default function CityClient({
 
       {/* Internal Linking Cluster */}
       <div className="section city-directory">
-        <h3>Find Dentists in Nearby Cities</h3>
+        <h3>Explore Dentists in Nearby Cities</h3>
 
         <div className="city-links-grid">
 
@@ -198,8 +314,8 @@ export default function CityClient({
               key={c.city_slug}
               href={`/dentists/${c.city_slug}`}
               className="city-link"
-              title={`Dentists in ${c.city_slug}`}
-              aria-label={`Dentists in ${c.city_slug}`}
+         title={`Dentists in ${c.city_name}, TX`}
+aria-label={`Dentists in ${c.city_name}, TX`}
             >
              Dentists in {c.city_name}
             </a>
