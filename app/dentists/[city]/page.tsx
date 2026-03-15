@@ -50,11 +50,11 @@ export async function generateMetadata({
   const citySlug = normalizeSlug(city)
   const formattedCity = formatCity(citySlug)
 
-  const { data: citySeo } = await supabase
-    .from("city_seo_content")
-    .select("meta_title, meta_description")
-    .eq("city_name", formattedCity)
-    .maybeSingle()
+const { data: citySeo } = await supabase
+  .from("city_seo_content")
+  .select("meta_title, meta_description")
+  .eq("city_slug", citySlug)
+  .maybeSingle()
 
   const canonicalUrl = `https://texasdentalhub.com/dentists/${citySlug}`
 
@@ -98,19 +98,19 @@ export default async function CityPage({
 
   const clinicList = clinics || []
 
-/* All Cities (for internal linking) */
+/* Nearby Cities (distance based) */
 
-const { data: cities } = await supabase
-  .from("city_seo_content")
-  .select("city_name, city_slug")
-  .order("city_name", { ascending: true })
+const { data: nearbyCities } = await supabase.rpc("get_nearby_cities", {
+  current_slug: citySlug,
+  limit_count: 8,
+})
 
   /* City SEO Content */
 
   const { data: citySeo } = await supabase
     .from("city_seo_content")
     .select("*")
-    .eq("city_name", formattedCity)
+    .eq("city_slug", citySlug)
     .maybeSingle()
 
   /* Structured Data */
@@ -149,7 +149,7 @@ const { data: cities } = await supabase
         cityName={formattedCity}
         clinics={clinicList}
         citySeo={citySeo}
-        cities={cities || []}
+       nearbyCities={nearbyCities || []}
       />
     </>
   )

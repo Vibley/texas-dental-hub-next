@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import ClinicCard from './components/ClinicCard'
 import FilterBar from './components/FilterBar'
 import type { Clinic } from '@/app/types'
+import CitySearch from './components/CitySearch'
 
 export default function HomePage({
   cities,
@@ -53,6 +54,10 @@ Whether you are searching for a family dentist, cosmetic dentist,
 emergency dental care, or dental implants, you can explore verified
 dental clinics and connect directly with local dental providers.
 </p>
+
+
+
+
 
 <p className="hero-cta">
   Browse dentists below or use the filters to find clinics

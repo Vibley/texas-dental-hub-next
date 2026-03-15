@@ -66,10 +66,13 @@ export default async function RootLayout({
       <h4>Popular Cities</h4>
       <ul>
         <li><a href="/dentists/houston">Houston</a></li>
-        <li><a href="/dentists/katy">Katy</a></li>
-        <li><a href="/dentists/sugar-land">Sugar Land</a></li>
-        <li><a href="/dentists/the-woodlands">The Woodlands</a></li>
-        <li><a href="/dentists/conroe">Conroe</a></li>
+        <li><a href="/dentists/dallas">Dallas</a></li>
+        <li><a href="/dentists/austin">Austin</a></li>
+        <li><a href="/dentists/san-antonio">San Antonio</a></li>
+        <li><a href="/dentists/fort-worth">Fort Worth</a></li>
+       <li><a href="/dentists/el-paso">El Paso</a></li>
+       <li><a href="/dentists/arlington">Arlington</a></li>
+      <li><a href="/dentists/corpus-christi">Corpus Christi</a></li>
       </ul>
     </div>
 

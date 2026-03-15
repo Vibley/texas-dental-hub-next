@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import CitySearch from './CitySearch'
 
 function toCityKey(city: string) {
   return city
@@ -49,20 +50,16 @@ export default function Header({ cities }: { cities: string[] }) {
     <div className="brand-tagline">TEXAS DENTAL DIRECTORY</div>
   </div>
 </a>
-        <select
-          className="city-select"
-          onChange={(e) => {
-            if (!e.target.value) return
-            router.push(`/dentists/${toCityKey(e.target.value)}`)
-          }}
-        >
-          <option value="">Houston</option>
-          {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </select>
+      <div className="city-search-wrapper">
+  <CitySearch
+    cities={cities.map((c) => ({
+      city_name: c,
+      city_slug: toCityKey(c),
+    }))}
+  />
+</div>  
+
+
 
       </div>
     </div>

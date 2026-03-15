@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -13,105 +14,6 @@ function slugify(text: string) {
     .replace(/(^-|-$)/g, "")
 }
 
-
-const cityClusters: Record<string, string[]> = {
-
-  /* Houston Metro */
-
-  houston: [
-    "katy",
-    "sugar-land",
-    "pearland",
-    "cypress",
-    "the-woodlands",
-    "league-city",
-    "missouri-city",
-    "richmond",
-    "rosenberg",
-    "stafford",
-    "pasadena",
-    "kingwood",
-    "baytown",
-    "galveston",
-    "texas-city",
-    "humble",
-    "conroe",
-    "spring",
-    "tomball"
-  ],
-
-  /* Dallas–Fort Worth */
-
-  dallas: [
-    "plano",
-    "arlington",
-    "fort-worth"
-  ],
-
-  "fort-worth": [
-    "dallas",
-    "plano",
-    "arlington"
-  ],
-
-  plano: [
-    "dallas",
-    "arlington",
-    "fort-worth"
-  ],
-
-  arlington: [
-    "dallas",
-    "plano",
-    "fort-worth"
-  ],
-
-  /* Central Texas */
-
-  austin: [
-    "san-antonio"
-  ],
-
-  "san-antonio": [
-    "austin"
-  ],
-
-  /* West Texas */
-
-  midland: [
-    "lubbock",
-    "amarillo",
-    "el-paso"
-  ],
-
-  lubbock: [
-    "midland",
-    "amarillo"
-  ],
-
-  amarillo: [
-    "lubbock",
-    "midland"
-  ],
-
-  "el-paso": [
-    "midland",
-    "lubbock"
-  ],
-
-  /* Gulf Coast */
-
-  "corpus-christi": [
-    "galveston",
-    "texas-city"
-  ]
-
-}
-
-
-
-
-
 type CitySeo = {
   intro_paragraph1: string | null
   intro_paragraph2: string | null
@@ -124,13 +26,13 @@ export default function CityClient({
   cityName,
   clinics,
   citySeo,
-  cities,
+  nearbyCities,
 }: {
   city: string
   cityName: string
   clinics: Clinic[]
   citySeo: CitySeo | null
-  cities: { city_name: string; city_slug: string }[]
+  nearbyCities: { city_name: string; city_slug: string }[]
 }) {
   const router = useRouter()
   const [filteredClinics, setFilteredClinics] = useState(clinics)
@@ -146,25 +48,6 @@ export default function CityClient({
 
   const trimmedFeatured = trimToMultipleOfThree(featuredClinics)
   const trimmedRegular = trimToMultipleOfThree(regularClinics)
-
-
-let cluster: string[] = []
-
-for (const key in cityClusters) {
-  if (key === city || cityClusters[key].includes(city)) {
-    cluster = [key, ...cityClusters[key]]
-    break
-  }
-}
-
-const nearbyCities = cities
-  ?.filter(
-    (c) =>
-      cluster.includes(c.city_slug) &&
-      c.city_slug !== city
-  )
-  .slice(0, 8) || []
-
 
 
   return (
@@ -309,17 +192,19 @@ const nearbyCities = cities
 
         <div className="city-links-grid">
 
-          {nearbyCities.map((c) => (
-            <a
-              key={c.city_slug}
-              href={`/dentists/${c.city_slug}`}
-              className="city-link"
-         title={`Dentists in ${c.city_name}, TX`}
-aria-label={`Dentists in ${c.city_name}, TX`}
-            >
-             Dentists in {c.city_name}
-            </a>
-          ))}
+{nearbyCities.map((c) => (
+  <a
+    key={c.city_slug}
+    href={`/dentists/${c.city_slug}`}
+    className="city-link"
+    title={`Dentists in ${c.city_name}`}
+  >
+    Dentists in {c.city_name}
+  </a>
+))}
+      
+
+
 
         </div>
       </div>
