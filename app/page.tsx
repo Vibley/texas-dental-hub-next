@@ -16,7 +16,7 @@ export default async function Page() {
 
   const { data: cities } = await supabase
     .from("city_seo_content")
-    .select("city_name, city_slug")
+    .select("city_name, city_slug,latitude, longitude")
     .order("city_name", { ascending: true })
 
   return <HomeClient cities={cities || []} />
