@@ -2954,3 +2954,17 @@ body {
 .topbar-inner {
   max-width: 1100px;
 }
+
+
+
+@media (max-width: 768px) {
+
+  .city-search {
+    width: 140px;
+  }
+
+}
+
+.city-search-input {
+  height: 34px;
+}
