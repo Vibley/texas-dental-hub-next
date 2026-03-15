@@ -2906,3 +2906,33 @@ body {
   transform: translateX(2px);
 }
 
+
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+
+  .topbar-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand {
+    flex: 1;
+  }
+
+  .city-search {
+    width: 140px;
+  }
+
+  .city-search-input {
+    height: 32px;
+    font-size: 12px;
+  }
+
+}
