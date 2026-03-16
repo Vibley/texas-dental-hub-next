@@ -36,7 +36,10 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
   const clinicSlug = slugify(clinic.name)
 
   const goToDetail = () => {
-    router.push(`/dentists/${citySlug}/clinic/${clinicSlug}`)
+   router.push(
+  `/dentists/${citySlug}/clinic/${clinicSlug}`,
+  { scroll: true }
+)
   }
 
   const photoUrl = clinic.google_photo_reference && clinic.google_photo_reference !== 'undefined'
@@ -45,6 +48,14 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
 
   const displayAddress =
     clinic.google_formatted_address?.replace(', USA', '') || clinic.address
+
+const shortAddress =
+  (clinic.google_formatted_address || clinic.address)
+    ?.replace(", USA", "")
+    ?.split(",")
+    .slice(0, 2)
+    .join(" • ")
+
 
   return (
 
@@ -58,24 +69,30 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
     >
 
 <div className="clinic-photo">
-      {clinic.featured && (
-        <span className="featured-badge">⭐ Featured</span>
-      )}
 
-      <div className="clinic-photo">
-        <img
-          src={photoUrl}
-          alt={clinic.name}
-          loading="lazy"
-          style={{
-            width: '100%',
-            height: '180px',
-            objectFit: 'cover',
-            borderRadius: '8px',
-            marginBottom: '10px'
-          }}
-        />
-      </div>
+  {clinic.featured && (
+    <span className="featured-badge">⭐ Featured</span>
+  )}
+
+  {clinic.google_rating && (
+    <span className="rating-badge">
+      ⭐ {clinic.google_rating.toFixed(1)}
+    </span>
+  )}
+
+  <img
+    src={photoUrl}
+    alt={clinic.name}
+    loading="lazy"
+    style={{
+      width: "100%",
+      height: "180px",
+      objectFit: "cover",
+      borderRadius: "8px",
+      marginBottom: "10px"
+    }}
+  />
+
 </div>
 
       <h3>{clinic.name}</h3>
@@ -103,7 +120,7 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
 )}
 
 
-      <p>{displayAddress}</p>
+     <p>{shortAddress}</p>
 
       <div className="address-text">
 

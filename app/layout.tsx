@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import PageViewTracker from "./components/PageViewTracker";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import ScrollToTop from "./components/ScrollToTop"
 
 export const metadata = {
   title: "TexasDentalHub",
@@ -46,7 +47,9 @@ const cities = data?.map((c) => c.city_name) || [];
       </Script>
 
       <body>
+
         <PageViewTracker />
+  <ScrollToTop />
 
         <Header cities={cities} />
 
