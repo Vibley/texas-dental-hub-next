@@ -3056,7 +3056,61 @@ html, body {
 
 
 
+.clinic-photo {
+  position: relative;
+}
 
+.featured-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #2563eb;
+  color: white;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+}
+
+
+.clinic-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.stars {
+  color: #fbbf24;
+  letter-spacing: 1px;
+}
+
+.rating-number {
+  font-weight: 600;
+}
+
+.review-count {
+  color: #6b7280;
+}
+
+.clinic-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stars {
+  color: #fbbf24;
+  letter-spacing: 1px;
+}
+
+.rating-number {
+  font-weight: 600;
+}
+
+.review-count {
+  color: #6b7280;
+}
 
 
 

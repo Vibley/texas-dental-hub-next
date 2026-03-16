@@ -63,6 +63,11 @@ const hours = (() => {
 })()
 
 
+const photoUrl = clinic.google_photo_reference
+  ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${clinic.google_photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
+  : "/placeholder-dental.jpg"
+
+
 return (
   <div className="clinic-detail">
 
@@ -76,10 +81,59 @@ return (
 
     <div className="clinic-card">
 
-      <div className="info-row">
-        <strong>Address</strong>
-        <span>{clinic.address}</span>
-      </div>
+     
+{clinic.google_rating && (
+  <div className="info-row">
+    <strong>Rating</strong>
+
+    <span className="clinic-rating">
+
+      <span className="stars">
+        {"★".repeat(Math.round(clinic.google_rating))}
+        {"☆".repeat(5 - Math.round(clinic.google_rating))}
+      </span>
+
+      <span className="rating-number">
+        {clinic.google_rating.toFixed(1)}
+      </span>
+
+      {clinic.google_review_count && (
+        <span className="review-count">
+          ({clinic.google_review_count} Google reviews)
+        </span>
+      )}
+
+    </span>
+
+  </div>
+)}
+
+
+<div className="info-row">
+
+
+
+
+  <strong>Address</strong>
+
+  <span>
+    <a
+      href={
+        clinic.google_maps_url ||
+        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+          clinic.google_formatted_address || clinic.address
+        )}`
+      }
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {(clinic.google_formatted_address
+        ? clinic.google_formatted_address.replace(", USA", "")
+        : clinic.address)}
+    </a>
+  </span>
+
+</div>
 
       {services.length > 0 && (
         <div className="info-row">

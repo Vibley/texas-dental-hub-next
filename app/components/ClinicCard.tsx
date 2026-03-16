@@ -9,7 +9,13 @@ type Clinic = {
   address: string
   phone?: string
   city: string
- featured?: boolean
+  featured?: boolean
+
+  google_rating?: number
+  google_review_count?: number
+  google_photo_reference?: string
+  google_maps_url?: string
+  google_formatted_address?: string
 }
 
 function slugify(text: string) {
@@ -20,60 +26,105 @@ function slugify(text: string) {
 }
 
 export default function ClinicCard({ clinic }: { clinic: Clinic }) {
+
   const router = useRouter()
 
+  const citySlug = clinic.city
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+
+  const clinicSlug = slugify(clinic.name)
+
   const goToDetail = () => {
-    const citySlug = clinic.city
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-
-    const clinicSlug = slugify(clinic.name)
-
-    router.push(
-      `/dentists/${citySlug}/clinic/${clinicSlug}`
-    )
+    router.push(`/dentists/${citySlug}/clinic/${clinicSlug}`)
   }
 
+  const photoUrl = clinic.google_photo_reference && clinic.google_photo_reference !== 'undefined'
+    ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${clinic.google_photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+    : '/placeholder-dental.jpg'
+
+  const displayAddress =
+    clinic.google_formatted_address?.replace(', USA', '') || clinic.address
+
   return (
-  
-<div
-  className={`card ${clinic.featured ? 'featured-card' : ''}`}
 
+    <div
+      className={`card ${clinic.featured ? 'featured-card' : ''}`}
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest('.card-actions')) return
+        goToDetail()
+      }}
+      style={{ cursor: 'pointer' }}
+    >
 
-  onClick={(e) => {
-    // Only navigate if clicking directly on card,
-    // not inside buttons or modal
-    if ((e.target as HTMLElement).closest('.card-actions')) return
-    goToDetail()
-  }}
-  style={{ cursor: 'pointer' }}
->
- {clinic.featured && (
-    <span className="featured-badge">⭐ Featured</span>
-  )}
+<div className="clinic-photo">
+      {clinic.featured && (
+        <span className="featured-badge">⭐ Featured</span>
+      )}
+
+      <div className="clinic-photo">
+        <img
+          src={photoUrl}
+          alt={clinic.name}
+          loading="lazy"
+          style={{
+            width: '100%',
+            height: '180px',
+            objectFit: 'cover',
+            borderRadius: '8px',
+            marginBottom: '10px'
+          }}
+        />
+      </div>
+</div>
 
       <h3>{clinic.name}</h3>
 
+
+  {clinic.google_rating && (
+  <div className="clinic-rating">
+
+    <span className="stars">
+      {"★".repeat(Math.round(clinic.google_rating))}
+      {"☆".repeat(5 - Math.round(clinic.google_rating))}
+    </span>
+
+    <span className="rating-number">
+      {clinic.google_rating.toFixed(1)}
+    </span>
+
+    {clinic.google_review_count && (
+      <span className="review-count">
+        ({clinic.google_review_count})
+      </span>
+    )}
+
+  </div>
+)}
+
+
+      <p>{displayAddress}</p>
+
       <div className="address-text">
+
         <a
-          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-            clinic.address
-          )}`}
+          href={clinic.google_maps_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(displayAddress)}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
           className="map-link"
         >
-          {clinic.address}
+          View on Google Maps
         </a>
+
       </div>
 
-      {/* 🔥 Unified CTA Logic */}
       <CardCTA
         phone={clinic.phone}
-        city={`${clinic.city.toLowerCase().replace(/\s+/g, '-')}`}
+        city={citySlug}
         clinicName={clinic.name}
       />
+
     </div>
   )
 }

@@ -6,16 +6,20 @@
     "dev": "next dev",
     "build": "NEXT_DISABLE_TURBOPACK=1 next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "google:enrich": "tsx scripts/google-enrich.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.96.0",
+    "axios": "^1.13.6",
     "cross-env": "^10.1.0",
+    "dotenv": "^17.3.1",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "stripe": "^20.4.0"
+    "stripe": "^20.4.0",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
