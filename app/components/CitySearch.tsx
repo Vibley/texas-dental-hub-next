@@ -67,6 +67,7 @@ export default function CitySearch({ cities }: { cities: City[] }) {
     }
   }
 
+
   return (
     <div className="city-search">
 

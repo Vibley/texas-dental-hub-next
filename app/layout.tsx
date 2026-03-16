@@ -15,13 +15,18 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { data } = await supabaseAdmin
-    .from("clinics")
-    .select("city");
 
-  const cities = Array.from(
-    new Set(data?.map((c) => c.city).filter(Boolean))
-  ).sort();
+
+  
+const { data } = await supabaseAdmin
+  .from("city_seo_content")
+  .select("city_name")
+  .order("city_name");
+
+const cities = data?.map((c) => c.city_name) || [];
+
+
+
 
   return (
     <html lang="en">
