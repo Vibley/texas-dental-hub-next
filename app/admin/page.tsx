@@ -107,8 +107,9 @@ function StatsGrid({ children }: { children: React.ReactNode }) {
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(4, 1fr)',  // 🔥 force 4 columns
         gap: '20px',
+        width: '100%',
       }}
     >
       {children}
