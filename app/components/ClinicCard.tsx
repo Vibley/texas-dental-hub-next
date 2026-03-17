@@ -37,7 +37,7 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
 
   const goToDetail = () => {
    router.push(
-  `/dentists/${citySlug}/clinic/${clinicSlug}`,
+  `/dentists/${citySlug}/${clinicSlug}`,
   { scroll: true }
 )
   }
