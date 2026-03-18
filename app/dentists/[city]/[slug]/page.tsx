@@ -159,7 +159,7 @@ return (
           <div className="info-label">Insurance</div>
           <div className="info-value">
             <div className="insurance-pills">
-              {insurances.map((ins, i) => (
+              {insurances.map((ins: string, i: number) => (
                 <span key={i} className="pill">{ins}</span>
               ))}
             </div>
