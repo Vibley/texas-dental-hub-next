@@ -73,14 +73,14 @@ export default function ClinicCTA({
                 className="btn primary"
                 onClick={handleCallClick}
               >
-                Call Now
+                📞 Call Now
               </a>
             ) : (
               <button
                 className="btn primary"
                 onClick={handleCallClick}
               >
-                Call Now
+               📞 Call Now
               </button>
             )}
 

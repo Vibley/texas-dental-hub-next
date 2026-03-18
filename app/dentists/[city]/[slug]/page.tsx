@@ -63,132 +63,141 @@ const hours = (() => {
 })()
 
 
-const photoUrl = clinic.google_photo_reference
-  ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${clinic.google_photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
-  : "/placeholder-dental.jpg"
+
+
+  const photoUrl = clinic.google_photo_reference && clinic.google_photo_reference !== 'undefined'
+    ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${clinic.google_photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+    : '/placeholder-dental.jpg'
 
 
 return (
   <div className="clinic-detail">
 
-    <div className="clinic-header">
-      <h1 className="clinic-title">{clinic.name}</h1>
-      <div className="clinic-title-divider"></div>
-      <div className="clinic-subtitle">
-        {cityName}, TX
+    {/* 🔙 Back Link (moved to top) */}
+    <div className="back-link-top">
+      <a href={`/dentists/${city}`}>
+        ← Back to {cityName} dentists
+      </a>
+    </div>
+
+    {/* 🔥 HERO SECTION */}
+    <div className="clinic-hero">
+
+ <img
+    src={photoUrl}
+    alt={clinic.name}
+    loading="lazy"
+    style={{
+      width: "20%",
+      height: "180px",
+      objectFit: "cover",
+      borderRadius: "8px",
+      marginBottom: "10px"
+    }}
+  />
+
+
+      <div className="clinic-hero-content">
+
+        <h1 className="clinic-title">{clinic.name}</h1>
+
+        <div className="clinic-subtitle">
+          {cityName}, TX
+        </div>
+
+        {clinic.google_rating && (
+          <div className="hero-rating">
+            ⭐ {clinic.google_rating.toFixed(1)}{" "}
+            {clinic.google_review_count && `(${clinic.google_review_count} reviews)`}
+          </div>
+        )}
+
       </div>
     </div>
 
-    <div className="clinic-card">
-
-     
-{clinic.google_rating && (
-  <div className="info-row">
-    <strong>Rating</strong>
-
-    <span className="clinic-rating">
-
-      <span className="stars">
-        {"★".repeat(Math.round(clinic.google_rating))}
-        {"☆".repeat(5 - Math.round(clinic.google_rating))}
-      </span>
-
-      <span className="rating-number">
-        {clinic.google_rating.toFixed(1)}
-      </span>
-
-      {clinic.google_review_count && (
-        <span className="review-count">
-          ({clinic.google_review_count} Google reviews)
-        </span>
-      )}
-
-    </span>
-
-  </div>
-)}
-
-
-<div className="info-row">
-
-
-
-
-  <strong>Address</strong>
-
-  <span>
-    <a
-      href={
-        clinic.google_maps_url ||
-        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          clinic.google_formatted_address || clinic.address
-        )}`
-      }
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {(clinic.google_formatted_address
-        ? clinic.google_formatted_address.replace(", USA", "")
-        : clinic.address)}
-    </a>
-  </span>
-
-</div>
-
-      {services.length > 0 && (
-        <div className="info-row">
-          <strong>Services</strong>
-          <span>{services.join(', ')}</span>
-        </div>
-      )}
-
-      {insurances.length > 0 && (
-        <div className="info-row">
-          <strong>Insurance</strong>
-          <span>{insurances.join(', ')}</span>
-        </div>
-      )}
-
-      {hours && (
-        <div className="info-row">
-          <strong>Hours</strong>
-          <span>{hours}</span>
-        </div>
-      )}
-
-    </div>
-
-    {/* Patient Actions */}
+    {/* 🔥 CTA moved UP */}
     <ClinicCTA
       phone={clinic.phone}
       city={city}
       clinicName={clinic.name}
     />
 
-    {/* Claim Listing Section */}
-<div className="claim-listing-box">
+    {/* 🔥 INFO CARD */}
+    <div className="clinic-card">
 
-  <div className="claim-listing-title">
-    Own this dental practice?
-  </div>
+     
 
-  <div className="claim-listing-text">
-  Get more patients, manage your listing, and receive appointment requests.
-  </div>
+      <div className="info-row">
+        <div className="info-label">Address</div>
+        <div className="info-value">
+          <a
+            href={
+              clinic.google_maps_url ||
+              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                clinic.google_formatted_address || clinic.address
+              )}`
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {(clinic.google_formatted_address
+              ? clinic.google_formatted_address.replace(", USA", "")
+              : clinic.address)}
+          </a>
+        </div>
+      </div>
 
-  <a
-    href={`/contact?type=Claim%20Listing&clinic=${encodeURIComponent(clinic.name)}`}
-    className="claim-listing-btn"
-  >
-    Claim This Listing
-  </a>
+      {services.length > 0 && (
+        <div className="info-row">
+          <div className="info-label">Services</div>
+          <div className="info-value">{services.join(', ')}</div>
+        </div>
+      )}
 
-</div>
+      {insurances.length > 0 && (
+        <div className="info-row">
+          <div className="info-label">Insurance</div>
+          <div className="info-value">
+            <div className="insurance-pills">
+              {insurances.map((ins, i) => (
+                <span key={i} className="pill">{ins}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
-    <div className="back-link">
-      <a href={`/dentists/${city}`}>
-        ← Browse more dentists in {cityName}
+      {hours && (
+        <div className="info-row">
+          <div className="info-label">Hours</div>
+          <div className="info-value">{hours}</div>
+        </div>
+      )}
+
+    </div>
+
+    {/* 🔥 CLAIM LISTING (upgraded) */}
+    <div className="claim-listing-box premium">
+
+      <div className="claim-listing-title">
+        Own this dental practice?
+      </div>
+
+      <div className="claim-listing-text">
+        Get more patients, manage your listing, and receive appointment requests.
+      </div>
+
+      {/*<div className="claim-highlight">
+        🚀 Free listing optimization available
+      </div>*/}
+
+      <a
+        href={`/contact?type=Claim%20Listing&clinic=${encodeURIComponent(clinic.name)}`}
+        className="claim-listing-btn"
+      >
+        Claim This Listing
       </a>
+
     </div>
 
   </div>

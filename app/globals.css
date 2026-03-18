@@ -3341,3 +3341,142 @@ html, body {
     grid-template-columns: 1fr;
   }
 }
+
+/* HERO */
+.clinic-hero {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.clinic-hero-image {
+  width: 220px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.hero-rating {
+  margin-top: 8px;
+  color: #666;
+}
+
+/* INFO CARD */
+.clinic-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* ROW STRUCTURE */
+.info-row {
+  display: flex;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-label {
+  font-weight: 600;
+  width: 120px;
+}
+
+.info-value {
+  flex: 1;
+}
+
+/* INSURANCE PILLS */
+.insurance-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pill {
+  background: #eef4ff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* CLAIM BOX */
+.claim-listing-box.premium {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eef4ff, #ffffff);
+  border: 1px solid #dbe6ff;
+}
+
+.claim-highlight {
+  margin: 10px 0;
+  font-size: 13px;
+  color: #1e5bbf;
+}
+
+/* BACK LINK */
+.back-link-top {
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.cta-row {
+  margin: 20px 0 30px;
+  display: flex;
+  gap: 16px;
+}
+
+.primary-cta {
+  flex: 2;
+  font-size: 16px;
+}
+
+.secondary-cta {
+  flex: 1;
+}
+
+.primary-cta {
+  box-shadow: 0 6px 18px rgba(30,91,191,0.25);
+}
+
+.verified-badge {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #1e5bbf;
+  background: #eef4ff;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.info-value a {
+  font-weight: 500;
+  color: #1e5bbf;
+}
+
+
+
+.info-row {
+  padding: 16px 0;
+}
+
+.claim-listing-btn {
+  font-weight: 600;
+  padding: 10px 16px;
+}
+.trust-line {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .cta-row {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 10px;
+    z-index: 10;
+  }
+}
