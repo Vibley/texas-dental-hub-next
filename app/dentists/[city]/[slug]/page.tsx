@@ -173,8 +173,7 @@ return (
   </div>
 
   <div className="claim-listing-text">
-    Claim this listing to update your information, receive appointment requests
-    directly, and promote your practice to more patients in {cityName}.
+  Get more patients, manage your listing, and receive appointment requests.
   </div>
 
   <a

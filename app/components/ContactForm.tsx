@@ -31,10 +31,12 @@ export default function ContactForm({
       .from('contact_messages')
       .insert([
         {
-          full_name: formData.get('name'),
-          email: formData.get('email'),
-          message: formData.get('message'),
-          inquiry_type: inquiryType, // ✅ CRITICAL FIX
+         full_name: formData.get('name')?.toString(),
+      email: formData.get('email')?.toString(),
+      phone: formData.get('phone')?.toString() || null,
+      message: formData.get('message')?.toString(),
+      user_type: formData.get('user_type')?.toString(),
+      inquiry_type: inquiryType,
         },
       ])
 
@@ -56,42 +58,61 @@ export default function ContactForm({
   }, [success])
 
   return (
-    <form onSubmit={handleSubmit} className="contact-form">
+    
+<form onSubmit={handleSubmit} className="contact-form">
 
-      {/* Hidden Field (Optional for debugging) */}
-      <input type="hidden" value={inquiryType} />
+ 
 
-      <div className="form-group">
-        <label>Full Name</label>
-        <input name="name" required />
-      </div>
+  <p className="form-subtitle">
+    We typically respond within 24 hours.
+  </p>
 
-      <div className="form-group">
-        <label>Email</label>
-        <input name="email" type="email" required />
-      </div>
+  <div className="form-group">
+    <label>I am a:</label>
+    <select name="user_type" required>
+      <option value="">Select</option>
+      <option value="patient">Patient</option>
+      <option value="clinic">Dental Clinic</option>
+    </select>
+  </div>
 
-      <div className="form-group">
-        <label>Message</label>
-        <textarea name="message" rows={5} required />
-      </div>
+  <div className="form-group">
+    <label>Full Name</label>
+    <input name="name" required />
+  </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? 'Sending...' : 'Send Message'}
-      </button>
+  <div className="form-group">
+    <label>Email</label>
+    <input name="email" type="email" required />
+  </div>
 
-      {success && (
-        <div className="success">
-          ✅ Your message has been sent successfully.
-        </div>
-      )}
+  <div className="form-group">
+    <label>Phone (optional)</label>
+    <input name="phone" type="tel" />
+  </div>
 
-      {error && (
-        <div className="error">
-          ❌ Failed to send message. Please try again.
-        </div>
-      )}
+  <div className="form-group">
+    <label>Message</label>
+    <textarea name="message" rows={5} required />
+  </div>
 
-    </form>
+  <button type="submit" disabled={loading}>
+    {loading ? 'Sending...' : 'Send Message'}
+  </button>
+
+  {success && (
+    <div className="success">
+      ✅ Thanks! We’ll get back to you shortly.
+    </div>
+  )}
+
+  {error && (
+    <div className="error">
+      ❌ Something went wrong. Please try again.
+    </div>
+  )}
+
+</form>
+
   )
 }

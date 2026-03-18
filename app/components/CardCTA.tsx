@@ -67,7 +67,7 @@ export default function CardCTA({
               className="btn"
               onClick={handleCallClick}
             >
-              Call to Schedule
+              Call Now
             </a>
 
             {/* Desktop popup only */}
@@ -100,7 +100,7 @@ export default function CardCTA({
             setShowModal(true)
           }}
         >
-          Request Appointment
+           📅 Request Appointment
         </button>
 
       </div>

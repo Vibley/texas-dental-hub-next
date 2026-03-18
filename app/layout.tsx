@@ -90,7 +90,7 @@ const cities = data?.map((c) => c.city_name) || [];
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/dentists/houston">Find Dentists</a></li>
-        <li><a href="/contact">Contact us</a></li>
+        <a href="/contact">Contact us</a>
         <li><a href="/about">About TexasDentalHub</a></li>
       </ul>
     </div>
@@ -115,7 +115,7 @@ const cities = data?.map((c) => c.city_name) || [];
           </a>
         </li>
         <li>
-          <a href="/contact?type=Claim%20Listing">
+          <a href="/contact?type=Claim%20an%20Existing%20Listing">
             Claim an Existing Listing
           </a>
         </li>

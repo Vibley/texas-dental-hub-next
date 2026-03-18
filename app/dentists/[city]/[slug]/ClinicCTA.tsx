@@ -73,14 +73,14 @@ export default function ClinicCTA({
                 className="btn primary"
                 onClick={handleCallClick}
               >
-                Call Clinic
+                Call Now
               </a>
             ) : (
               <button
                 className="btn primary"
                 onClick={handleCallClick}
               >
-                Call Clinic
+                Call Now
               </button>
             )}
 
@@ -128,7 +128,7 @@ export default function ClinicCTA({
   setShowModal(true);
 }}
         >
-          Request Appointment
+        📅 Request Appointment
         </button>
 
       </div>

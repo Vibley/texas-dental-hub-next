@@ -44,6 +44,16 @@ export default function HomePage({
   const featuredClinics = filteredClinics.filter((c) => c.featured === true)
   const regularClinics = filteredClinics.filter((c) => c.featured !== true)
 
+const featuredToShow = featuredClinics.slice(
+  0,
+  Math.floor(featuredClinics.length / 3) * 3
+)
+const regularToShow = regularClinics.slice(
+  0,
+  Math.floor(regularClinics.length / 3) * 3
+)
+
+
   useEffect(() => {
     loadHoustonClinics()
   }, [])
@@ -134,7 +144,7 @@ export default function HomePage({
           </h2>
 
           <div className="grid">
-            {featuredClinics.map((clinic) => (
+            {featuredToShow.map((clinic) => (
               <ClinicCard key={clinic.id} clinic={clinic} />
             ))}
           </div>
@@ -152,7 +162,7 @@ export default function HomePage({
           </h2>
 
           <div className="grid">
-            {regularClinics.map((clinic) => (
+            {regularToShow.map((clinic) => (
               <ClinicCard key={clinic.id} clinic={clinic} />
             ))}
           </div>
