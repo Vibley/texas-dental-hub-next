@@ -88,11 +88,11 @@ return (
     alt={clinic.name}
     loading="lazy"
     style={{
-      width: "20%",
-      height: "180px",
+      width: "50%",
+      height: "200px",
       objectFit: "cover",
       borderRadius: "8px",
-      marginBottom: "10px"
+      marginBottom: "1px"
     }}
   />
 
