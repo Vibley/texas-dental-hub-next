@@ -99,7 +99,7 @@ return (
 
       <div className="clinic-hero-content">
 
-        <h1 className="clinic-title">{clinic.name}</h1>
+        <h2 className="clinic-title">{clinic.name}</h2>
 
         <div className="clinic-subtitle">
           {cityName}, TX
