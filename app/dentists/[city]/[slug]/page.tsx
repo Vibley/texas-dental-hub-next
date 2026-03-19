@@ -74,11 +74,11 @@ return (
   <div className="clinic-detail">
 
     {/* 🔙 Back Link (moved to top) */}
-    <div className="back-link-top">
-      <a href={`/dentists/${city}`}>
-        ← Back to {cityName} dentists
-      </a>
-    </div>
+  <div className="back-link">
+  <a href={`/dentists/${city}`} className="back-btn">
+    ← Back to {cityName} dentists
+  </a>
+</div>
 
     {/* 🔥 HERO SECTION */}
     <div className="clinic-hero">
@@ -88,7 +88,7 @@ return (
     alt={clinic.name}
     loading="lazy"
     style={{
-      width: "50%",
+      width: "30%",
       height: "200px",
       objectFit: "cover",
       borderRadius: "8px",

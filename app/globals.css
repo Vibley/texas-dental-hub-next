@@ -604,8 +604,8 @@
 /* === Clinic Detail Page === */
 
 .clinic-hero {
-  padding: 32px 20px 28px;
-  background: linear-gradient(180deg, #f8fbff, #eef4ff);
+  padding: 16px 10px 14px;
+ 
 }
 
     .clinic-hero h1 {
@@ -3692,3 +3692,36 @@ select:focus, input:focus {
 }
 
 
+.back-link {
+  margin-bottom: 16px;
+}
+
+/* Button style */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  background: #f3f4f6;
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  text-decoration: none; /* removes underline */
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.back-btn:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+
+.back-btn {
+  letter-spacing: 0.2px;
+}
