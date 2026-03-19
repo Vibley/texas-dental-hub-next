@@ -92,33 +92,61 @@ const regularToShow = regularClinics.slice(
 
       <div className="hero hero-expanded">
 
-        <h1>Find Trusted Dentists Across Texas</h1>
+     <h1>Find Top-Rated Dentists in Houston, TX</h1>
 
-        <p>
-          TexasDentalHub helps patients discover trusted dental clinics across Texas.
-          Our directory includes dentists serving major Texas cities including Houston,
-          Dallas, Austin, San Antonio, Fort Worth, and surrounding communities.
-        </p>
+<p className="hero-subtext">
+  Browse verified dental clinics in Houston with real patient reviews,
+  services, and accepted insurance plans.
+</p>
 
-        <p>
-          Whether you are searching for a family dentist, cosmetic dentist,
-          emergency dental care, or dental implants, you can explore verified
-          dental clinics and connect directly with local dental providers.
-        </p>
+<p className="hero-subtext">
+  Whether you need a family dentist, emergency care, cosmetic dentistry,
+  or dental implants — find the right provider near you.
+</p>
 
-        <p className="hero-cta">
-          Browse dentists below or use the filters to find clinics
-          offering the services and insurance plans you need.
-        </p>
 
-      </div>
+
+<div className="hero-cities">
+  Looking for dentists in other cities?
+  <div className="city-links">
+    <a href="/dentists/dallas">Dallas</a>
+    <a href="/dentists/austin">Austin</a>
+    <a href="/dentists/san-antonio">San Antonio</a>
+    <a href="/dentists/fort-worth">Fort Worth</a>
+ <a href="/dentists/el-paso">El Paso</a>
+ <a href="/dentists/arlington">Arlington</a>
+ <a href="/dentists/irving">Irving</a>
+ <a href="/dentists/lubbock">Lubbock</a>
+ <a href="/dentists/plano">Plano</a>
+<a href="/dentists/garland">Garland</a>
+  </div>
+</div>
+
+
+
+<div className="hero-trust">
+  <span>✔ 2000+ clinics</span>
+  <span>✔ Real Google ratings</span>
+  <span>✔ Filter by insurance & services</span>
+</div>
+</div> {/* END HERO */}
+
+{/* 🔥 ACTION PANEL */}
+<div className="search-panel">
+
+  <p className="filter-intent">
+    Find dentists by service, insurance, or location:
+  </p>
+
+  <FilterBar
+    clinics={clinics}
+    onFilter={setFilteredClinics}
+  />
+
+</div>
 
       {/* Filter Bar */}
 
-      <FilterBar
-        clinics={clinics}
-        onFilter={setFilteredClinics}
-      />
 
       {/* EMPTY FILTER RESULT */}
 

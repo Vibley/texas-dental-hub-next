@@ -61,7 +61,21 @@ export default function CityClient({
       </div>
 
       {/* FILTER BAR */}
-      <FilterBar clinics={clinics} onFilter={setFilteredClinics} />
+      
+
+
+{/* 🔥 ACTION PANEL */}
+<div className="search-panel">
+
+  <p className="filter-intent">
+    Find dentists by service, insurance, or location:
+  </p>
+
+  <FilterBar clinics={clinics} onFilter={setFilteredClinics} />
+
+
+</div>
+
 
       {/* EMPTY FILTER RESULT */}
       {filteredClinics.length === 0 && (
