@@ -92,7 +92,7 @@ const regularToShow = regularClinics.slice(
 
       <div className="hero hero-expanded">
 
-     <h1>Find Top-Rated Dentists in Houston, TX</h1>
+     <h2>Find Top-Rated Dentists in Houston, TX</h2>
 
 <p className="hero-subtext">
   Browse verified dental clinics in Houston with real patient reviews,

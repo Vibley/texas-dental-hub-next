@@ -46,7 +46,7 @@ export default function CityClient({
       {/* HERO */}
       <div className="hero hero-expanded">
 
-        <h1>Dentists in {cityName}</h1>
+        <h2>Dentists in {cityName}</h2>
 
         <p>
           {citySeo?.intro_paragraph1 ||
