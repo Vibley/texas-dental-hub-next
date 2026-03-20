@@ -604,7 +604,7 @@
 /* === Clinic Detail Page === */
 
 .clinic-hero {
-  padding: 16px 10px 14px;
+  padding: 2px 4px 14px;
  
 }
 
@@ -3347,7 +3347,7 @@ html, body {
   display: flex;
   gap: 20px;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .clinic-hero-image {

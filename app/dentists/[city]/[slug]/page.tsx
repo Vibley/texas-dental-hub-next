@@ -89,7 +89,7 @@ return (
     loading="lazy"
     style={{
       width: "30%",
-      height: "200px",
+      height: "120px",
       objectFit: "cover",
       borderRadius: "8px",
       marginBottom: "1px"
