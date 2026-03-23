@@ -116,6 +116,7 @@ return (
     </div>
 
     {/* 🔥 CTA moved UP */}
+<div className="space-y-4">
     <ClinicCTA
       phone={clinic.phone}
       city={city}
@@ -175,6 +176,7 @@ return (
       )}
 
     </div>
+</div>
 
     {/* 🔥 CLAIM LISTING (upgraded) */}
     <div className="claim-listing-box premium">

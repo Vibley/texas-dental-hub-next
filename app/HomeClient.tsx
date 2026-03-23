@@ -88,9 +88,15 @@ const regularToShow = regularClinics.slice(
 
   return (
     <>
+
+
       {/* Hero */}
 
-      <div className="hero hero-expanded">
+
+
+
+
+    <div className="hero hero-expanded">
 
      <h2>Find Top-Rated Dentists in Houston, TX</h2>
 
@@ -105,7 +111,7 @@ const regularToShow = regularClinics.slice(
 </p>
 
 
-
+{/* Commented out
 <div className="hero-cities">
   Looking for dentists in other cities?
   <div className="city-links">
@@ -123,12 +129,13 @@ const regularToShow = regularClinics.slice(
 </div>
 
 
-
 <div className="hero-trust">
   <span>✔ 2000+ clinics</span>
   <span>✔ Real Google ratings</span>
   <span>✔ Filter by insurance & services</span>
-</div>
+</div> 
+Commented out*/} 
+
 </div> {/* END HERO */}
 
 {/* 🔥 ACTION PANEL */}
@@ -202,7 +209,7 @@ const regularToShow = regularClinics.slice(
 
       <div className="section city-directory">
 
-        <h2>Dentists Near Houston</h2>
+        <h3>Dentists Near Houston</h3>
 
         <div className="city-links-grid">
 
