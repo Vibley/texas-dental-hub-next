@@ -1,6 +1,7 @@
 export const revalidate = 86400
 import { supabase } from "@/lib/supabase"
 import CityClient from "./CityClient"
+import ScrollToTop from '@/app/components/ScrollToTop';
 
 function cleanCity(city: string) {
   return city.replace("-tx", "").replace(/-/g, " ")
@@ -136,6 +137,7 @@ const { data: nearbyCities } = await supabase.rpc("get_nearby_cities", {
 
   return (
     <>
+ <ScrollToTop />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

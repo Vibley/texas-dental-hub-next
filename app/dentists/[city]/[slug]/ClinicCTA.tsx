@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import AppointmentForm from '@/app/components/AppointmentForm'
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent } from "@/lib/analytics"
+import ScrollToTop from '@/app/components/ScrollToTop';
 
 export default function ClinicCTA({
   phone,
@@ -62,6 +63,7 @@ export default function ClinicCTA({
 
   return (
     <>
+ <ScrollToTop />
       <div className="clinic-cta">
 
         {/* Call Button */}

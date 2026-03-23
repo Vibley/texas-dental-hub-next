@@ -3743,3 +3743,20 @@ select:focus, input:focus {
 }
 
 
+
+
+.clinic-cta {
+  display: flex;
+  gap: 12px;
+}
+
+.clinic-cta .btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.clinic-cta .btn {
+  flex: 1;
+}
