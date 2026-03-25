@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import AppointmentForm from '@/app/components/AppointmentForm'
 import ClinicCTA from './ClinicCTA'   // ✅ YOU NEED THIS
+import CardCTA from '@/app/components/CardCTA'
 
 function slugify(text: string) {
   return text
@@ -117,11 +118,21 @@ return (
 
     {/* 🔥 CTA moved UP */}
 <div className="space-y-4">
-    <ClinicCTA
+    
+<div   style={{
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  marginTop: '10px',
+}}
+
+className="card-actions responsive-cta">
+<CardCTA
       phone={clinic.phone}
       city={city}
       clinicName={clinic.name}
     />
+</div>
 
     {/* 🔥 INFO CARD */}
     <div className="clinic-card">

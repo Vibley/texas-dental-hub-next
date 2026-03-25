@@ -1223,7 +1223,7 @@ body.city-view .hero h1 {
 
 
 .call-popup {
-  position: absolute;
+  position: fixed;
   margin-top: 10px;
   background: white;
   border-radius: 12px;
@@ -2526,7 +2526,7 @@ html, body {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-  overflow: hidden;
+  overflow: visible;
   z-index: 999;
 }
 
@@ -3760,3 +3760,29 @@ select:focus, input:focus {
 .clinic-cta .btn {
   flex: 1;
 }
+
+.modal-overlay, .call-popup {
+  display: none !important;
+}
+
+
+/* Mobile default (stacked) */
+.responsive-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Desktop (side-by-side) */
+@media (min-width: 768px) {
+  .responsive-cta {
+    flex-direction: row;
+  }
+
+  .responsive-cta a,
+  .responsive-cta button {
+    flex: 1;
+  }
+}
+
+

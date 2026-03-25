@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import AppointmentForm from '@/app/components/AppointmentForm'
+import ScrollToTop from '@/app/components/ScrollToTop';
 
 export default function CardCTA({
   phone,
@@ -15,11 +16,6 @@ export default function CardCTA({
 }) {
   const [showModal, setShowModal] = useState(false)
   const [showCallPopup, setShowCallPopup] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const trackCall = () => {
     fetch('/api/track-call', {
@@ -34,17 +30,21 @@ export default function CardCTA({
     }).catch(() => {})
   }
 
+  // 🔥 CLEAN CALL HANDLER
   const handleCallClick = (e: React.MouseEvent) => {
     e.stopPropagation()
+
     trackCall()
 
-    // Only show popup on desktop
     if (typeof window !== 'undefined' && window.innerWidth > 768) {
+      // Desktop → show popup ONLY
       e.preventDefault()
       setShowCallPopup(true)
     }
+    // Mobile → allow tel: to proceed naturally
   }
 
+  // Auto-close popup
   useEffect(() => {
     if (!showCallPopup) return
 
@@ -57,33 +57,77 @@ export default function CardCTA({
 
   return (
     <>
-      <div className="card-actions">
 
+      <div
+        className="card-actions card-cta"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          marginTop: '10px',
+        }}
+      >
+        {/* 🔥 CALL BUTTON */}
         {phone && (
           <>
-            {/* ✅ Always use tel: link */}
             <a
               href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
-              className="btn"
               onClick={handleCallClick}
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                background: '#2563eb',
+                color: '#fff',
+                padding: '12px',
+                borderRadius: '10px',
+                fontWeight: 600,
+                fontSize: '15px',
+                textDecoration: 'none',
+                boxShadow: '0 4px 10px rgba(37,99,235,0.25)',
+                WebkitTapHighlightColor: 'transparent',
+              }}
             >
-              Call Now
+              📞 Call Now
             </a>
 
-            {/* Desktop popup only */}
+            {/* Desktop popup */}
             {showCallPopup && (
-              <div className="call-popup">
+              <div
+                style={{
+                  position: 'fixed',
+                  bottom: '20px',
+                  left: '20px',
+                  right: '20px',
+                  zIndex: 9999,
+                  background: '#fff',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button
-                  type="button"
-                  className="call-popup-close"
-                  onClick={() => setShowCallPopup(false)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowCallPopup(false)
+                  }}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '8px',
+                    border: 'none',
+                    background: 'transparent',
+                    fontSize: '16px',
+                    cursor: 'pointer',
+                  }}
                 >
                   ✕
                 </button>
-                <div className="call-popup-number">
+
+                <div style={{ fontWeight: 600, marginBottom: '6px' }}>
                   📞 {phone}
                 </div>
-                <div className="call-popup-note">
+                <div style={{ fontSize: '13px', color: '#666' }}>
                   Calling works best on mobile devices.
                 </div>
               </div>
@@ -91,36 +135,71 @@ export default function CardCTA({
           </>
         )}
 
+        {/* 🔥 REQUEST APPOINTMENT */}
         <button
           type="button"
-          className="btn secondary"
           onClick={(e) => {
             e.stopPropagation()
-            e.preventDefault()
             setShowModal(true)
           }}
+          style={{
+            width: '100%',
+            background: 'transparent',
+            color: '#2563eb',
+            padding: '10px',
+            borderRadius: '8px',
+            fontWeight: 500,
+            fontSize: '14px',
+            border: '1px solid #dbeafe',
+            cursor: 'pointer',
+            WebkitTapHighlightColor: 'transparent',
+          }}
         >
-           📅 Request Appointment
+          Request Appointment →
         </button>
-
       </div>
 
-      {/* ✅ Modal via Portal */}
-      {mounted &&
-        showModal &&
+      {/* 🔥 MODAL (FIXED) */}
+      {showModal &&
+        typeof document !== 'undefined' &&
         createPortal(
           <div
-            className="modal-overlay"
             onClick={() => setShowModal(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              background: 'rgba(0,0,0,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
             <div
-              className="modal-content"
               onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#fff',
+                borderRadius: '12px',
+                padding: '20px',
+                width: '90%',
+                maxWidth: '400px',
+                position: 'relative',
+              }}
             >
               <button
-                type="button"
-                className="modal-close"
-                onClick={() => setShowModal(false)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setShowModal(false)
+                }}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '10px',
+                  border: 'none',
+                  background: 'transparent',
+                  fontSize: '18px',
+                  cursor: 'pointer',
+                }}
               >
                 ✕
               </button>
