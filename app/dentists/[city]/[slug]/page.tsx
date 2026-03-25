@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import AppointmentForm from '@/app/components/AppointmentForm'
-import ClinicCTA from './ClinicCTA'   // ✅ YOU NEED THIS
+
 import CardCTA from '@/app/components/CardCTA'
 
 function slugify(text: string) {
