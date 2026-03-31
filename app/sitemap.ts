@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (!clinic.city || !clinic.name) return
 
     urls.push({
-      url: `${baseUrl}/dentists/${cityToSlug(clinic.city)}/clinic/${slugify(clinic.name)}`,
+      url: `${baseUrl}/dentists/${cityToSlug(clinic.city)}/${slugify(clinic.name)}`,
       changeFrequency: 'monthly',
       priority: 0.7,
     })
