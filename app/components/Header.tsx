@@ -47,7 +47,7 @@ export default function Header({ cities }: { cities: string[] }) {
       <span className="brand-name">TexasDental</span>
       <span className="brand-hub">Hub</span>
     </div>
-    <div className="brand-tagline">TEXAS DENTAL DIRECTORY</div>
+    
   </div>
 </a>
       <div className="city-search-wrapper">
