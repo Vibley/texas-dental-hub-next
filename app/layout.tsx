@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/lib/supabase/admin";
 import ScrollToTop from "./components/ScrollToTop"
 
 export const metadata = {
+ metadataBase: new URL('https://texasdentalhub.com'),
   title: "TexasDentalHub",
   description: "Find verified dentists across Texas",
 };
