@@ -17,7 +17,7 @@ type Clinic = {
   google_maps_url?: string
   google_formatted_address?: string
 
-  website?: string // 👈 ADD THIS (future-proof)
+  website?: string
 }
 
 function slugify(text: string) {
@@ -27,7 +27,6 @@ function slugify(text: string) {
     .replace(/(^-|-$)/g, '')
 }
 
-
 function formatCityState(city?: string) {
   if (!city) return 'Texas'
 
@@ -35,6 +34,58 @@ function formatCityState(city?: string) {
     city.charAt(0).toUpperCase() + city.slice(1).toLowerCase()
 
   return `${cleanCity}, TX`
+}
+
+/* 🔥 STEP 1 — Dynamic Trust Line */
+
+function getTrustLine(clinic: Clinic) {
+  const rating = clinic.google_rating || 0
+  const reviews = clinic.google_review_count || 0
+
+  if (reviews > 0 && reviews < 5) {
+    return 'Recently reviewed by patients'
+  }
+
+  if (rating >= 4.8 && reviews > 80) {
+    return 'Consistently top patient satisfaction'
+  }
+
+  if (rating >= 4.5 && reviews >= 5) {
+    return 'Known for quality dental care'
+  }
+
+  if (reviews > 50) {
+    return 'Trusted by many local families'
+  }
+
+  return 'Local dental clinic accepting patients'
+}
+
+
+
+
+/* 🔥 STEP 2 — Dynamic Urgency */
+function getUrgencyLabel(clinic: Clinic) {
+  const rating = clinic.google_rating || 0
+  const reviews = clinic.google_review_count || 0
+
+  if (clinic.weekend_open === 'YES') {
+    return '✔ Weekend appointments available'
+  }
+
+  if (reviews > 100) {
+    return '✔ High demand this week'
+  }
+
+  if (rating >= 4.8 && reviews >= 20) {
+    return '✔ Top-rated near you'
+  }
+
+  if (reviews >= 5) {
+    return '✔ Bookings filling fast'
+  }
+
+  return '✔ New listing — available now'
 }
 
 export default function ClinicCard({ clinic }: { clinic: Clinic }) {
@@ -92,7 +143,6 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
           }}
         />
 
-        {/* Featured */}
         {clinic.featured && (
           <span
             style={{
@@ -119,61 +169,54 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
         {/* RATING */}
         {clinic.google_rating && (
           <div style={{ fontSize: '14px', marginBottom: '4px' }}>
-            ⭐ {clinic.google_rating.toFixed(1)}{' '}
+            ⭐ {clinic.google_rating.toFixed(1)} from{' '}
             {clinic.google_review_count && (
               <span style={{ color: '#666' }}>
-                ({clinic.google_review_count} reviews)
+                {clinic.google_review_count} patients
               </span>
             )}
           </div>
         )}
 
+        {/* 🔥 STEP 3 — Social Proof + Urgency */}
+        <p style={{
+          fontSize: '12px',
+          color: '#6b7280',
+          marginTop: '2px'
+        }}>
+          {getTrustLine(clinic)}
+        </p>
+
+        <p style={{
+          fontSize: '12px',
+          color: '#059669',
+          fontWeight: 600,
+          marginTop: '4px'
+        }}>
+          {getUrgencyLabel(clinic)}
+        </p>
+
         {/* LOCATION */}
-
-      
-<p style={{ fontSize: '14px', color: '#555', marginBottom: '6px' }}>
-  📍 {cityState}
-</p>
-
-
-        {/* TRUST LINE */}
-        {/* <p style={{fontSize: '12px', color: '#777',fontStyle: 'italic', marginBottom: '10px' }}>Known for quality care and friendly staff</p>*/}
-
-        {/* REMOVE THIS OR KEEP SMALL */}
-        {/* 
-        <div className="address-text">
-          <a
-            href={clinic.google_maps_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(displayAddress)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="map-link"
-          >
-            View on Google Maps
-          </a>
-        </div>
-        */}
+        <p style={{ fontSize: '14px', color: '#555', marginBottom: '6px' }}>
+          📍 {cityState}
+        </p>
 
         {/* CTA */}
-  
-<div
-  style={{
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '10px',
-  }}
->
-  <div style={{ width: '100%', maxWidth: '260px' }}>
-    <CardCTA
-      phone={clinic.phone}
-      city={citySlug}
-      clinicName={clinic.name}
-    />
-  </div>
-</div>
-
-
-
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '10px',
+          }}
+        >
+          <div style={{ width: '100%', maxWidth: '260px' }}>
+            <CardCTA
+              phone={clinic.phone}
+              city={citySlug}
+              clinicName={clinic.name}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )
