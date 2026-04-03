@@ -18,6 +18,7 @@ type Clinic = {
   google_formatted_address?: string
 
   website?: string
+ weekend_open?: string  
 }
 
 function slugify(text: string) {
