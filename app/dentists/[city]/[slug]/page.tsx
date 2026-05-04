@@ -84,18 +84,7 @@ return (
     {/* 🔥 HERO SECTION */}
     <div className="clinic-hero">
 
- <img
-    src={photoUrl}
-    alt={clinic.name}
-    loading="lazy"
-    style={{
-      width: "30%",
-      height: "120px",
-      objectFit: "cover",
-      borderRadius: "8px",
-      marginBottom: "1px"
-    }}
-  />
+
 
 
       <div className="clinic-hero-content">

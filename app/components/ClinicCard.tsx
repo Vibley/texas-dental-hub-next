@@ -100,11 +100,7 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
     router.push(`/dentists/${citySlug}/${clinicSlug}`, { scroll: true })
   }
 
-  const photoUrl =
-    clinic.google_photo_reference &&
-    clinic.google_photo_reference !== 'undefined'
-      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${clinic.google_photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-      : '/placeholder-dental.jpg'
+ 
 
   const displayAddress =
     clinic.google_formatted_address?.replace(', USA', '') ||
@@ -132,30 +128,12 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
       }}
     >
       {/* IMAGE */}
-      <div style={{ position: 'relative' }}>
-        <img
-          src={photoUrl}
-          alt={clinic.name}
-          loading="lazy"
-          style={{
-            width: '100%',
-            height: '180px',
-            objectFit: 'cover'
-          }}
-        />
+      <div className="card-header">
+      
 
         {clinic.featured && (
-          <span
-            style={{
-              position: 'absolute',
-              top: '10px',
-              left: '10px',
-              background: '#2563eb',
-              color: '#fff',
-              padding: '4px 10px',
-              borderRadius: '20px',
-              fontSize: '12px'
-            }}
+          <span className="featured-badge"
+            
           >
             ⭐ Featured
           </span>

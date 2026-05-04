@@ -13,13 +13,10 @@ export default async function AdminDashboard() {
     redirect('/admin-login')
   }
 
-  // 🔹 Calculate 7-day cutoff
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-
   const isoDate = sevenDaysAgo.toISOString()
 
-  // 🔹 Parallel queries
   const [
     totalLeads,
     totalMessages,
@@ -41,26 +38,40 @@ export default async function AdminDashboard() {
     supabase.from('call_clicks').select('*', { count: 'exact', head: true }).gte('created_at', isoDate),
   ])
 
-const { data: settings } = await supabase
-  .from('admin_settings')
-  .select('*')
-  .single()
-async function updateSettings(formData: FormData) {
-  'use server'
+  /* 🔥 NEW — Clinic Performance Query */
+  const { data: clinicEvents } = await supabase
+    .from('clinic_events')
+    .select('clinic_name, event_type, created_at')
+    .gte('created_at', isoDate)
 
-  const supabase = await createClient()
+  const clinicMap: Record<
+    string,
+    { calls: number; appointments: number }
+  > = {}
 
-  await supabase.from('admin_settings').update({
-    notification_email: formData.get('notification_email'),
-    notifications_enabled: formData.get('notifications_enabled') === 'on',
-    notify_leads: formData.get('notify_leads') === 'on',
-    notify_contact_messages: formData.get('notify_contact_messages') === 'on',
-    notify_call_clicks: formData.get('notify_call_clicks') === 'on',
-    updated_at: new Date().toISOString()
+  clinicEvents?.forEach((event) => {
+    if (!clinicMap[event.clinic_name]) {
+      clinicMap[event.clinic_name] = { calls: 0, appointments: 0 }
+    }
+
+    if (event.event_type === 'call_click') {
+      clinicMap[event.clinic_name].calls++
+    }
+
+    if (event.event_type === 'appointment_submit') {
+      clinicMap[event.clinic_name].appointments++
+    }
   })
 
-  redirect('/admin')
-}
+  const clinicRows = Object.entries(clinicMap)
+    .map(([clinic, stats]) => ({
+      clinic,
+      calls: stats.calls,
+      appointments: stats.appointments,
+      total: stats.calls + stats.appointments,
+    }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10)
 
   return (
     <div>
@@ -72,7 +83,6 @@ async function updateSettings(formData: FormData) {
       <form action="/api/admin/logout" method="get">
         <button type="submit">Logout</button>
       </form>
-
 
       <hr style={{ margin: '30px 0' }} />
 
@@ -88,9 +98,6 @@ async function updateSettings(formData: FormData) {
       <hr style={{ margin: '40px 0' }} />
 
       <h2 style={{ marginBottom: '20px' }}>All Time</h2>
-<hr style={{ margin: '40px 0' }} />
-
-
 
       <StatsGrid>
         <StatCard title="Total Leads" value={totalLeads.count || 0} />
@@ -98,6 +105,55 @@ async function updateSettings(formData: FormData) {
         <StatCard title="Total Contact Leads" value={totalContactLeads.count || 0} />
         <StatCard title="Total Call Clicks" value={totalCallClicks.count || 0} />
       </StatsGrid>
+
+      {/* 🔥 NEW SECTION */}
+      <hr style={{ margin: '40px 0' }} />
+
+      <h2 style={{ marginBottom: '20px' }}>
+        Top Performing Clinics (Last 7 Days)
+      </h2>
+
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+        }}
+      >
+        <thead>
+          <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left' }}>
+            <th style={{ padding: '10px' }}>Clinic</th>
+            <th style={{ padding: '10px' }}>Calls</th>
+            <th style={{ padding: '10px' }}>Appointments</th>
+            <th style={{ padding: '10px' }}>Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {clinicRows.map((row, index) => (
+            <tr
+              key={row.clinic}
+              style={{
+                borderBottom: '1px solid #f5f5f5',
+                background: index === 0 ? '#f0f9ff' : 'transparent',
+              }}
+            >
+              <td style={{ padding: '10px', fontWeight: 500 }}>
+                {row.clinic}
+              </td>
+
+              <td style={{ padding: '10px' }}>{row.calls}</td>
+
+              <td style={{ padding: '10px' }}>
+                {row.appointments}
+              </td>
+
+              <td style={{ padding: '10px', fontWeight: 600 }}>
+                {row.total}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -107,7 +163,7 @@ function StatsGrid({ children }: { children: React.ReactNode }) {
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',  // 🔥 force 4 columns
+        gridTemplateColumns: 'repeat(4, 1fr)',
         gap: '20px',
         width: '100%',
       }}
@@ -134,4 +190,3 @@ function StatCard({ title, value }: { title: string; value: number }) {
     </div>
   )
 }
-

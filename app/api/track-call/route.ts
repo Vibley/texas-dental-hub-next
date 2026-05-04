@@ -19,8 +19,7 @@ export async function POST(req: Request) {
       )
     }
 
-
-console.log("TRACK CALL ROUTE HIT");
+    console.log("TRACK CALL ROUTE HIT");
 
     /* ----------------------------------------
        1️⃣ Always log legacy call_clicks table
@@ -53,8 +52,11 @@ console.log("TRACK CALL ROUTE HIT");
       eventType = 'appointment_submit'
     }
 
+    console.log("EVENT TYPE:", eventType, "SOURCE:", source_position)
+
     /* ----------------------------------------
        3️⃣ Insert into clinic_events
+       🔥 FIX: add created_at
     ----------------------------------------- */
     const { error: eventError } = await supabase
       .from('clinic_events')
@@ -64,6 +66,7 @@ console.log("TRACK CALL ROUTE HIT");
           city,
           event_type: eventType,
           source_page,
+          created_at: new Date().toISOString(), // ✅ CRITICAL FIX
         },
       ])
 

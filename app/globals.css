@@ -3785,4 +3785,8 @@ select:focus, input:focus {
   }
 }
 
-
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
