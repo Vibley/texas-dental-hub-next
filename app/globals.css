@@ -3790,3 +3790,18 @@ select:focus, input:focus {
   flex-direction: column;
   gap: 6px;
 }
+
+
+.featured-card {
+  background: #f8fbff;
+  border: 2px solid #2563eb;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+  transform: scale(1.02);
+}
+
+
+.featured-badge {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}

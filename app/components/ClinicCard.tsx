@@ -43,26 +43,30 @@ function getTrustLine(clinic: Clinic) {
   const rating = clinic.google_rating || 0
   const reviews = clinic.google_review_count || 0
 
-  if (reviews > 0 && reviews < 5) {
-    return 'Recently reviewed by patients'
+  // 🔥 strongest signals first
+  if (rating >= 4.9 && reviews >= 200) {
+    return `Top-rated with ${reviews}+ patient reviews`
   }
 
-  if (rating >= 4.8 && reviews > 80) {
-    return 'Consistently top patient satisfaction'
+  if (rating >= 4.8 && reviews >= 100) {
+    return `Highly rated by ${reviews}+ local patients`
   }
 
-  if (rating >= 4.5 && reviews >= 5) {
-    return 'Known for quality dental care'
+  if (reviews >= 300) {
+    return `Trusted by ${reviews}+ patients in the area`
   }
 
-  if (reviews > 50) {
-    return 'Trusted by many local families'
+  if (rating >= 4.5 && reviews >= 20) {
+    return `Well-reviewed local dental clinic`
   }
 
-  return 'Local dental clinic accepting patients'
+  if (reviews > 0 && reviews < 10) {
+    return `Recently reviewed by patients`
+  }
+
+  return `Accepting new patients`
+
 }
-
-
 
 
 /* 🔥 STEP 2 — Dynamic Urgency */
@@ -71,23 +75,25 @@ function getUrgencyLabel(clinic: Clinic) {
   const reviews = clinic.google_review_count || 0
 
   if (clinic.weekend_open === 'YES') {
-    return '✔ Weekend appointments available'
+    return '✔ Open weekends — book faster'
   }
 
-  if (reviews > 100) {
-    return '✔ High demand this week'
+  if (reviews >= 500 && rating >= 4.7) {
+    return '✔ High demand — limited slots this week'
   }
 
-  if (rating >= 4.8 && reviews >= 20) {
-    return '✔ Top-rated near you'
+  if (rating >= 4.8 && reviews >= 50) {
+    return '✔ Top-rated — filling quickly'
   }
 
-  if (reviews >= 5) {
-    return '✔ Bookings filling fast'
+  if (reviews >= 20) {
+    return '✔ Popular choice nearby'
   }
 
-  return '✔ New listing — available now'
+  return '✔ Accepting new patients'
+
 }
+
 
 export default function ClinicCard({ clinic }: { clinic: Clinic }) {
   const router = useRouter()
@@ -148,10 +154,10 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
         {/* RATING */}
         {clinic.google_rating && (
           <div style={{ fontSize: '14px', marginBottom: '4px' }}>
-            ⭐ {clinic.google_rating.toFixed(1)} from{' '}
+            ⭐ {clinic.google_rating.toFixed(1)} ({''}
             {clinic.google_review_count && (
               <span style={{ color: '#666' }}>
-                {clinic.google_review_count} patients
+                {clinic.google_review_count} Google reviews)
               </span>
             )}
           </div>
