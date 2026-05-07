@@ -10,6 +10,52 @@ function slugify(text: string) {
     .replace(/(^-|-$)/g, '')
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ city: string; slug: string }>
+}) {
+  const { city, slug } = await params
+
+  const cityName = city.replace('-tx', '').replace(/-/g, ' ')
+
+  const { data: clinics } = await supabase
+    .from('clinics')
+    .select('name, city, services, google_rating, google_review_count')
+    .ilike('city', cityName)
+
+  const clinic = clinics?.find((c) => slugify(c.name) === slug)
+
+  const formattedCity = cityName
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+
+  const canonicalUrl = `https://texasdentalhub.com/dentists/${city}/${slug}`
+
+  if (!clinic) {
+    return {
+      title: `Dentist in ${formattedCity}, TX | TexasDentalHub`,
+      description: `Find trusted dentists in ${formattedCity}, TX through TexasDentalHub.`,
+      alternates: {
+        canonical: canonicalUrl,
+      },
+    }
+  }
+
+  return {
+    title: `${clinic.name} in ${formattedCity}, TX | TexasDentalHub`,
+    description: `View services, insurance accepted, ratings, and contact information for ${clinic.name} in ${formattedCity}, Texas.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+  }
+}
+
+
+
+
+
 export default async function ClinicDetail({
   params,
 }: {
