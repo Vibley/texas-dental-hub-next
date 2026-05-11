@@ -117,92 +117,81 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
     .slice(0, 2)
     .join(' • ')
 
-  return (
-    <div
-      className={`card ${clinic.featured ? 'featured-card' : ''}`}
-      onClick={(e) => {
-        if ((e.target as HTMLElement).closest('.card-actions')) return
-        goToDetail()
-      }}
-      style={{
-        cursor: 'pointer',
-        borderRadius: '16px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-        overflow: 'hidden',
-        background: '#fff',
-        transition: 'all 0.2s ease'
-      }}
-    >
-      {/* IMAGE */}
-      <div className="card-header">
-      
+ return (
+  <div
+    className={`card ${clinic.featured ? 'featured-card' : ''}`}
+    onClick={(e) => {
+      if ((e.target as HTMLElement).closest('.card-actions')) return
+      goToDetail()
+    }}
+  >
+    {/* TOP ACCENT */}
+    <div className="card-top-accent" />
 
-        {clinic.featured && (
-          <span className="featured-badge"
-            
-          >
-            ⭐ Featured
-          </span>
-        )}
+    <div className="card-content">
+
+      {/* FEATURED */}
+      {clinic.featured && (
+        <span className="featured-badge">
+          ⭐ Featured
+        </span>
+      )}
+
+      {/* NAME */}
+      <h3 className="clinic-name">
+        {clinic.name}
+      </h3>
+
+      {/* RATING */}
+   <div className="rating-row">
+  {clinic.google_rating ? (
+    <>
+      <span className="rating-star">⭐</span>
+
+      <span className="rating-number">
+        {clinic.google_rating.toFixed(1)}
+      </span>
+
+      <span className="review-count">
+        ({clinic.google_review_count} Google reviews)
+      </span>
+    </>
+  ) : (
+    <span className="review-count">
+      New clinic profile
+    </span>
+  )}
+</div>
+
+      {/* TRUST */}
+      <div className="trust-line">
+        {getTrustLine(clinic)}
       </div>
 
-      {/* CONTENT */}
-      <div style={{ padding: '14px' }}>
-        {/* NAME */}
-        <h3 style={{ marginBottom: '6px' }}>{clinic.name}</h3>
-
-        {/* RATING */}
-        {clinic.google_rating && (
-          <div style={{ fontSize: '14px', marginBottom: '4px' }}>
-            ⭐ {clinic.google_rating.toFixed(1)} ({''}
-            {clinic.google_review_count && (
-              <span style={{ color: '#666' }}>
-                {clinic.google_review_count} Google reviews)
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* 🔥 STEP 3 — Social Proof + Urgency */}
-        <p style={{
-          fontSize: '12px',
-          color: '#6b7280',
-          marginTop: '2px'
-        }}>
-          {getTrustLine(clinic)}
-        </p>
-
-        <p style={{
-          fontSize: '12px',
-          color: '#059669',
-          fontWeight: 600,
-          marginTop: '4px'
-        }}>
-          {getUrgencyLabel(clinic)}
-        </p>
-
-        {/* LOCATION */}
-        <p style={{ fontSize: '14px', color: '#555', marginBottom: '6px' }}>
-          📍 {cityState}
-        </p>
-
-        {/* CTA */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '10px',
-          }}
-        >
-          <div style={{ width: '100%', maxWidth: '260px' }}>
-            <CardCTA
-              phone={clinic.phone}
-              city={citySlug}
-              clinicName={clinic.name}
-            />
-          </div>
-        </div>
+      {/* URGENCY */}
+      <div className="urgency-pill">
+        {getUrgencyLabel(clinic)}
       </div>
+
+      {/* LOCATION */}
+      <div className="location-row">
+        📍 {cityState}
+      </div>
+
+      {/* CTA */}
+      <div className="card-cta-wrapper">
+        <CardCTA
+          phone={clinic.phone}
+          city={citySlug}
+          clinicName={clinic.name}
+        />
+      </div>
+
     </div>
-  )
+  </div>
+)
+
+
+
+
 }

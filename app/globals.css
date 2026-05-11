@@ -3805,3 +3805,241 @@ select:focus, input:focus {
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
+
+
+/* =========================================
+   PREMIUM CLINIC CARD
+========================================= */
+
+.card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid #edf1f5;
+
+  box-shadow:
+    0 6px 20px rgba(15, 23, 42, 0.04),
+    0 2px 6px rgba(15, 23, 42, 0.03);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+
+  cursor: pointer;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 0.10),
+    0 8px 16px rgba(15, 23, 42, 0.06);
+
+  border-color: #dbe5f0;
+}
+
+
+/* =========================================
+   TOP ACCENT
+========================================= */
+
+.card-top-accent {
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #3b82f6
+  );
+}
+
+.featured-card .card-top-accent {
+  background: linear-gradient(
+    90deg,
+    #f59e0b,
+    #fbbf24
+  );
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.card-content {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+
+/* =========================================
+   FEATURED BADGE
+========================================= */
+
+.featured-badge {
+  align-self: flex-start;
+
+  background: #fff7e6;
+  color: #b45309;
+
+  border: 1px solid #fde68a;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+}
+
+
+/* =========================================
+   CLINIC NAME
+========================================= */
+
+.clinic-name {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #172033;
+
+  margin: 0;
+}
+
+
+/* =========================================
+   RATING ROW
+========================================= */
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+
+  padding: 10px 12px;
+}
+
+.rating-star {
+  font-size: 15px;
+}
+
+.rating-number {
+  font-weight: 700;
+  color: #111827;
+}
+
+.review-count {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* =========================================
+   TRUST LINE
+========================================= */
+
+.trust-line {
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   URGENCY PILL
+========================================= */
+
+.urgency-pill {
+  align-self: flex-start;
+
+  background: #ecfdf5;
+  color: #059669;
+
+  border: 1px solid #a7f3d0;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+}
+
+
+/* =========================================
+   LOCATION
+========================================= */
+
+.location-row {
+  font-size: 15px;
+  color: #475569;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+/* =========================================
+   CTA WRAPPER
+========================================= */
+
+.card-cta-wrapper {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .card-content {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .clinic-name {
+    font-size: 1.3rem;
+  }
+
+  .rating-row {
+    padding: 9px 10px;
+  }
+
+}
+
+
+.card-content {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+}
+.card-cta-wrapper {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.clinic-name {
+  min-height: 72px;
+}
+.clinic-name {
+  min-height: 2.6em;
+}
