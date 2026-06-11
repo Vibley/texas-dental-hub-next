@@ -62,10 +62,10 @@ const { data: citySeo } = await supabase
   return {
     title:
       citySeo?.meta_title ||
-      `Dentists in ${formattedCity}, TX | TexasDentalHub`,
+      `Best Dentists in ${formattedCity}, TX – Family, Cosmetic & Emergency Dental Care| TexasDentalHub`,
     description:
       citySeo?.meta_description ||
-      `Find trusted dentists in ${formattedCity}, TX. Compare local dental clinics and services through TexasDentalHub.`,
+      `Find top-rated dentists in ${formattedCity}, TX. Compare family, cosmetic, pediatric, and emergency dental clinics accepting new patients, weekend appointments, and major insurance plans.`,
     alternates: {
       canonical: canonicalUrl,
     },

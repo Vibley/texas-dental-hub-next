@@ -4043,3 +4043,7 @@ select:focus, input:focus {
 .clinic-name {
   min-height: 2.6em;
 }
+
+.card-content {
+  gap: 11px;
+}

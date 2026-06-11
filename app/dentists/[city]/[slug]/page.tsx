@@ -35,8 +35,8 @@ export async function generateMetadata({
 
   if (!clinic) {
     return {
-      title: `Dentist in ${formattedCity}, TX | TexasDentalHub`,
-      description: `Find trusted dentists in ${formattedCity}, TX through TexasDentalHub.`,
+      title: `Best Dentists in ${formattedCity}, TX – Family, Cosmetic & Emergency Dental Care | TexasDentalHub`,
+      description: `Find top-rated dentists in ${formattedCity}, TX. Compare family, cosmetic, pediatric, and emergency dental clinics accepting new patients, weekend appointments, and major insurance plans.`,
       alternates: {
         canonical: canonicalUrl,
       },
