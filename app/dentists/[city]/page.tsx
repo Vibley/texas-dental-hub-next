@@ -91,7 +91,7 @@ export default async function CityPage({
   const { data: clinics } = await supabase
     .from("clinics")
     .select(
-      "id, name, address, phone, city, services, insurances, weekend_open, zip, featured,google_rating,google_review_count,google_photo_reference,google_maps_url,google_formatted_address"  )
+      "id, name, address, phone, city, services, insurances, weekend_open, zip, featured,google_rating,google_review_count,google_photo_reference,google_maps_url,google_formatted_address, accepts_new_patients, emergency_available"  )
    .ilike("city", formattedCity)
     .order("featured", { ascending: false })
     .order("name", { ascending: true })

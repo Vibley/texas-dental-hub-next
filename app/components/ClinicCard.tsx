@@ -16,10 +16,14 @@ type Clinic = {
   google_photo_reference?: string
   google_maps_url?: string
   google_formatted_address?: string
-
   website?: string
- weekend_open?: string  
+  weekend_open?: string
+  accepts_new_patients?: boolean
+  emergency_available?: boolean  
 }
+
+
+
 
 function slugify(text: string) {
   return text
@@ -37,63 +41,34 @@ function formatCityState(city?: string) {
   return `${cleanCity}, TX`
 }
 
-/* 🔥 STEP 1 — Dynamic Trust Line */
 
-function getTrustLine(clinic: Clinic) {
+
+function getClinicBadges(clinic: Clinic) {
+  const badges: string[] = []
+
   const rating = clinic.google_rating || 0
   const reviews = clinic.google_review_count || 0
 
-  // 🔥 strongest signals first
-  if (rating >= 4.9 && reviews >= 200) {
-    return `Top-rated with ${reviews}+ patient reviews`
+  if (clinic.emergency_available === true) {
+    badges.push("Emergency appointments")
   }
 
-  if (rating >= 4.8 && reviews >= 100) {
-    return `Highly rated by ${reviews}+ local patients`
+  if (clinic.weekend_open === "yes") {
+    badges.push("Open weekends")
   }
 
-  if (reviews >= 300) {
-    return `Trusted by ${reviews}+ patients in the area`
+  if (clinic.accepts_new_patients === true) {
+    badges.push("Accepting new patients")
   }
 
-  if (rating >= 4.5 && reviews >= 20) {
-    return `Well-reviewed local dental clinic`
+
+
+  if (badges.length === 0) {
+    badges.push("Local dental clinic")
   }
 
-  if (reviews > 0 && reviews < 10) {
-    return `Recently reviewed by patients`
-  }
-
-  return `Accepting new patients`
-
+  return badges
 }
-
-
-/* 🔥 STEP 2 — Dynamic Urgency */
-function getUrgencyLabel(clinic: Clinic) {
-  const rating = clinic.google_rating || 0
-  const reviews = clinic.google_review_count || 0
-
-  if (clinic.weekend_open === 'YES') {
-    return '✔ Open weekends — book faster'
-  }
-
-  if (reviews >= 500 && rating >= 4.7) {
-    return '✔ High demand — limited slots this week'
-  }
-
-  if (rating >= 4.8 && reviews >= 50) {
-    return '✔ Top-rated — filling quickly'
-  }
-
-  if (reviews >= 20) {
-    return '✔ Popular choice nearby'
-  }
-
-  return '✔ Accepting new patients'
-
-}
-
 
 export default function ClinicCard({ clinic }: { clinic: Clinic }) {
   const router = useRouter()
@@ -163,15 +138,43 @@ export default function ClinicCard({ clinic }: { clinic: Clinic }) {
   )}
 </div>
 
-      {/* TRUST */}
-      <div className="trust-line">
-        {getTrustLine(clinic)}
-      </div>
+    
 
       {/* URGENCY */}
-      <div className="urgency-pill">
-        {getUrgencyLabel(clinic)}
-      </div>
+      
+{/* BADGES */}
+<div
+  style={{
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '8px',
+    marginTop: '16px',
+    minHeight: '72px',
+    alignContent: 'flex-start',
+    justifyContent: 'left',
+  }}
+>
+  {getClinicBadges(clinic).slice(0, 3).map((badge) => (
+    <span
+      key={badge}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        borderRadius: '999px',
+        border: '1px solid #a7f3d0',
+        backgroundColor: '#ecfdf5',
+        padding: '6px 12px',
+        fontSize: '12px',
+        fontWeight: 600,
+        color: '#047857',
+      }}
+    >
+      ✓ {badge}
+    </span>
+  ))}
+</div>
+
+
 
       {/* LOCATION */}
       <div className="location-row">
