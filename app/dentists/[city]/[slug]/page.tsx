@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase'
-import AppointmentForm from '@/app/components/AppointmentForm'
-
 import CardCTA from '@/app/components/CardCTA'
+import ScrollToTop from '@/app/components/ScrollToTop'
 
 function slugify(text: string) {
   return text
@@ -31,7 +30,8 @@ export async function generateMetadata({
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 
-  const canonicalUrl = `https://texasdentalhub.com/dentists/${city}/${slug}`
+  const canonicalUrl =
+    'https://texasdentalhub.com/dentists/' + city + '/' + slug
 
   if (!clinic) {
     return {
@@ -52,10 +52,6 @@ export async function generateMetadata({
   }
 }
 
-
-
-
-
 export default async function ClinicDetail({
   params,
 }: {
@@ -74,183 +70,152 @@ export default async function ClinicDetail({
     return <div style={{ padding: 40 }}>Clinic Not Found</div>
   }
 
-  const clinic = clinics.find(
-    (c) => slugify(c.name) === slug
-  )
+  const clinic = clinics.find((c) => slugify(c.name) === slug)
 
   if (!clinic) {
     return <div style={{ padding: 40 }}>Clinic Not Found</div>
   }
 
-  const services = Array.isArray(clinic.services)
-    ? clinic.services
-    : []
+  const services = Array.isArray(clinic.services) ? clinic.services : []
+  const insurances = Array.isArray(clinic.insurances) ? clinic.insurances : []
 
-  const insurances = Array.isArray(clinic.insurances)
-    ? clinic.insurances
-    : []
+  const hours = (() => {
+    if (!clinic.hours) return ''
 
-const hours = (() => {
-  if (!clinic.hours) return ''
-
-  // If hours is already a string
-  if (typeof clinic.hours === 'string') return clinic.hours
-
-  // If raw exists
-  if (clinic.hours.raw) {
-    try {
-      const parsed = JSON.parse(clinic.hours.raw)
-      return parsed.text || clinic.hours.raw
-    } catch {
-      return clinic.hours.raw
+    if (typeof clinic.hours === 'string') {
+      return clinic.hours
     }
-  }
 
-  return ''
-})()
+    if (clinic.hours.raw) {
+      try {
+        const parsed = JSON.parse(clinic.hours.raw)
+        return parsed.text || clinic.hours.raw
+      } catch {
+        return clinic.hours.raw
+      }
+    }
 
+    return ''
+  })()
 
+  return (
+    <>
+      <ScrollToTop />
 
-
-  const photoUrl = clinic.google_photo_reference && clinic.google_photo_reference !== 'undefined'
-    ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${clinic.google_photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-    : '/placeholder-dental.jpg'
-
-
-return (
-  <div className="clinic-detail">
-
-    {/* 🔙 Back Link (moved to top) */}
-  <div className="back-link">
-  <a href={`/dentists/${city}`} className="back-btn">
-    ← Back to {cityName} dentists
-  </a>
-</div>
-
-    {/* 🔥 HERO SECTION */}
-    <div className="clinic-hero">
-
-
-
-
-      <div className="clinic-hero-content">
-
-        <h2 className="clinic-title">{clinic.name}</h2>
-
-        <div className="clinic-subtitle">
-          {cityName}, TX
+      <div className="clinic-detail">
+        <div className="back-link">
+          <a href={`/dentists/${city}`} className="back-btn">
+            ← Back to {cityName} dentists
+          </a>
         </div>
 
-        {clinic.google_rating && (
-          <div className="hero-rating">
-            ⭐ {clinic.google_rating.toFixed(1)}{" "}
-            {clinic.google_review_count && `(${clinic.google_review_count} reviews)`}
+        <div className="clinic-hero">
+          <div className="clinic-hero-content">
+            <h2 className="clinic-title">{clinic.name}</h2>
+
+            <div className="clinic-subtitle">{cityName}, TX</div>
+
+            {clinic.google_rating && (
+              <div className="hero-rating">
+                ⭐ {clinic.google_rating.toFixed(1)}{' '}
+                {clinic.google_review_count &&
+                  `(${clinic.google_review_count} reviews)`}
+              </div>
+            )}
           </div>
-        )}
+        </div>
 
-      </div>
-    </div>
-
-    {/* 🔥 CTA moved UP */}
-<div className="space-y-4">
-    
-<div   style={{
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  marginTop: '10px',
-}}
-
-className="card-actions responsive-cta">
-<CardCTA
-      phone={clinic.phone}
-      city={city}
-      clinicName={clinic.name}
-    />
-</div>
-
-    {/* 🔥 INFO CARD */}
-    <div className="clinic-card">
-
-     
-
-      <div className="info-row">
-        <div className="info-label">Address</div>
-        <div className="info-value">
-          <a
-            href={
-              clinic.google_maps_url ||
-              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                clinic.google_formatted_address || clinic.address
-              )}`
-            }
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="space-y-4">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              marginTop: '10px',
+            }}
+            className="card-actions responsive-cta"
           >
-            {(clinic.google_formatted_address
-              ? clinic.google_formatted_address.replace(", USA", "")
-              : clinic.address)}
+            <CardCTA
+              phone={clinic.phone}
+              city={city}
+              clinicName={clinic.name}
+            />
+          </div>
+
+          <div className="clinic-card">
+            <div className="info-row">
+              <div className="info-label">Address</div>
+
+              <div className="info-value">
+                <a
+                  href={
+                    clinic.google_maps_url ||
+                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      clinic.google_formatted_address || clinic.address
+                    )}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {clinic.google_formatted_address
+                    ? clinic.google_formatted_address.replace(', USA', '')
+                    : clinic.address}
+                </a>
+              </div>
+            </div>
+
+            {services.length > 0 && (
+              <div className="info-row">
+                <div className="info-label">Services</div>
+                <div className="info-value">{services.join(', ')}</div>
+              </div>
+            )}
+
+            {insurances.length > 0 && (
+              <div className="info-row">
+                <div className="info-label">Insurance</div>
+
+                <div className="info-value">
+                  <div className="insurance-pills">
+                    {insurances.map((ins: string, i: number) => (
+                      <span key={i} className="pill">
+                        {ins}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {hours && (
+              <div className="info-row">
+                <div className="info-label">Hours</div>
+                <div className="info-value">{hours}</div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="claim-listing-box premium">
+          <div className="claim-listing-title">
+            Own this dental practice?
+          </div>
+
+          <div className="claim-listing-text">
+            Get more patients, manage your listing, and receive appointment
+            requests.
+          </div>
+
+          <a
+            href={`/contact?type=Claim%20Listing&clinic=${encodeURIComponent(
+              clinic.name
+            )}`}
+            className="claim-listing-btn"
+          >
+            Claim This Listing
           </a>
         </div>
       </div>
-
-      {services.length > 0 && (
-        <div className="info-row">
-          <div className="info-label">Services</div>
-          <div className="info-value">{services.join(', ')}</div>
-        </div>
-      )}
-
-      {insurances.length > 0 && (
-        <div className="info-row">
-          <div className="info-label">Insurance</div>
-          <div className="info-value">
-            <div className="insurance-pills">
-              {insurances.map((ins: string, i: number) => (
-                <span key={i} className="pill">{ins}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {hours && (
-        <div className="info-row">
-          <div className="info-label">Hours</div>
-          <div className="info-value">{hours}</div>
-        </div>
-      )}
-
-    </div>
-</div>
-
-    {/* 🔥 CLAIM LISTING (upgraded) */}
-    <div className="claim-listing-box premium">
-
-      <div className="claim-listing-title">
-        Own this dental practice?
-      </div>
-
-      <div className="claim-listing-text">
-        Get more patients, manage your listing, and receive appointment requests.
-      </div>
-
-      {/*<div className="claim-highlight">
-        🚀 Free listing optimization available
-      </div>*/}
-
-      <a
-        href={`/contact?type=Claim%20Listing&clinic=${encodeURIComponent(clinic.name)}`}
-        className="claim-listing-btn"
-      >
-        Claim This Listing
-      </a>
-
-    </div>
-
-  </div>
-)
-
-
-
+    </>
+  )
 }

@@ -120,7 +120,7 @@ const { data: nearbyCities } = await supabase.rpc("get_nearby_cities", {
     "@type": "ItemList",
     name: `Dentists in ${formattedCity}, TX`,
     itemListElement: clinicList.map((clinic: any, index: number) => ({
-      "@type": "LocalBusiness",
+      "@type": "Dentist",
       position: index + 1,
       name: clinic.name,
       telephone: clinic.phone || undefined,

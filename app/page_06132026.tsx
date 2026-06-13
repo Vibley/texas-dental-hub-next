@@ -4,11 +4,14 @@ import HomeClient from "./HomeClient"
 export const metadata = {
   title:
     "TexasDentalHub – Find Top Dentists in Houston Metro & Across Texas",
+
   description:
     "Compare dentists in Houston and Texas cities for family, cosmetic, pediatric, and emergency dental care. Find clinics accepting new patients, weekend appointments, and major insurance plans.",
+
   alternates: {
     canonical: "https://texasdentalhub.com/",
   },
+
   openGraph: {
     title:
       "TexasDentalHub – Find Top Dentists in Houston Metro & Across Texas",
@@ -19,6 +22,7 @@ export const metadata = {
     locale: "en_US",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title:
@@ -31,21 +35,10 @@ export const metadata = {
 export const revalidate = 86400
 
 export default async function Page() {
-
   const { data: cities } = await supabase
     .from("city_seo_content")
     .select("city_name, city_slug, latitude, longitude")
     .order("city_name", { ascending: true })
 
-  const { data: clinics } = await supabase
-    .from("clinics")
-    .select("*")
-    .ilike("city", "%houston%")
-
-  return (
-    <HomeClient
-      cities={cities || []}
-      initialClinics={clinics || []}
-    />
-  )
+  return <HomeClient cities={cities || []} />
 }
