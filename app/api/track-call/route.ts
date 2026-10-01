@@ -10,7 +10,14 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
 
-    const { clinic_name, city, source_page, source_position } = body
+    const {
+      clinic_name,
+      city,
+      source_page,
+      source_position,
+      visitor_id,
+      session_id,
+    } = body
 
     if (!clinic_name || !city || !source_position) {
       return NextResponse.json(
@@ -19,45 +26,64 @@ export async function POST(req: Request) {
       )
     }
 
-    console.log("TRACK CALL ROUTE HIT");
+    /*
+     * Convert source_position into a controlled event type.
+     */
+    let eventType: string
 
-    /* ----------------------------------------
-       1️⃣ Always log legacy call_clicks table
-    ----------------------------------------- */
-    const { error: callError } = await supabase
-      .from('call_clicks')
-      .insert([
-        {
-          clinic_name,
-          city,
-          source_page,
-          source_position,
-        },
-      ])
+    switch (source_position) {
+      case 'card_call_button':
+        eventType = 'call_click'
+        break
 
-    if (callError) {
-      return NextResponse.json({ error: callError }, { status: 400 })
+      case 'appointment_modal_open':
+        eventType = 'appointment_modal_open'
+        break
+
+      case 'appointment_submit':
+        eventType = 'appointment_submit'
+        break
+
+      default:
+        console.warn(
+          'Unknown tracking source_position:',
+          source_position
+        )
+
+        return NextResponse.json(
+          { error: 'Invalid source_position' },
+          { status: 400 }
+        )
     }
 
-    /* ----------------------------------------
-       2️⃣ Determine event type for clinic_events
-    ----------------------------------------- */
-    let eventType = 'call_click'
+    /*
+     * Keep the legacy call_clicks table for now.
+     *
+     * ONLY real Call Now clicks are inserted here.
+     */
+    if (eventType === 'call_click') {
+      const { error: callError } = await supabase
+        .from('call_clicks')
+        .insert([
+          {
+            clinic_name,
+            city,
+            source_page,
+            source_position,
+          },
+        ])
 
-    if (source_position === 'appointment_modal_open') {
-      eventType = 'appointment_modal_open'
+      if (callError) {
+        console.error(
+          'call_clicks insert error:',
+          callError
+        )
+      }
     }
 
-    if (source_position === 'appointment_submit') {
-      eventType = 'appointment_submit'
-    }
-
-    console.log("EVENT TYPE:", eventType, "SOURCE:", source_position)
-
-    /* ----------------------------------------
-       3️⃣ Insert into clinic_events
-       🔥 FIX: add created_at
-    ----------------------------------------- */
+    /*
+     * clinic_events is our primary analytics table.
+     */
     const { error: eventError } = await supabase
       .from('clinic_events')
       .insert([
@@ -66,18 +92,34 @@ export async function POST(req: Request) {
           city,
           event_type: eventType,
           source_page,
-          created_at: new Date().toISOString(), // ✅ CRITICAL FIX
+          visitor_id: visitor_id || null,
+          session_id: session_id || null,
+          created_at: new Date().toISOString(),
         },
       ])
 
     if (eventError) {
-      console.error('clinic_events insert error:', eventError)
+      console.error(
+        'clinic_events insert error:',
+        eventError
+      )
+
+      return NextResponse.json(
+        { error: 'Unable to record event' },
+        { status: 500 }
+      )
     }
 
-    return NextResponse.json({ success: true })
-
+    return NextResponse.json({
+      success: true,
+      event_type: eventType,
+    })
   } catch (err) {
-    console.error(err)
+    console.error(
+      'Tracking API error:',
+      err
+    )
+
     return NextResponse.json(
       { error: 'Server error' },
       { status: 500 }

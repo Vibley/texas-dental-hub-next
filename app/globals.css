@@ -2164,25 +2164,6 @@ color:white;
 }
 
 
-.city-links-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.city-link {
-  background: #f1f5f9;
-  padding: 6px 12px;
-  border-radius: 999px;
-  text-decoration: none;
-  color: #2563eb;
-  font-size: 14px;
-}
-
-.city-link:hover {
-  background: #e2e8f0;
-}
 
 
 @media (max-width:768px){
@@ -2334,42 +2315,6 @@ html, body {
 }
 
 
-.city-links-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-top:12px;
-}
-
-@media (max-width:768px){
-
-  .city-links-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
-
-}
-@media (max-width:768px){
-
-  .city-links-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
-
-}
-.city-links-grid{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:12px;
-}
-@media (max-width:768px){
-
-  .city-links-grid{
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-  }
-
-}
 .city-link{
   display:inline-block;
   padding:6px 12px;
@@ -4047,3 +3992,722 @@ select:focus, input:focus {
 .card-content {
   gap: 11px;
 }
+
+
+
+
+/* ========================================
+   TOP-RATED DENTAL PRACTICES
+======================================== */
+
+.top-rated-section {
+  margin-top: 36px;
+  margin-bottom: 44px;
+}
+
+.top-rated-heading {
+  margin-bottom: 22px;
+}
+
+.top-rated-heading h2 {
+  margin: 0 0 8px;
+  font-size: 25px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.top-rated-intro {
+  margin: 0;
+  color: #5f6b7a;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+/* Top-rated cards */
+
+.top-rated-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.top-rated-item {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e3e8f0;
+  border-radius: 16px;
+  padding: 26px 22px 22px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.top-rated-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 42px;
+  height: 28px;
+
+  margin-bottom: 16px;
+  padding: 0 10px;
+
+  border-radius: 999px;
+
+  background: #eef4ff;
+  color: #1f5ed7;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.top-rated-content h3 {
+  margin: 0 0 14px;
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+.top-rated-content h3 a {
+  color: #111827;
+  text-decoration: none;
+}
+
+.top-rated-content h3 a:hover {
+  color: #2563eb;
+}
+
+.top-rated-rating {
+  margin-bottom: 18px;
+  color: #111827;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.top-rated-rating span {
+  color: #667085;
+}
+
+.top-rated-profile-link {
+  display: inline-block;
+  color: #2563eb;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.top-rated-profile-link:hover {
+  text-decoration: underline;
+}
+
+
+/* Methodology */
+
+.top-rated-methodology {
+  margin: 10px 2px 0;
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+
+  color: #7b8494;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .top-rated-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .top-rated-section {
+    margin-top: 28px;
+    margin-bottom: 34px;
+  }
+
+  .top-rated-heading h2 {
+    font-size: 22px;
+  }
+
+  .top-rated-item {
+    padding: 22px 18px 20px;
+  }
+
+  .top-rated-content h3 {
+    font-size: 18px;
+  }
+}
+
+
+/* ========================================
+   CITY FAQs
+======================================== */
+
+.city-faq-section {
+  margin-top: 48px;
+}
+
+.city-faq-section > h2 {
+  margin: 0 0 22px;
+  font-size: 25px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.city-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.city-faq-item {
+  background: #ffffff;
+  border: 1px solid #e5eaf1;
+  border-radius: 12px;
+  padding: 20px 22px;
+}
+
+.city-faq-item h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 1.4;
+  color: #111827;
+}
+
+.city-faq-item p {
+  margin: 0;
+  color: #667085;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+@media (max-width: 600px) {
+  .city-faq-section {
+    margin-top: 36px;
+  }
+
+  .city-faq-section > h2 {
+    font-size: 22px;
+  }
+
+  .city-faq-item {
+    padding: 17px 16px;
+  }
+
+  .city-faq-item h3 {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   CLINIC CARD — FINAL LAYOUT OVERRIDES
+   Keep this block at the END of globals.css
+========================================================= */
+
+/* Main clinic card */
+.card {
+  height: 100%;
+  padding: 0;
+}
+
+/* Main content layout */
+.card .card-content {
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------
+   Clinic name
+   Reserve exactly two lines so all cards align.
+--------------------------------------------------------- */
+.card .clinic-name {
+  margin: 0 0 10px 0;
+
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 700;
+
+  min-height: 2.6em;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+   Rating
+--------------------------------------------------------- */
+.card .rating-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  padding: 9px 12px;
+
+  margin: 0 0 14px 0;
+
+  min-height: 46px;
+}
+
+/* Rating star */
+.card .rating-star {
+  flex-shrink: 0;
+}
+
+/* Rating number */
+.card .rating-number {
+  font-weight: 700;
+}
+
+/* Review count */
+.card .review-count {
+  color: #64748b;
+}
+
+/* ---------------------------------------------------------
+   Badge area
+
+   IMPORTANT:
+   Reserve enough room for TWO badge rows.
+   This keeps location and CTA buttons aligned between cards.
+--------------------------------------------------------- */
+.card .clinic-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: flex-start;
+
+  gap: 7px;
+
+  min-height: 62px;
+
+  margin: 0 0 12px 0;
+}
+
+/* Individual badge */
+.card .clinic-badge {
+  display: inline-flex;
+  align-items: center;
+
+  border-radius: 999px;
+  border: 1px solid #a7f3d0;
+
+  background: #ecfdf5;
+
+  padding: 5px 10px;
+
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 600;
+
+  color: #047857;
+}
+
+/* ---------------------------------------------------------
+   Location
+--------------------------------------------------------- */
+.card .location-row {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin: 0 0 12px 0;
+
+  font-size: 15px;
+  color: #475569;
+}
+
+/* ---------------------------------------------------------
+   CTA area
+--------------------------------------------------------- */
+.card .card-cta-wrapper {
+  margin-top: auto;
+  padding-top: 0;
+}
+
+/* Remove extra margin inherited by CardCTA */
+.card .card-actions.card-cta {
+  margin-top: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   Featured badge
+--------------------------------------------------------- */
+.card .featured-badge {
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------
+   Mobile
+--------------------------------------------------------- */
+@media (max-width: 768px) {
+
+  .card .card-content {
+    padding: 18px;
+  }
+
+  .card .clinic-name {
+    font-size: 1.2rem;
+    min-height: auto;
+  }
+
+  /*
+   * On mobile cards are stacked vertically,
+   * so forced badge alignment isn't necessary.
+   */
+  .card .clinic-badges {
+    min-height: auto;
+  }
+
+  .card .rating-row {
+    min-height: auto;
+    padding: 9px 10px;
+  }
+}
+/* =========================================================
+   FEATURED CLINIC CARD SPACING
+========================================================= */
+
+.card.featured-card .clinic-name {
+  margin-top: 14px;
+}
+
+/* Slightly tighten name-to-rating spacing */
+.card .clinic-name {
+  margin-bottom: 6px;
+}
+
+
+.card .featured-badge {
+  position: static !important;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+}
+
+.card.featured-card .clinic-name {
+  margin-top: 0;
+}
+
+
+.card .featured-badge-row {
+  min-height: 36px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+}
+
+
+/* =========================================================
+   CLINIC CARD ADDRESS
+========================================================= */
+
+.card .clinic-address {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+
+  min-height: 48px;
+  margin: 0 0 12px 0;
+
+  color: #475569;
+}
+
+.card .clinic-address-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 15px;
+}
+
+.card .clinic-address-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.card .clinic-street {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card .clinic-city-state {
+  margin-top: 2px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .card .clinic-address {
+    min-height: auto;
+  }
+
+  .card .clinic-street {
+    white-space: normal;
+  }
+}
+
+
+
+/* =========================================================
+   CLINIC CARD ADDRESS — SINGLE LINE
+========================================================= */
+
+.card .clinic-address {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  min-height: 28px;
+  margin: 0 0 14px 0;
+
+  color: #475569;
+}
+
+.card .clinic-address-icon {
+  flex-shrink: 0;
+  font-size: 15px;
+}
+
+.card .clinic-street {
+  min-width: 0;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   CLINIC CARD GRID — EQUAL HEIGHTS
+========================================================= */
+
+/*
+ * Stretch clinic cards to the height of the tallest
+ * card in each grid row.
+ */
+.grid {
+  align-items: stretch;
+}
+
+
+.card .clinic-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: flex-start;
+
+  gap: 7px;
+
+  min-height: 104px;
+
+  margin: 0 0 12px 0;
+}
+/*
+ * ClinicCard is a direct child of .grid.
+ */
+.grid > .card {
+  height: 100%;
+}
+
+/*
+ * Allow the internal content to use the full card height.
+ * This keeps the address and CTAs aligned at the bottom.
+ */
+.grid > .card > .card-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * Push the address + CTA area toward the bottom
+ * after the reserved badge area.
+ */
+.grid > .card .clinic-address {
+  margin-top: auto;
+}
+
+
+
+.card .clinic-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+
+  gap: 7px;
+
+  /* Do NOT reserve empty badge space */
+  min-height: 0;
+
+  margin: 0 0 18px 0;
+}
+
+.grid {
+  align-items: stretch;
+}
+
+.grid > .card {
+  height: 100%;
+}
+
+.grid > .card > .card-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid > .card .card-cta-wrapper {
+  margin-top: auto;
+}
+
+.grid > .card {
+  height: 100%;
+  min-height: 0;
+}
+
+.grid > .card > .card-content {
+  min-height: 0;
+}
+
+
+/* =========================================================
+   CLINIC CARD — FINAL EQUAL HEIGHT BEHAVIOR
+========================================================= */
+
+.grid {
+  align-items: stretch;
+}
+
+/* Every clinic card fills its grid cell */
+.grid > .card {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+/* Card content fills the card */
+.grid > .card > .card-content {
+  height: 100% !important;
+  min-height: 0 !important;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* No artificial badge whitespace */
+.grid > .card .clinic-badges {
+  min-height: 0 !important;
+}
+
+/* CTA stays at bottom of card */
+.grid > .card .card-cta-wrapper {
+  margin-top: auto;
+}
+
+
+/* =========================================================
+   CLINIC CARD GRID — FINAL
+   ========================================================= */
+
+/* Desktop: 3 equal columns */
+.grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Each card fills its grid cell */
+.grid > .card {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Internal card layout */
+.grid > .card > .card-content {
+  height: 100%;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * Do NOT reserve a large fixed badge area.
+ * Cards will equalize naturally because CSS Grid
+ * makes every card in the row the same height.
+ */
+.grid > .card .clinic-badges {
+  min-height: 0 !important;
+  margin-bottom: 18px;
+}
+
+/*
+ * Push the address toward the bottom.
+ * Therefore a card with one badge simply gets
+ * flexible whitespace ABOVE the address.
+ */
+.grid > .card .clinic-address {
+  margin-top: auto;
+}
+
+/* CTA follows address normally */
+.grid > .card .card-cta-wrapper {
+  margin-top: 0;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid > .card {
+    height: auto;
+  }
+
+  .grid > .card .clinic-address {
+    margin-top: 0;
+  }
+}
+
+
+

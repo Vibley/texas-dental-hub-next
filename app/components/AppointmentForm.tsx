@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent } from '@/lib/analytics'
+import { getTrackingIdentity } from '@/lib/trackingIdentity'
 
 export default function AppointmentForm({
   clinicName,
@@ -15,79 +16,209 @@ export default function AppointmentForm({
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
-async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-  e.preventDefault()
-  setLoading(true)
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>
+  ) {
+    e.preventDefault()
 
-  const form = e.currentTarget  // ✅ store reference BEFORE await
-  const formData = new FormData(form)
+    /*
+     * Prevent accidental double submissions.
+     */
+    if (loading) return
 
-  const response = await fetch('/api/leads', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      clinic_name: clinicName,
-      city: city,
-      patient_name: formData.get('name'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      message: formData.get('message'),
-    }),
-  })
+    setLoading(true)
 
-  setLoading(false)
+    /*
+     * Store the form reference before any await.
+     */
+    const form = e.currentTarget
+    const formData = new FormData(form)
 
-if (response.ok) {
-await fetch("/api/track-call", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    clinic_name: clinicName,
-    city,
-    source_page: window.location.pathname,
-    source_position: "appointment_submit",
-  }),
-});
+    try {
+      /*
+       * ----------------------------------------
+       * 1. Submit the actual appointment lead
+       * ----------------------------------------
+       */
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clinic_name: clinicName,
+          city,
+          patient_name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          message: formData.get('message'),
+        }),
+      })
 
-  // 🔥 GA conversion tracking
-  trackEvent("appointment_submit", {
-    clinic_name: clinicName,
-    city,
-  })
+      /*
+       * ----------------------------------------
+       * Lead submission failed
+       * ----------------------------------------
+       */
+      if (!response.ok) {
+        let result: unknown
 
-  setSuccess(true)
-  form.reset()
-}
+        try {
+          result = await response.json()
+        } catch {
+          result = {
+            error: 'Unable to read server response',
+          }
+        }
 
+        console.error(
+          'Appointment submission failed:',
+          result
+        )
 
-else {
-    const result = await response.json()
-    console.error(result)
-    alert('Something went wrong submitting your request.')
+        alert(
+          'Something went wrong submitting your request.'
+        )
+
+        return
+      }
+
+      /*
+       * ----------------------------------------
+       * 2. Lead succeeded.
+       * Get anonymous analytics identity.
+       * ----------------------------------------
+       */
+      const { visitorId, sessionId } =
+        getTrackingIdentity()
+
+      /*
+       * ----------------------------------------
+       * 3. Record appointment_submit
+       *
+       * Analytics failure must NOT make the
+       * successful appointment look like it failed.
+       * ----------------------------------------
+       */
+      try {
+        const trackingResponse = await fetch(
+          '/api/track-call',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              clinic_name: clinicName,
+              city,
+              source_page: window.location.pathname,
+              source_position: 'appointment_submit',
+              visitor_id: visitorId,
+              session_id: sessionId,
+            }),
+          }
+        )
+
+        if (!trackingResponse.ok) {
+          console.error(
+            'Appointment analytics tracking failed'
+          )
+        }
+      } catch (trackingError) {
+        console.error(
+          'Appointment analytics request failed:',
+          trackingError
+        )
+      }
+
+      /*
+       * ----------------------------------------
+       * 4. GA4 conversion tracking
+       * ----------------------------------------
+       */
+      try {
+        trackEvent('appointment_submit', {
+          clinic_name: clinicName,
+          city,
+        })
+      } catch (analyticsError) {
+        console.error(
+          'GA appointment tracking failed:',
+          analyticsError
+        )
+      }
+
+      /*
+       * ----------------------------------------
+       * 5. Show success state
+       * ----------------------------------------
+       */
+      setSuccess(true)
+      form.reset()
+    } catch (error) {
+      console.error(
+        'Appointment request error:',
+        error
+      )
+
+      alert(
+        'Something went wrong submitting your request.'
+      )
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
+  /*
+   * ----------------------------------------
+   * Success screen
+   * ----------------------------------------
+   */
   if (success) {
     return (
       <div className="appointment-card success">
         <h3>✅ Request Submitted</h3>
-        <p>We’ve sent your appointment request successfully.</p>
-        <button className="btn primary" onClick={onClose}>
+
+        <p>
+          We&apos;ve sent your appointment request
+          successfully.
+        </p>
+
+        <button
+          type="button"
+          className="btn primary"
+          onClick={onClose}
+        >
           Close
         </button>
       </div>
     )
   }
 
+  /*
+   * ----------------------------------------
+   * Appointment form
+   * ----------------------------------------
+   */
   return (
-    <div id="appointment-form" className="appointment-card">
+    <div
+      id="appointment-form"
+      className="appointment-card"
+    >
       <h3>Request Appointment Online</h3>
-      <p className="clinic-label">Clinic: {clinicName}</p>
 
-      <form onSubmit={handleSubmit} className="appointment-form">
+      <p className="clinic-label">
+        Clinic: {clinicName}
+      </p>
+
+      <form
+        onSubmit={handleSubmit}
+        className="appointment-form"
+      >
         <input
           name="name"
           placeholder="Your Name"
+          autoComplete="name"
           required
         />
 
@@ -95,12 +226,15 @@ else {
           name="email"
           type="email"
           placeholder="Email"
+          autoComplete="email"
           required
         />
 
         <input
           name="phone"
+          type="tel"
           placeholder="Phone"
+          autoComplete="tel"
           required
         />
 
@@ -111,11 +245,15 @@ else {
         />
 
         <div className="appointment-actions">
-          <button type="submit" className="btn primary" disabled={loading}>
-            {loading ? 'Submitting...' : 'Submit Request'}
+          <button
+            type="submit"
+            className="btn primary"
+            disabled={loading}
+          >
+            {loading
+              ? 'Submitting...'
+              : 'Submit Request'}
           </button>
-
-          
         </div>
       </form>
     </div>

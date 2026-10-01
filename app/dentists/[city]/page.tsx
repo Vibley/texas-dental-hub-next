@@ -1,7 +1,8 @@
 export const revalidate = 86400
+
 import { supabase } from "@/lib/supabase"
 import CityClient from "./CityClient"
-import ScrollToTop from '@/app/components/ScrollToTop';
+import ScrollToTop from "@/app/components/ScrollToTop"
 
 function cleanCity(city: string) {
   return city.replace("-tx", "").replace(/-/g, " ")
@@ -51,21 +52,24 @@ export async function generateMetadata({
   const citySlug = normalizeSlug(city)
   const formattedCity = formatCity(citySlug)
 
-const { data: citySeo } = await supabase
-  .from("city_seo_content")
-  .select("meta_title, meta_description")
-  .eq("city_slug", citySlug)
-  .maybeSingle()
+  const { data: citySeo } = await supabase
+    .from("city_seo_content")
+    .select("meta_title, meta_description")
+    .eq("city_slug", citySlug)
+    .maybeSingle()
 
-  const canonicalUrl = `https://texasdentalhub.com/dentists/${citySlug}`
+  const canonicalUrl =
+    `https://texasdentalhub.com/dentists/${citySlug}`
 
   return {
     title:
       citySeo?.meta_title ||
-      `Best Dentists in ${formattedCity}, TX – Family, Cosmetic & Emergency Dental Care| TexasDentalHub`,
+      `Dentists in ${formattedCity}, TX – Compare Local Dental Practices | TexasDentalHub`,
+
     description:
       citySeo?.meta_description ||
-      `Find top-rated dentists in ${formattedCity}, TX. Compare family, cosmetic, pediatric, and emergency dental clinics accepting new patients, weekend appointments, and major insurance plans.`,
+      `Find dentists in ${formattedCity}, TX. Compare dental practices, services, Google ratings, new-patient availability, emergency care, weekend availability, and insurance information.`,
+
     alternates: {
       canonical: canonicalUrl,
     },
@@ -86,26 +90,54 @@ export default async function CityPage({
   const citySlug = normalizeSlug(city)
   const formattedCity = formatCity(citySlug)
 
+  /* -------------------------------- */
   /* Clinics */
+  /* -------------------------------- */
 
   const { data: clinics } = await supabase
     .from("clinics")
     .select(
-      "id, name, address, phone, city, services, insurances, weekend_open, zip, featured,google_rating,google_review_count,google_photo_reference,google_maps_url,google_formatted_address, accepts_new_patients, emergency_available"  )
-   .ilike("city", formattedCity)
+      `
+        id,
+        name,
+        address,
+        phone,
+        city,
+        services,
+        insurances,
+        weekend_open,
+        zip,
+        featured,
+        google_rating,
+        google_review_count,
+        google_photo_reference,
+        google_maps_url,
+        google_formatted_address,
+        accepts_new_patients,
+        emergency_available
+      `
+    )
+    .ilike("city", formattedCity)
     .order("featured", { ascending: false })
     .order("name", { ascending: true })
 
   const clinicList = clinics || []
 
-/* Nearby Cities (distance based) */
+  /* -------------------------------- */
+  /* Nearby Cities */
+  /* -------------------------------- */
 
-const { data: nearbyCities } = await supabase.rpc("get_nearby_cities", {
-  current_slug: citySlug,
-  limit_count: 8,
-})
+  const { data: nearbyCities } = await supabase.rpc(
+    "get_nearby_cities",
+    {
+      current_slug: citySlug,
+      limit_count: 8,
+    }
+  )
 
+  /* -------------------------------- */
   /* City SEO Content */
+  /* -------------------------------- */
 
   const { data: citySeo } = await supabase
     .from("city_seo_content")
@@ -113,31 +145,54 @@ const { data: nearbyCities } = await supabase.rpc("get_nearby_cities", {
     .eq("city_slug", citySlug)
     .maybeSingle()
 
+  /* -------------------------------- */
   /* Structured Data */
+  /* -------------------------------- */
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+
     name: `Dentists in ${formattedCity}, TX`,
-    itemListElement: clinicList.map((clinic: any, index: number) => ({
-      "@type": "Dentist",
-      position: index + 1,
-      name: clinic.name,
-      telephone: clinic.phone || undefined,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: clinic.address,
-        addressLocality: formattedCity,
-        addressRegion: "TX",
-        postalCode: clinic.zip || undefined,
-        addressCountry: "US",
-      },
-    })),
+
+    itemListElement: clinicList.map(
+      (clinic: any, index: number) => ({
+        "@type": "Dentist",
+
+        position: index + 1,
+
+        name: clinic.name,
+
+        telephone: clinic.phone || undefined,
+
+        address: {
+          "@type": "PostalAddress",
+
+          streetAddress:
+            clinic.google_formatted_address ||
+            clinic.address,
+
+          addressLocality: formattedCity,
+
+          addressRegion: "TX",
+
+          postalCode:
+            clinic.zip || undefined,
+
+          addressCountry: "US",
+        },
+      })
+    ),
   }
+
+  /* -------------------------------- */
+  /* Render */
+  /* -------------------------------- */
 
   return (
     <>
- <ScrollToTop />
+      <ScrollToTop />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -150,7 +205,7 @@ const { data: nearbyCities } = await supabase.rpc("get_nearby_cities", {
         cityName={formattedCity}
         clinics={clinicList}
         citySeo={citySeo}
-       nearbyCities={nearbyCities || []}
+        nearbyCities={nearbyCities || []}
       />
     </>
   )

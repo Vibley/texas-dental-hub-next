@@ -4,7 +4,6 @@ import { NextResponse } from "next/server"
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(req: Request) {
- console.log("SITE URL:", process.env.NEXT_PUBLIC_SITE_URL)
   const { clinicId, clinicName } = await req.json()
 
   const session = await stripe.checkout.sessions.create({

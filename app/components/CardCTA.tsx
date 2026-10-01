@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import AppointmentForm from '@/app/components/AppointmentForm'
-import ScrollToTop from '@/app/components/ScrollToTop';
+import { getTrackingIdentity } from '@/lib/trackingIdentity'
 
 export default function CardCTA({
   phone,
@@ -17,34 +17,95 @@ export default function CardCTA({
   const [showModal, setShowModal] = useState(false)
   const [showCallPopup, setShowCallPopup] = useState(false)
 
+  /*
+   * ----------------------------------------
+   * Track Call Now click
+   * ----------------------------------------
+   */
   const trackCall = () => {
+    const { visitorId, sessionId } = getTrackingIdentity()
+
     fetch('/api/track-call', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         clinic_name: clinicName,
         city,
         source_page: window.location.pathname,
         source_position: 'card_call_button',
+        visitor_id: visitorId,
+        session_id: sessionId,
       }),
-    }).catch(() => {})
+    }).catch((error) => {
+      console.error('Call tracking failed:', error)
+    })
   }
 
-  // 🔥 CLEAN CALL HANDLER
-  const handleCallClick = (e: React.MouseEvent) => {
+  /*
+   * ----------------------------------------
+   * Handle Call Now
+   * ----------------------------------------
+   *
+   * Desktop:
+   * Prevent tel: navigation and show phone popup.
+   *
+   * Mobile:
+   * Allow tel: link to proceed normally.
+   */
+  const handleCallClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation()
 
     trackCall()
 
     if (typeof window !== 'undefined' && window.innerWidth > 768) {
-      // Desktop → show popup ONLY
       e.preventDefault()
       setShowCallPopup(true)
     }
-    // Mobile → allow tel: to proceed naturally
   }
 
-  // Auto-close popup
+  /*
+   * ----------------------------------------
+   * Track appointment modal opening
+   * ----------------------------------------
+   */
+  const handleAppointmentClick = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.stopPropagation()
+
+    const { visitorId, sessionId } = getTrackingIdentity()
+
+    fetch('/api/track-call', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        clinic_name: clinicName,
+        city,
+        source_page: window.location.pathname,
+        source_position: 'appointment_modal_open',
+        visitor_id: visitorId,
+        session_id: sessionId,
+      }),
+    }).catch((error) => {
+      console.error('Appointment modal tracking failed:', error)
+    })
+
+    /*
+     * Do not wait for analytics.
+     * Open the appointment form immediately.
+     */
+    setShowModal(true)
+  }
+
+  /*
+   * ----------------------------------------
+   * Auto-close desktop phone popup
+   * ----------------------------------------
+   */
   useEffect(() => {
     if (!showCallPopup) return
 
@@ -57,7 +118,6 @@ export default function CardCTA({
 
   return (
     <>
-
       <div
         className="card-actions card-cta"
         style={{
@@ -67,7 +127,9 @@ export default function CardCTA({
           marginTop: '10px',
         }}
       >
-        {/* 🔥 CALL BUTTON */}
+        {/* --------------------------------
+            CALL NOW
+        --------------------------------- */}
         {phone && (
           <>
             <a
@@ -90,7 +152,7 @@ export default function CardCTA({
               📞 Call Now
             </a>
 
-            {/* Desktop popup */}
+            {/* Desktop call popup */}
             {showCallPopup && (
               <div
                 style={{
@@ -107,6 +169,8 @@ export default function CardCTA({
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
+                  type="button"
+                  aria-label="Close phone popup"
                   onClick={(e) => {
                     e.stopPropagation()
                     setShowCallPopup(false)
@@ -124,10 +188,21 @@ export default function CardCTA({
                   ✕
                 </button>
 
-                <div style={{ fontWeight: 600, marginBottom: '6px' }}>
+                <div
+                  style={{
+                    fontWeight: 600,
+                    marginBottom: '6px',
+                  }}
+                >
                   📞 {phone}
                 </div>
-                <div style={{ fontSize: '13px', color: '#666' }}>
+
+                <div
+                  style={{
+                    fontSize: '13px',
+                    color: '#666',
+                  }}
+                >
                   Calling works best on mobile devices.
                 </div>
               </div>
@@ -135,13 +210,12 @@ export default function CardCTA({
           </>
         )}
 
-        {/* 🔥 REQUEST APPOINTMENT */}
+        {/* --------------------------------
+            REQUEST APPOINTMENT
+        --------------------------------- */}
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation()
-            setShowModal(true)
-          }}
+          onClick={handleAppointmentClick}
           style={{
             width: '100%',
             background: 'transparent',
@@ -159,7 +233,9 @@ export default function CardCTA({
         </button>
       </div>
 
-      {/* 🔥 MODAL (FIXED) */}
+      {/* --------------------------------
+          APPOINTMENT MODAL
+      --------------------------------- */}
       {showModal &&
         typeof document !== 'undefined' &&
         createPortal(
@@ -187,6 +263,8 @@ export default function CardCTA({
               }}
             >
               <button
+                type="button"
+                aria-label="Close appointment form"
                 onClick={(e) => {
                   e.stopPropagation()
                   setShowModal(false)
