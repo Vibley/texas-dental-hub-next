@@ -216,18 +216,18 @@ export default function CardCTA({
         <button
           type="button"
           onClick={handleAppointmentClick}
-          style={{
-            width: '100%',
-            background: 'transparent',
-            color: '#2563eb',
-            padding: '10px',
-            borderRadius: '8px',
-            fontWeight: 500,
-            fontSize: '14px',
-            border: '1px solid #dbeafe',
-            cursor: 'pointer',
-            WebkitTapHighlightColor: 'transparent',
-          }}
+       style={{
+  width: '100%',
+  background: '#fbbf24',
+  color: '#172033',
+  padding: '10px',
+  borderRadius: '8px',
+  fontWeight: 700,
+  fontSize: '14px',
+  border: '1px solid #f59e0b',
+  cursor: 'pointer',
+  WebkitTapHighlightColor: 'transparent',
+}}
         >
           Request Appointment →
         </button>
