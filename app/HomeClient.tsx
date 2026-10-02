@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import ClinicCard from './components/ClinicCard'
 import FilterBar from './components/FilterBar'
 import type { Clinic } from '@/app/types'
@@ -10,28 +10,28 @@ const HOUSTON_LAT = 29.7604
 const HOUSTON_LNG = -95.3698
 
 /* Distance calculator */
-function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+function getDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
   const R = 6371
-  const dLat = (lat2 - lat1) * Math.PI / 180
-  const dLon = (lon2 - lon1) * Math.PI / 180
+
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLon = ((lon2 - lon1) * Math.PI) / 180
 
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) *
-      Math.cos(lat2 * Math.PI / 180) *
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2)
 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  const c =
+    2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
   return R * c
-}
-
-function slugify(text: string) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
 }
 
 type City = {
@@ -48,57 +48,16 @@ export default function HomePage({
   cities: City[]
   initialClinics: Clinic[]
 }) {
-
-  const [clinics] = useState<Clinic[]>(initialClinics)
+  const [clinics] =
+    useState<Clinic[]>(initialClinics)
 
   const [filteredClinics, setFilteredClinics] =
     useState<Clinic[]>(initialClinics)
 
-  const featuredClinics = filteredClinics.filter(
-    (clinic) => clinic.featured === true
-  )
-
-  const regularClinics = filteredClinics.filter(
-    (clinic) => clinic.featured !== true
-  )
-
   /*
-   * Top-Rated Houston Dental Practices
-   *
-   * Eligibility:
-   * - Google rating of 4.5 or higher
-   * - At least 50 Google reviews
-   *
-   * Ranking:
-   * - Highest Google rating first
-   * - Review count breaks ties
-   * - Featured status does not affect ranking
+   * Find the closest cities to Houston for
+   * homepage internal navigation.
    */
-const topRatedClinics = useMemo(() => {
-  return [...filteredClinics]
-    .filter(
-      (clinic) =>
-        typeof clinic.google_rating === 'number' &&
-        typeof clinic.google_review_count === 'number' &&
-        clinic.google_rating >= 4.5 &&
-        clinic.google_review_count >= 50
-    )
-    .sort((a, b) => {
-      const ratingDifference =
-        (b.google_rating ?? 0) - (a.google_rating ?? 0)
-
-      if (ratingDifference !== 0) {
-        return ratingDifference
-      }
-
-      return (
-        (b.google_review_count ?? 0) -
-        (a.google_review_count ?? 0)
-      )
-    })
-    .slice(0, 3)
-}, [filteredClinics])
-
   const nearbyCities = useMemo(() => {
     return [...cities]
       .filter((city) => city.city_slug !== 'houston')
@@ -119,24 +78,36 @@ const topRatedClinics = useMemo(() => {
 
   return (
     <>
-      {/* HERO */}
+      {/* =====================================================
+          HERO
+          ===================================================== */}
+
       <div className="hero hero-expanded">
 
-        <h1>Find Top-Rated Dentists in Houston, TX</h1>
+        <h1>
+          Find Top-Rated Dentists in Houston, TX
+        </h1>
 
         <p className="hero-subtext">
-          Browse verified dental clinics in Houston with real patient reviews,
-          services, and accepted insurance plans.
+          Browse dental clinics in Houston with Google
+          ratings, services, and accepted insurance
+          information.
         </p>
 
         <p className="hero-subtext">
-          Whether you need a family dentist, emergency care, cosmetic dentistry,
-          or dental implants — find the right provider near you.
+          Whether you need a family dentist, emergency
+          care, cosmetic dentistry, or dental implants —
+          compare local practices and connect directly
+          with the dental office.
         </p>
 
       </div>
 
-      {/* ACTION PANEL */}
+
+      {/* =====================================================
+          SEARCH / FILTER PANEL
+          ===================================================== */}
+
       <div className="search-panel">
 
         <p className="filter-intent">
@@ -150,256 +121,314 @@ const topRatedClinics = useMemo(() => {
 
       </div>
 
-      {/* TOP-RATED DENTAL PRACTICES */}
-      {topRatedClinics.length >= 3 && (
-        <section className="section top-rated-section">
 
-          <div className="top-rated-heading">
+      {/* =====================================================
+          DIRECTORY RESULTS
+          ===================================================== */}
 
-            <h2>
-              Top-Rated Dental Practices in Houston
-            </h2>
+      <section className="section directory-results-section">
 
-            <p className="top-rated-intro">
-              Compare highly rated Houston dental practices using Google
-              ratings and review counts.
+        <div className="directory-results-heading">
+
+          <h2>
+            {filteredClinics.length.toLocaleString()}{" "}
+            {filteredClinics.length === 1
+              ? 'Dentist'
+              : 'Dentists'}{' '}
+            in Houston
+          </h2>
+
+        </div>
+
+
+        {filteredClinics.length > 0 ? (
+
+          <div className="directory-results-list">
+
+            {filteredClinics.map((clinic) => (
+
+              <ClinicCard
+                key={clinic.id}
+                clinic={clinic}
+              />
+
+            ))}
+
+          </div>
+
+        ) : (
+
+          <div className="directory-empty-state">
+
+            <h3>
+              No dentists found in Houston
+            </h3>
+
+            <p>
+              Try adjusting your filters to see more
+              dental practices.
             </p>
 
           </div>
 
-          <div className="top-rated-grid">
+        )}
 
-            {topRatedClinics.map((clinic, index) => (
+      </section>
 
-              <div
-                key={clinic.id}
-                className="top-rated-item"
+
+      {/* =====================================================
+          HOUSTON FAQs
+          ===================================================== */}
+
+      <section className="section city-faq-section">
+
+        <div className="city-faq-heading">
+
+          <h2>
+            Frequently Asked Questions About Dentists in
+            Houston
+          </h2>
+
+          <p>
+            Find answers about new-patient availability,
+            emergency dental care, weekend hours,
+            insurance, and finding dental practices in
+            Houston.
+          </p>
+
+        </div>
+
+
+        <div className="city-faq-list">
+
+          {/* ACCEPTING NEW PATIENTS */}
+
+          <details className="city-faq-item">
+
+            <summary>
+
+              <span>
+                How can I find a dentist in Houston
+                accepting new patients?
+              </span>
+
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
+
+            </summary>
+
+            <div className="city-faq-answer">
+
+              <p>
+                Use the Accepting New Patients filter to
+                find Houston dental practices marked as
+                accepting new patients. You can then
+                compare ratings, services, location, and
+                other practice information before
+                contacting the dental office directly.
+              </p>
+
+            </div>
+
+          </details>
+
+
+          {/* EMERGENCY */}
+
+          <details className="city-faq-item">
+
+            <summary>
+
+              <span>
+                How can I find an emergency dentist in
+                Houston?
+              </span>
+
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
+
+            </summary>
+
+            <div className="city-faq-answer">
+
+              <p>
+                Use the Emergency Appointments option to
+                find Houston dental practices listed as
+                offering emergency appointments. Contact
+                the clinic directly to confirm current
+                availability and whether it can treat your
+                specific dental need.
+              </p>
+
+            </div>
+
+          </details>
+
+
+          {/* WEEKENDS */}
+
+          <details className="city-faq-item">
+
+            <summary>
+
+              <span>
+                Which dentists in Houston are open on
+                weekends?
+              </span>
+
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
+
+            </summary>
+
+            <div className="city-faq-answer">
+
+              <p>
+                Use the Open Weekends option to find
+                Houston dental practices listed as
+                offering weekend hours. Office schedules
+                can change, so confirm current hours
+                directly with the clinic before visiting.
+              </p>
+
+            </div>
+
+          </details>
+
+
+          {/* INSURANCE */}
+
+          <details className="city-faq-item">
+
+            <summary>
+
+              <span>
+                Can I search Houston dentists by insurance?
+              </span>
+
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
+
+            </summary>
+
+            <div className="city-faq-answer">
+
+              <p>
+                Yes. Use the Insurance filter to compare
+                Houston dental practices using available
+                insurance information. Because
+                participation and coverage can change,
+                confirm your specific plan with the dental
+                office or your insurance company before
+                scheduling treatment.
+              </p>
+
+            </div>
+
+          </details>
+
+
+          {/* SERVICES */}
+
+          <details className="city-faq-item">
+
+            <summary>
+
+              <span>
+                Can I search Houston dentists by dental
+                service?
+              </span>
+
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
+
+            </summary>
+
+            <div className="city-faq-answer">
+
+              <p>
+                Yes. Use the Services filter to narrow the
+                list of Houston dental practices using the
+                service information available on
+                TexasDentalHub. Review the practice
+                details and contact the dental office
+                directly to confirm that the specific
+                treatment you need is currently offered.
+              </p>
+
+            </div>
+
+          </details>
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          NEARBY CITIES
+          ===================================================== */}
+
+      {nearbyCities.length > 0 && (
+
+        <section className="section city-directory">
+
+          <div className="city-directory-heading">
+
+            <h2>
+              Explore Dentists in Nearby Cities
+            </h2>
+
+          </div>
+
+
+          <div className="city-links-grid">
+
+            {nearbyCities.map((city) => (
+
+              <a
+                key={city.city_slug}
+                href={`/dentists/${city.city_slug}`}
+                className="city-link"
+                aria-label={`Dentists in ${city.city_name}`}
               >
 
-                <div className="top-rated-rank">
-                  #{index + 1}
-                </div>
+                <span>
+                  Dentists in {city.city_name}
+                </span>
 
-                <div className="top-rated-content">
+                <span
+                  className="city-link-arrow"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
 
-                  <h3>
-                    <a
-                      href={`/dentists/houston/${slugify(clinic.name)}`}
-                    >
-                      {clinic.name}
-                    </a>
-                  </h3>
-
-                  <div className="top-rated-rating">
-                    ⭐ {clinic.google_rating?.toFixed(1)}
-
-                    {clinic.google_review_count != null && (
-                      <span>
-                        {' '}
-                        ({clinic.google_review_count.toLocaleString()} Google reviews)
-                      </span>
-                    )}
-                  </div>
-
-                  <a
-                    href={`/dentists/houston/${slugify(clinic.name)}`}
-                    className="top-rated-profile-link"
-                  >
-                    View Practice →
-                  </a>
-
-                </div>
-
-              </div>
+              </a>
 
             ))}
 
           </div>
-
-          <p className="top-rated-methodology">
-            Top-rated selections are based on Google ratings and review counts.
-            Featured status does not affect rankings.
-          </p>
 
         </section>
+
       )}
 
-      {/* EMPTY FILTER RESULT */}
-      {filteredClinics.length === 0 && (
-        <div
-          className="section"
-          style={{
-            textAlign: 'left',
-            padding: '10px 0',
-          }}
-        >
-
-          <h3>No dentists found in Houston</h3>
-
-          <p
-            style={{
-              marginTop: '10px',
-              color: '#666',
-            }}
-          >
-            Try adjusting your filters to see more clinics.
-          </p>
-
-        </div>
-      )}
-
-      {/* FEATURED DENTISTS */}
-      {featuredClinics.length > 0 && (
-        <div className="section">
-
-          <h2 className="featured-title">
-            ⭐ Featured Dentists in Houston
-          </h2>
-
-          <div className="grid">
-
-            {featuredClinics.map((clinic) => (
-              <ClinicCard
-                key={clinic.id}
-                clinic={clinic}
-              />
-            ))}
-
-          </div>
-
-        </div>
-      )}
-
-      {/* ALL DENTISTS */}
-      {regularClinics.length > 0 && (
-        <div className="section">
-
-          <h2 className="all-dentists-title">
-            All Dentists in Houston
-          </h2>
-
-          <div className="grid">
-
-            {regularClinics.map((clinic) => (
-              <ClinicCard
-                key={clinic.id}
-                clinic={clinic}
-              />
-            ))}
-
-          </div>
-
-        </div>
-      )}
-
-            
-    {/* HOUSTON FAQs */}
-<section className="section city-faq-section">
-
-  <h2>
-    Frequently Asked Questions About Dentists in Houston
-  </h2>
-
-  <p className="city-faq-intro">
-    Find answers about appointments, emergency dental care, weekend
-    availability, insurance, and how practices are displayed on
-    TexasDentalHub.
-  </p>
-
-  <div className="city-faq-list">
-
-    <details className="city-faq-item">
-      <summary>
-        How can I find a dentist in Houston accepting new patients?
-      </summary>
-
-      <p>
-        Use the TexasDentalHub filters to narrow the listings to dental
-        practices marked as accepting new patients. You can then compare
-        ratings, services, location, and other practice information before
-        contacting the dental office directly.
-      </p>
-    </details>
-
-    <details className="city-faq-item">
-      <summary>
-        How can I find an emergency dentist in Houston?
-      </summary>
-
-      <p>
-        Use the emergency availability filter to find dental practices in
-        Houston listed as offering emergency dental care. Contact the
-        practice directly to confirm current availability and whether they
-        can treat your specific dental emergency.
-      </p>
-    </details>
-
-    <details className="city-faq-item">
-      <summary>
-        Which dentists in Houston are open on weekends?
-      </summary>
-
-      <p>
-        Use the weekend availability filter to identify dental practices
-        listed as offering weekend hours. Office schedules can change, so
-        confirm the current hours with the practice before visiting.
-      </p>
-    </details>
-
-    <details className="city-faq-item">
-      <summary>
-        Can I search Houston dentists by insurance?
-      </summary>
-
-      <p>
-        TexasDentalHub allows you to compare dental practices using
-        available insurance information. Because participation and coverage
-        can change, confirm that your specific insurance plan is accepted
-        by the dental office or your insurance company before scheduling
-        treatment.
-      </p>
-    </details>
-
-    <details className="city-faq-item">
-      <summary>
-        How are Top-Rated dental practices in Houston selected?
-      </summary>
-
-      <p>
-        Top-Rated practices are selected from eligible TexasDentalHub
-        listings with a Google rating of 4.5 or higher and at least 50
-        Google reviews. Practices are ordered by Google rating, with review
-        count used when ratings are equal. Featured listing status does not
-        affect the ranking.
-      </p>
-    </details>
-
-  </div>
-
-</section>        
-
-{/* NEARBY CITIES */}
-<div className="section city-directory">
-
-  <h3>Dentists Near Houston</h3>
-
-  <div className="city-links-grid">
-
-    {nearbyCities.map((city) => (
-      <a
-        key={city.city_slug}
-        href={`/dentists/${city.city_slug}`}
-        className="city-link"
-        
-        aria-label={`Dentists in ${city.city_name}`}
-      >
-        Dentists in {city.city_name}
-      </a>
-    ))}
-
-  </div>
-
-</div>
     </>
   )
 }
