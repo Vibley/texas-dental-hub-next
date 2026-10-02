@@ -410,7 +410,7 @@ export default function HomePage({
                   className="city-link-arrow"
                   aria-hidden="true"
                 >
-                  →
+                  
                 </span>
 
               </a>

@@ -362,7 +362,7 @@ export default function CityClient({
                   className="city-link-arrow"
                   aria-hidden="true"
                 >
-                  →
+                
                 </span>
 
               </a>
