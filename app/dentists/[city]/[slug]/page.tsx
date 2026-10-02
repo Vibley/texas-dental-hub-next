@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import CardCTA from "@/app/components/CardCTA"
-import ScrollToTop from "@/app/components/ScrollToTop"
+
 
 function slugify(text: string) {
   return text
@@ -268,15 +268,7 @@ export default async function ClinicDetail({
 
   return (
     <>
-      <ScrollToTop />
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html:
-            JSON.stringify(structuredData),
-        }}
-      />
+      
 
       <main className="clinic-detail">
 

@@ -1,6 +1,11 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+
 import type { Clinic } from '@/app/types'
 
 type Props = {
@@ -8,192 +13,346 @@ type Props = {
   onFilter: (filtered: Clinic[]) => void
 }
 
-export default function FilterBar({ clinics, onFilter }: Props) {
-  const [serviceFilter, setServiceFilter] = useState('')
-  const [insuranceFilter, setInsuranceFilter] = useState('')
-  const [availabilityFilter, setAvailabilityFilter] = useState('')
-  const [zipFilter, setZipFilter] = useState('')
+export default function FilterBar({
+  clinics,
+  onFilter,
+}: Props) {
+  const [serviceFilter, setServiceFilter] =
+    useState('')
 
-  /* =============================
-     Extract Dynamic Options
-  ============================== */
+  const [insuranceFilter, setInsuranceFilter] =
+    useState('')
+
+  const [practiceFilter, setPracticeFilter] =
+    useState('')
+
+  const [zipFilter, setZipFilter] =
+    useState('')
+
+  /* =====================================================
+     DYNAMIC FILTER OPTIONS
+     ===================================================== */
 
   const services = useMemo(() => {
     return Array.from(
-      new Set((clinics ?? []).flatMap(c => c.services || []))
+      new Set(
+        (clinics ?? [])
+          .flatMap((clinic) => clinic.services || [])
+          .filter(Boolean)
+      )
     ).sort()
   }, [clinics])
 
   const insurances = useMemo(() => {
     return Array.from(
-      new Set((clinics ?? []).flatMap(c => c.insurances || []))
+      new Set(
+        (clinics ?? [])
+          .flatMap((clinic) => clinic.insurances || [])
+          .filter(Boolean)
+      )
     ).sort()
   }, [clinics])
 
-  /* =============================
-     Filtering Logic
-  ============================== */
+  /* =====================================================
+     FILTERING
+     ===================================================== */
 
   useEffect(() => {
     let results = clinics ?? []
 
+    /* SERVICE */
+
     if (serviceFilter) {
-      results = results.filter(c =>
-        c.services?.includes(serviceFilter)
+      results = results.filter((clinic) =>
+        clinic.services?.includes(serviceFilter)
       )
     }
+
+    /* INSURANCE */
 
     if (insuranceFilter) {
-      results = results.filter(c =>
-        c.insurances?.includes(insuranceFilter)
+      results = results.filter((clinic) =>
+        clinic.insurances?.includes(insuranceFilter)
       )
     }
 
-    if (availabilityFilter === 'weekend') {
+    /* PRACTICE OPTIONS */
+
+    if (practiceFilter === 'new-patients') {
       results = results.filter(
-        c => c.weekend_open === 'YES'
+        (clinic) =>
+          clinic.accepts_new_patients === true
       )
     }
 
-    if (zipFilter) {
-      results = results.filter(c =>
-        c.zip?.includes(zipFilter)
+    if (practiceFilter === 'emergency') {
+      results = results.filter(
+        (clinic) =>
+          clinic.emergency_available === true
+      )
+    }
+
+    if (practiceFilter === 'weekend') {
+      results = results.filter(
+        (clinic) =>
+          clinic.weekend_open
+            ?.trim()
+            .toLowerCase() === 'yes'
+      )
+    }
+
+    /* ZIP CODE */
+
+    const normalizedZip = zipFilter.trim()
+
+    if (normalizedZip) {
+      results = results.filter((clinic) =>
+        clinic.zip?.includes(normalizedZip)
       )
     }
 
     onFilter(results)
-
   }, [
     clinics,
     serviceFilter,
     insuranceFilter,
-    availabilityFilter,
+    practiceFilter,
     zipFilter,
     onFilter,
   ])
 
-  /* =============================
-     Reset Filters
-  ============================== */
+  /* =====================================================
+     RESET
+     ===================================================== */
 
   function clearFilters() {
     setServiceFilter('')
     setInsuranceFilter('')
-    setAvailabilityFilter('')
+    setPracticeFilter('')
     setZipFilter('')
   }
 
-  const hasActiveFilters =
+  const hasActiveFilters = Boolean(
     serviceFilter ||
-    insuranceFilter ||
-    availabilityFilter ||
-    zipFilter
+      insuranceFilter ||
+      practiceFilter ||
+      zipFilter
+  )
 
-  /* =============================
+  /* =====================================================
+     DISPLAY LABEL FOR PRACTICE FILTER CHIP
+     ===================================================== */
+
+  function getPracticeFilterLabel() {
+    switch (practiceFilter) {
+      case 'new-patients':
+        return 'Accepting New Patients'
+
+      case 'emergency':
+        return 'Emergency Appointments'
+
+      case 'weekend':
+        return 'Open Weekends'
+
+      default:
+        return ''
+    }
+  }
+
+  /* =====================================================
      UI
-  ============================== */
+     ===================================================== */
 
   return (
     <div className="filter-wrapper">
 
       <div className="filter-row">
 
+        {/* SERVICE */}
+
         <select
+          aria-label="Filter by dental service"
           value={serviceFilter}
-          onChange={(e) => setServiceFilter(e.target.value)}
+          onChange={(e) =>
+            setServiceFilter(e.target.value)
+          }
         >
-          <option value="">All Services</option>
-          {services.map(service => (
-            <option key={service} value={service}>
+          <option value="">
+            All Services
+          </option>
+
+          {services.map((service) => (
+            <option
+              key={service}
+              value={service}
+            >
               {service}
             </option>
           ))}
         </select>
 
+
+        {/* INSURANCE */}
+
         <select
+          aria-label="Filter by insurance"
           value={insuranceFilter}
-          onChange={(e) => setInsuranceFilter(e.target.value)}
+          onChange={(e) =>
+            setInsuranceFilter(e.target.value)
+          }
         >
-          <option value="">All Insurance</option>
-          {insurances.map(ins => (
-            <option key={ins} value={ins}>
-              {ins}
+          <option value="">
+            All Insurance
+          </option>
+
+          {insurances.map((insurance) => (
+            <option
+              key={insurance}
+              value={insurance}
+            >
+              {insurance}
             </option>
           ))}
         </select>
 
+
+        {/* PRACTICE OPTIONS */}
+
         <select
-          value={availabilityFilter}
-          onChange={(e) => setAvailabilityFilter(e.target.value)}
+          aria-label="Filter by practice options"
+          value={practiceFilter}
+          onChange={(e) =>
+            setPracticeFilter(e.target.value)
+          }
         >
-          <option value="">Any Availability</option>
-          <option value="weekday">Open Weekdays</option>
-          <option value="weekend">Open Weekends</option>
+          <option value="">
+            Practice Options
+          </option>
+
+          <option value="new-patients">
+            Accepting New Patients
+          </option>
+
+          <option value="emergency">
+            Emergency Appointments
+          </option>
+
+          <option value="weekend">
+            Open Weekends
+          </option>
         </select>
+
+
+        {/* ZIP CODE */}
 
         <input
           type="text"
+          inputMode="numeric"
+          maxLength={5}
+          aria-label="Filter by ZIP code"
           placeholder="ZIP Code"
           value={zipFilter}
-          onChange={(e) => setZipFilter(e.target.value)}
-        />
+          onChange={(e) => {
+            const value =
+              e.target.value.replace(/\D/g, '')
 
-     
+            setZipFilter(value)
+          }}
+        />
 
       </div>
 
-      {/* =============================
-         Active Filter Chips
-      ============================== */}
+
+      {/* =================================================
+          ACTIVE FILTERS
+          ================================================= */}
 
       {hasActiveFilters && (
         <div className="active-filters">
 
           {serviceFilter && (
             <span className="filter-chip">
+
               {serviceFilter}
-              <button onClick={() => setServiceFilter('')}>
+
+              <button
+                type="button"
+                aria-label={`Remove ${serviceFilter} filter`}
+                onClick={() =>
+                  setServiceFilter('')
+                }
+              >
                 ×
               </button>
+
             </span>
           )}
+
 
           {insuranceFilter && (
             <span className="filter-chip">
+
               {insuranceFilter}
-              <button onClick={() => setInsuranceFilter('')}>
+
+              <button
+                type="button"
+                aria-label={`Remove ${insuranceFilter} filter`}
+                onClick={() =>
+                  setInsuranceFilter('')
+                }
+              >
                 ×
               </button>
+
             </span>
           )}
 
-          {availabilityFilter && (
+
+          {practiceFilter && (
             <span className="filter-chip">
-              {availabilityFilter}
-              <button onClick={() => setAvailabilityFilter('')}>
+
+              {getPracticeFilterLabel()}
+
+              <button
+                type="button"
+                aria-label="Remove practice option filter"
+                onClick={() =>
+                  setPracticeFilter('')
+                }
+              >
                 ×
               </button>
+
             </span>
           )}
+
 
           {zipFilter && (
             <span className="filter-chip">
+
               ZIP: {zipFilter}
-              <button onClick={() => setZipFilter('')}>
+
+              <button
+                type="button"
+                aria-label="Remove ZIP code filter"
+                onClick={() =>
+                  setZipFilter('')
+                }
+              >
                 ×
               </button>
+
             </span>
           )}
 
 
-   {hasActiveFilters && (
           <button
+            type="button"
             className="clear-filters"
             onClick={clearFilters}
           >
             Reset all filters
           </button>
-        )}
 
         </div>
       )}

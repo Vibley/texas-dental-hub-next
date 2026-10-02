@@ -229,7 +229,7 @@ export default function CardCTA({
   WebkitTapHighlightColor: 'transparent',
 }}
         >
-          Request Appointment →
+          Request Appointment
         </button>
       </div>
 
