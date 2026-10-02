@@ -130,13 +130,7 @@ export default function HomePage({
 
         <div className="directory-results-heading">
 
-          <h2>
-            {filteredClinics.length.toLocaleString()}{" "}
-            {filteredClinics.length === 1
-              ? 'Dentist'
-              : 'Dentists'}{' '}
-            in Houston
-          </h2>
+          <h2>Dentists in Houston</h2>
 
         </div>
 

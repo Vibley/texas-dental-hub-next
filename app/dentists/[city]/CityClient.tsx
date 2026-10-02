@@ -83,13 +83,7 @@ export default function CityClient({
 
         <div className="directory-results-heading">
 
-          <h2>
-            {filteredClinics.length.toLocaleString()}{" "}
-            {filteredClinics.length === 1
-              ? "Dentist"
-              : "Dentists"}{" "}
-            in {cityName}
-          </h2>
+         <h2>Dentists in {cityName}</h2>
 
         </div>
 
