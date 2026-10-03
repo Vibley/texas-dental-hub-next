@@ -5259,3 +5259,15 @@ select:focus, input:focus {
     line-height: 1.25;
   }
 }
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 20px;
+    line-height: 1.14;
+    letter-spacing: -0.5px;
+  }
+
+  .hero p {
+    text-align: left;
+  }
+}
