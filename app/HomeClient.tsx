@@ -130,7 +130,7 @@ export default function HomePage({
 
         <div className="directory-results-heading">
 
-          <h2>Dentists in Houston</h2>
+         
 
         </div>
 
@@ -170,208 +170,242 @@ export default function HomePage({
       </section>
 
 
-      {/* =====================================================
-          HOUSTON FAQs
-          ===================================================== */}
+     {/* =====================================================
+    HOUSTON FAQs
+    ===================================================== */}
 
-      <section className="section city-faq-section">
+<section className="section city-faq-section">
 
-        <div className="city-faq-heading">
+  <div className="city-faq-heading">
 
-          <h2>
-            Frequently Asked Questions About Dentists in
-            Houston
-          </h2>
+    <h2>
+      Frequently Asked Questions About Dentists in Houston
+    </h2>
 
-          <p>
-            Find answers about new-patient availability,
-            emergency dental care, weekend hours,
-            insurance, and finding dental practices in
-            Houston.
-          </p>
+    <p>
+      Helpful information for finding dental care,
+      comparing practices, and requesting an appointment
+      in Houston.
+    </p>
 
-        </div>
+  </div>
 
 
-        <div className="city-faq-list">
+  <div className="city-faq-list">
 
-          {/* ACCEPTING NEW PATIENTS */}
+    {/* ACCEPTING NEW PATIENTS */}
 
-          <details className="city-faq-item">
+    <details className="city-faq-item">
 
-            <summary>
+      <summary>
 
-              <span>
-                How can I find a dentist in Houston
-                accepting new patients?
-              </span>
+        <span>
+          How can I find a dentist in Houston accepting
+          new patients?
+        </span>
 
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
 
-            </summary>
+      </summary>
 
-            <div className="city-faq-answer">
+      <div className="city-faq-answer">
 
-              <p>
-                Use the Accepting New Patients filter to
-                find Houston dental practices marked as
-                accepting new patients. You can then
-                compare ratings, services, location, and
-                other practice information before
-                contacting the dental office directly.
-              </p>
+        <p>
+          Use the Accepting New Patients option to find
+          Houston dental practices listed as accepting new
+          patients. You can compare ratings, services,
+          location, insurance information, and other
+          practice details before contacting the dental
+          office. Because availability can change, confirm
+          with the practice before scheduling.
+        </p>
 
-            </div>
+      </div>
 
-          </details>
-
-
-          {/* EMERGENCY */}
-
-          <details className="city-faq-item">
-
-            <summary>
-
-              <span>
-                How can I find an emergency dentist in
-                Houston?
-              </span>
-
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
-
-            </summary>
-
-            <div className="city-faq-answer">
-
-              <p>
-                Use the Emergency Appointments option to
-                find Houston dental practices listed as
-                offering emergency appointments. Contact
-                the clinic directly to confirm current
-                availability and whether it can treat your
-                specific dental need.
-              </p>
-
-            </div>
-
-          </details>
+    </details>
 
 
-          {/* WEEKENDS */}
+    {/* EMERGENCY */}
 
-          <details className="city-faq-item">
+    <details className="city-faq-item">
 
-            <summary>
+      <summary>
 
-              <span>
-                Which dentists in Houston are open on
-                weekends?
-              </span>
+        <span>
+          How can I find an emergency dentist in Houston?
+        </span>
 
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
 
-            </summary>
+      </summary>
 
-            <div className="city-faq-answer">
+      <div className="city-faq-answer">
 
-              <p>
-                Use the Open Weekends option to find
-                Houston dental practices listed as
-                offering weekend hours. Office schedules
-                can change, so confirm current hours
-                directly with the clinic before visiting.
-              </p>
+        <p>
+          Use the Emergency Appointments option to find
+          Houston dental practices listed as offering
+          emergency appointments. This does not guarantee
+          immediate or same-day availability, so contact
+          the dental office to confirm that it can see you
+          and treat your specific dental need.
+        </p>
 
-            </div>
+      </div>
 
-          </details>
-
-
-          {/* INSURANCE */}
-
-          <details className="city-faq-item">
-
-            <summary>
-
-              <span>
-                Can I search Houston dentists by insurance?
-              </span>
-
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
-
-            </summary>
-
-            <div className="city-faq-answer">
-
-              <p>
-                Yes. Use the Insurance filter to compare
-                Houston dental practices using available
-                insurance information. Because
-                participation and coverage can change,
-                confirm your specific plan with the dental
-                office or your insurance company before
-                scheduling treatment.
-              </p>
-
-            </div>
-
-          </details>
+    </details>
 
 
-          {/* SERVICES */}
+    {/* WEEKENDS */}
 
-          <details className="city-faq-item">
+    <details className="city-faq-item">
 
-            <summary>
+      <summary>
 
-              <span>
-                Can I search Houston dentists by dental
-                service?
-              </span>
+        <span>
+          Which dentists in Houston are open on weekends?
+        </span>
 
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
 
-            </summary>
+      </summary>
 
-            <div className="city-faq-answer">
+      <div className="city-faq-answer">
 
-              <p>
-                Yes. Use the Services filter to narrow the
-                list of Houston dental practices using the
-                service information available on
-                TexasDentalHub. Review the practice
-                details and contact the dental office
-                directly to confirm that the specific
-                treatment you need is currently offered.
-              </p>
+        <p>
+          Use the Open Weekends option to find Houston
+          dental practices listed as offering weekend
+          hours. Office schedules can change, so confirm
+          current hours and appointment availability
+          directly with the dental office before visiting.
+        </p>
 
-            </div>
+      </div>
 
-          </details>
+    </details>
 
-        </div>
 
-      </section>
+    {/* INSURANCE */}
+
+    <details className="city-faq-item">
+
+      <summary>
+
+        <span>
+          How can I find a dentist in Houston that accepts
+          my insurance?
+        </span>
+
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+
+      </summary>
+
+      <div className="city-faq-answer">
+
+        <p>
+          Use the Insurance filter to narrow Houston dental
+          practices using the insurance information
+          available on TexasDentalHub. Insurance
+          participation, networks, and coverage can change,
+          so verify your specific plan and benefits with
+          the dental office or your insurance company
+          before receiving treatment.
+        </p>
+
+      </div>
+
+    </details>
+
+
+    {/* SERVICES */}
+
+    <details className="city-faq-item">
+
+      <summary>
+
+        <span>
+          What dental services can I find in Houston?
+        </span>
+
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+
+      </summary>
+
+      <div className="city-faq-answer">
+
+        <p>
+          TexasDentalHub lets you compare Houston dental
+          practices using the services listed for each
+          office. Depending on the practice, these may
+          include general dentistry, cosmetic dentistry,
+          orthodontics, dental implants, pediatric
+          dentistry, and other dental services. Contact
+          the dental office to confirm that the specific
+          treatment you need is currently offered.
+        </p>
+
+      </div>
+
+    </details>
+
+
+    {/* APPOINTMENT REQUEST */}
+
+    <details className="city-faq-item">
+
+      <summary>
+
+        <span>
+          How does requesting an appointment through
+          TexasDentalHub work?
+        </span>
+
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+
+      </summary>
+
+      <div className="city-faq-answer">
+
+        <p>
+          When you submit an appointment request through
+          TexasDentalHub, you are sending a request for the
+          selected dental practice rather than booking a
+          confirmed appointment. The dental office should
+          confirm availability, the appointment date and
+          time, and any other details with you directly.
+        </p>
+
+      </div>
+
+    </details>
+
+  </div>
+
+</section>
+
 
 
       {/* =====================================================

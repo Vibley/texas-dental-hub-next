@@ -40,9 +40,9 @@ export default function CityClient({
 
       <div className="hero hero-expanded">
 
-        <h2>
+        <h1>
           Dentists in {cityName}
-        </h2>
+        </h1>
 
         <p>
           {citySeo?.intro_paragraph1 ||
@@ -83,7 +83,7 @@ export default function CityClient({
 
         <div className="directory-results-heading">
 
-         <h2>Dentists in {cityName}</h2>
+        
 
         </div>
 
@@ -123,257 +123,226 @@ export default function CityClient({
       </section>
 
 
-      {/* =====================================================
-          CITY FAQs
-          ===================================================== */}
+{/* =====================================================
+    CITY FAQs
+    ===================================================== */}
 
-      <section className="section city-faq-section">
+<section className="section city-faq-section">
+  <div className="city-faq-heading">
+    <h2>
+      Frequently Asked Questions About Dentists in{" "}
+      {cityName}
+    </h2>
 
-        <div className="city-faq-heading">
+    <p>
+      Helpful information for finding dental care, comparing
+      practices, and requesting an appointment in {cityName}.
+    </p>
+  </div>
 
-          <h2>
-            Frequently Asked Questions About Dentists in{" "}
-            {cityName}
-          </h2>
+  <div className="city-faq-list">
 
-          <p>
-            Find answers about new-patient availability,
-            emergency dental care, weekend hours, insurance,
-            and finding dental practices in {cityName}.
-          </p>
+    {/* ACCEPTING NEW PATIENTS */}
 
-        </div>
+    <details className="city-faq-item">
+      <summary>
+        <span>
+          How can I find a dentist in {cityName} accepting new patients?
+        </span>
 
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+      </summary>
 
-        <div className="city-faq-list">
+      <div className="city-faq-answer">
+        <p>
+          Use the Accepting New Patients option to find dental
+          practices in {cityName} that are listed as accepting
+          new patients. You can compare ratings, services,
+          location, insurance information, and other practice
+          details before contacting the dental office. Because
+          availability can change, confirm with the practice
+          before scheduling.
+        </p>
+      </div>
+    </details>
 
-          {/* ACCEPTING NEW PATIENTS */}
+    {/* EMERGENCY */}
 
-          <details className="city-faq-item">
+    <details className="city-faq-item">
+      <summary>
+        <span>
+          How can I find an emergency dentist in {cityName}?
+        </span>
 
-            <summary>
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+      </summary>
 
-              <span>
-                How can I find a dentist in {cityName}{" "}
-                accepting new patients?
-              </span>
+      <div className="city-faq-answer">
+        <p>
+          Use the Emergency Appointments option to find dental
+          practices in {cityName} listed as offering emergency
+          appointments. This does not guarantee immediate or
+          same-day availability, so contact the dental office
+          to confirm that it can see you and treat your specific
+          dental need.
+        </p>
+      </div>
+    </details>
 
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
+    {/* WEEKENDS */}
 
-            </summary>
+    <details className="city-faq-item">
+      <summary>
+        <span>
+          Which dentists in {cityName} are open on weekends?
+        </span>
 
-            <div className="city-faq-answer">
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+      </summary>
 
-              <p>
-                Use the Accepting New Patients filter to
-                find {cityName} dental practices marked as
-                accepting new patients. You can then compare
-                ratings, services, location, and other
-                practice information before contacting the
-                dental office directly.
-              </p>
+      <div className="city-faq-answer">
+        <p>
+          Use the Open Weekends option to find dental practices
+          in {cityName} listed as offering weekend hours.
+          Office schedules can change, so confirm current
+          hours and appointment availability directly with
+          the dental office before visiting.
+        </p>
+      </div>
+    </details>
 
-            </div>
+    {/* INSURANCE */}
 
-          </details>
+    <details className="city-faq-item">
+      <summary>
+        <span>
+          How can I find a dentist in {cityName} that accepts my insurance?
+        </span>
 
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+      </summary>
 
-          {/* EMERGENCY */}
+      <div className="city-faq-answer">
+        <p>
+          Use the Insurance filter to narrow dental practices
+          in {cityName} using the insurance information
+          available on TexasDentalHub. Insurance participation,
+          networks, and coverage can change, so verify your
+          specific plan and benefits with the dental office
+          or your insurance company before receiving treatment.
+        </p>
+      </div>
+    </details>
 
-          <details className="city-faq-item">
+    {/* SERVICES */}
 
-            <summary>
+    <details className="city-faq-item">
+      <summary>
+        <span>
+          What dental services can I find in {cityName}?
+        </span>
 
-              <span>
-                How can I find an emergency dentist in{" "}
-                {cityName}?
-              </span>
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+      </summary>
 
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
+      <div className="city-faq-answer">
+        <p>
+          TexasDentalHub lets you compare {cityName} dental
+          practices using the services listed for each office.
+          Depending on the practice, these may include general
+          dentistry, cosmetic dentistry, orthodontics, dental
+          implants, pediatric dentistry, and other dental
+          services. Contact the dental office to confirm that
+          the specific treatment you need is currently offered.
+        </p>
+      </div>
+    </details>
 
-            </summary>
+    {/* APPOINTMENT REQUEST */}
 
-            <div className="city-faq-answer">
+    <details className="city-faq-item">
+      <summary>
+        <span>
+          How does requesting an appointment through TexasDentalHub work?
+        </span>
 
-              <p>
-                Use the Emergency Appointments option to
-                find {cityName} dental practices listed as
-                offering emergency appointments. Contact
-                the clinic directly to confirm current
-                availability and whether it can treat your
-                specific dental need.
-              </p>
+        <span
+          className="city-faq-icon"
+          aria-hidden="true"
+        >
+        </span>
+      </summary>
 
-            </div>
+      <div className="city-faq-answer">
+        <p>
+          When you submit an appointment request through
+          TexasDentalHub, it is an appointment request rather
+          than a confirmed booking. The dental office should
+          confirm availability, the appointment date and time,
+          and any other details with you directly.
+        </p>
+      </div>
+    </details>
 
-          </details>
-
-
-          {/* WEEKENDS */}
-
-          <details className="city-faq-item">
-
-            <summary>
-
-              <span>
-                Which dentists in {cityName} are open on
-                weekends?
-              </span>
-
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
-
-            </summary>
-
-            <div className="city-faq-answer">
-
-              <p>
-                Use the Open Weekends option to find{" "}
-                {cityName} dental practices listed as
-                offering weekend hours. Office schedules
-                can change, so confirm current hours
-                directly with the clinic before visiting.
-              </p>
-
-            </div>
-
-          </details>
-
-
-          {/* INSURANCE */}
-
-          <details className="city-faq-item">
-
-            <summary>
-
-              <span>
-                Can I search {cityName} dentists by
-                insurance?
-              </span>
-
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
-
-            </summary>
-
-            <div className="city-faq-answer">
-
-              <p>
-                Yes. Use the Insurance filter to compare{" "}
-                {cityName} dental practices using available
-                insurance information. Because participation
-                and coverage can change, confirm your
-                specific plan with the dental office or your
-                insurance company before scheduling
-                treatment.
-              </p>
-
-            </div>
-
-          </details>
-
-
-          {/* SERVICES */}
-
-          <details className="city-faq-item">
-
-            <summary>
-
-              <span>
-                Can I search dentists in {cityName} by
-                dental service?
-              </span>
-
-              <span
-                className="city-faq-icon"
-                aria-hidden="true"
-              >
-              </span>
-
-            </summary>
-
-            <div className="city-faq-answer">
-
-              <p>
-                Yes. Use the Services filter to narrow the
-                list of {cityName} dental practices using
-                the service information available on
-                TexasDentalHub. Review the practice details
-                and contact the dental office directly to
-                confirm that the specific treatment you
-                need is currently offered.
-              </p>
-
-            </div>
-
-          </details>
-
-        </div>
-
-      </section>
+  </div>
+</section>
 
 
       {/* =====================================================
           NEARBY CITIES
           ===================================================== */}
 
-      {nearbyCities.length > 0 && (
+      {/* =====================================================
+    NEARBY CITIES
+    ===================================================== */}
 
-        <section className="section city-directory">
+{nearbyCities.length > 0 && (
+  <section className="section city-directory">
 
-          <div className="city-directory-heading">
+    <div className="city-directory-heading">
+      <h2>
+        Explore dental practices in other cities near {cityName}
+      </h2>
 
-            <h2>
-              Explore Dentists in Nearby Cities
-            </h2>
+      
+    </div>
 
-          </div>
+    <div className="city-links-grid">
+      {nearbyCities.map((nearbyCity) => (
+        <a
+          key={nearbyCity.city_slug}
+          href={`/dentists/${nearbyCity.city_slug}`}
+          className="city-link"
+        >
+          <span>
+            Dentists in {nearbyCity.city_name}
+          </span>
+        </a>
+      ))}
+    </div>
 
-
-          <div className="city-links-grid">
-
-            {nearbyCities.map((nearbyCity) => (
-
-              <a
-                key={nearbyCity.city_slug}
-                href={`/dentists/${nearbyCity.city_slug}`}
-                className="city-link"
-              >
-
-                <span>
-                  Dentists in {nearbyCity.city_name}
-                </span>
-
-                <span
-                  className="city-link-arrow"
-                  aria-hidden="true"
-                >
-                
-                </span>
-
-              </a>
-
-            ))}
-
-          </div>
-
-        </section>
-
-      )}
+  </section>
+)}
 
     </div>
   )
