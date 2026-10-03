@@ -5271,3 +5271,19 @@ select:focus, input:focus {
     text-align: left;
   }
 }
+
+
+/* =========================================================
+   CITY PAGE — MOBILE WIDTH FIX
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .container > .container {
+    width: 100%;
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
