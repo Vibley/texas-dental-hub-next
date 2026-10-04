@@ -5434,3 +5434,112 @@ select:focus, input:focus {
     padding: 10px 12px;
   }
 }
+
+
+/* =========================================================
+   FOOTER — MOBILE SPACING FIX
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .site-footer {
+    padding-top: 36px;
+    padding-bottom: 0;
+  }
+
+  .footer-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-column {
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+  }
+
+  .footer-column h3,
+  .footer-column h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+
+  .footer-column p {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .footer-column ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-column li {
+    margin: 0 0 9px;
+  }
+
+  .footer-bottom {
+    margin-top: 32px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+}
+
+
+/* =========================================================
+   FOOTER — MOBILE FINAL LAYOUT
+   ========================================================= */
+
+@media screen and (max-width: 600px) {
+
+  .site-footer .footer-container {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+
+    column-count: 2;
+    column-gap: 28px;
+  }
+
+  .site-footer .footer-column {
+    display: inline-block !important;
+    width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 0 28px 0 !important;
+    padding: 0 !important;
+
+    break-inside: avoid;
+    vertical-align: top;
+  }
+
+  .site-footer .footer-column h3,
+  .site-footer .footer-column h4 {
+    margin-top: 0 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .site-footer .footer-column ul {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .site-footer .footer-column li {
+    margin: 0 0 10px 0 !important;
+    padding: 0 !important;
+  }
+
+  .site-footer .footer-column p {
+    margin: 0 !important;
+  }
+
+  .site-footer .footer-bottom {
+    margin-top: 0 !important;
+    padding: 18px 22px !important;
+  }
+}
