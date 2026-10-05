@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import ClinicCard from './components/ClinicCard'
 import FilterBar from './components/FilterBar'
 import type { Clinic } from '@/app/types'
@@ -8,6 +8,9 @@ import type { Clinic } from '@/app/types'
 /* Houston coordinates */
 const HOUSTON_LAT = 29.7604
 const HOUSTON_LNG = -95.3698
+
+/* Number of clinics displayed at a time */
+const CLINICS_PER_PAGE = 10
 
 /* Distance calculator */
 function getDistance(
@@ -53,6 +56,38 @@ export default function HomePage({
 
   const [filteredClinics, setFilteredClinics] =
     useState<Clinic[]>(initialClinics)
+
+  /* =====================================================
+     LOAD MORE / PAGINATION
+     ===================================================== */
+
+  const [visibleCount, setVisibleCount] =
+    useState(CLINICS_PER_PAGE)
+
+  const visibleClinics =
+    filteredClinics.slice(0, visibleCount)
+
+  const hasMoreClinics =
+    visibleCount < filteredClinics.length
+
+  /*
+   * useCallback keeps the FilterBar callback stable.
+   * This is important because changing visibleCount should
+   * not cause FilterBar to reset us back to the first 10.
+   */
+  const handleFilter = useCallback((results: Clinic[]) => {
+    setFilteredClinics(results)
+    setVisibleCount(CLINICS_PER_PAGE)
+  }, [])
+
+  function handleLoadMore() {
+    setVisibleCount((current) =>
+      Math.min(
+        current + CLINICS_PER_PAGE,
+        filteredClinics.length
+      )
+    )
+  }
 
   /*
    * Find the closest cities to Houston for
@@ -116,7 +151,7 @@ export default function HomePage({
 
         <FilterBar
           clinics={clinics}
-          onFilter={setFilteredClinics}
+          onFilter={handleFilter}
         />
 
       </div>
@@ -128,28 +163,61 @@ export default function HomePage({
 
       <section className="section directory-results-section">
 
-        <div className="directory-results-heading">
-
-         
-
-        </div>
-
-
         {filteredClinics.length > 0 ? (
+          <>
 
-          <div className="directory-results-list">
+            <div className="directory-results-list">
 
-            {filteredClinics.map((clinic) => (
+              {visibleClinics.map((clinic) => (
 
-              <ClinicCard
-                key={clinic.id}
-                clinic={clinic}
-              />
+                <ClinicCard
+                  key={clinic.id}
+                  clinic={clinic}
+                />
 
-            ))}
+              ))}
 
-          </div>
+            </div>
 
+
+            {/* =================================================
+                LOAD MORE
+                ================================================= */}
+
+            {hasMoreClinics && (
+
+              <div className="directory-load-more">
+
+                <button
+                  type="button"
+                  className="directory-load-more-button"
+                  onClick={handleLoadMore}
+                >
+                  Load More Dentists
+                </button>
+
+              
+              </div>
+
+            )}
+
+
+            {/* =================================================
+                ALL RESULTS DISPLAYED
+                ================================================= */}
+
+            {!hasMoreClinics &&
+              filteredClinics.length > CLINICS_PER_PAGE && (
+
+                <div className="directory-load-more">
+
+                  
+
+                </div>
+
+              )}
+
+          </>
         ) : (
 
           <div className="directory-empty-state">
@@ -170,242 +238,241 @@ export default function HomePage({
       </section>
 
 
-     {/* =====================================================
-    HOUSTON FAQs
-    ===================================================== */}
+      {/* =====================================================
+          HOUSTON FAQs
+          ===================================================== */}
 
-<section className="section city-faq-section">
+      <section className="section city-faq-section">
 
-  <div className="city-faq-heading">
+        <div className="city-faq-heading">
 
-    <h2>
-      Frequently Asked Questions About Dentists in Houston
-    </h2>
+          <h2>
+            Frequently Asked Questions About Dentists in Houston
+          </h2>
 
-    <p>
-      Helpful information for finding dental care,
-      comparing practices, and requesting an appointment
-      in Houston.
-    </p>
+          <p>
+            Helpful information for finding dental care,
+            comparing practices, and requesting an appointment
+            in Houston.
+          </p>
 
-  </div>
+        </div>
 
 
-  <div className="city-faq-list">
+        <div className="city-faq-list">
 
-    {/* ACCEPTING NEW PATIENTS */}
+          {/* ACCEPTING NEW PATIENTS */}
 
-    <details className="city-faq-item">
+          <details className="city-faq-item">
 
-      <summary>
+            <summary>
 
-        <span>
-          How can I find a dentist in Houston accepting
-          new patients?
-        </span>
+              <span>
+                How can I find a dentist in Houston accepting
+                new patients?
+              </span>
 
-        <span
-          className="city-faq-icon"
-          aria-hidden="true"
-        >
-        </span>
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
 
-      </summary>
+            </summary>
 
-      <div className="city-faq-answer">
+            <div className="city-faq-answer">
 
-        <p>
-          Use the Accepting New Patients option to find
-          Houston dental practices listed as accepting new
-          patients. You can compare ratings, services,
-          location, insurance information, and other
-          practice details before contacting the dental
-          office. Because availability can change, confirm
-          with the practice before scheduling.
-        </p>
+              <p>
+                Use the Accepting New Patients option to find
+                Houston dental practices listed as accepting new
+                patients. You can compare ratings, services,
+                location, insurance information, and other
+                practice details before contacting the dental
+                office. Because availability can change, confirm
+                with the practice before scheduling.
+              </p>
 
-      </div>
+            </div>
 
-    </details>
+          </details>
 
 
-    {/* EMERGENCY */}
+          {/* EMERGENCY */}
 
-    <details className="city-faq-item">
+          <details className="city-faq-item">
 
-      <summary>
+            <summary>
 
-        <span>
-          How can I find an emergency dentist in Houston?
-        </span>
+              <span>
+                How can I find an emergency dentist in Houston?
+              </span>
 
-        <span
-          className="city-faq-icon"
-          aria-hidden="true"
-        >
-        </span>
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
 
-      </summary>
+            </summary>
 
-      <div className="city-faq-answer">
+            <div className="city-faq-answer">
 
-        <p>
-          Use the Emergency Appointments option to find
-          Houston dental practices listed as offering
-          emergency appointments. This does not guarantee
-          immediate or same-day availability, so contact
-          the dental office to confirm that it can see you
-          and treat your specific dental need.
-        </p>
+              <p>
+                Use the Emergency Appointments option to find
+                Houston dental practices listed as offering
+                emergency appointments. This does not guarantee
+                immediate or same-day availability, so contact
+                the dental office to confirm that it can see you
+                and treat your specific dental need.
+              </p>
 
-      </div>
+            </div>
 
-    </details>
+          </details>
 
 
-    {/* WEEKENDS */}
+          {/* WEEKENDS */}
 
-    <details className="city-faq-item">
+          <details className="city-faq-item">
 
-      <summary>
+            <summary>
 
-        <span>
-          Which dentists in Houston are open on weekends?
-        </span>
+              <span>
+                Which dentists in Houston are open on weekends?
+              </span>
 
-        <span
-          className="city-faq-icon"
-          aria-hidden="true"
-        >
-        </span>
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
 
-      </summary>
+            </summary>
 
-      <div className="city-faq-answer">
+            <div className="city-faq-answer">
 
-        <p>
-          Use the Open Weekends option to find Houston
-          dental practices listed as offering weekend
-          hours. Office schedules can change, so confirm
-          current hours and appointment availability
-          directly with the dental office before visiting.
-        </p>
+              <p>
+                Use the Open Weekends option to find Houston
+                dental practices listed as offering weekend
+                hours. Office schedules can change, so confirm
+                current hours and appointment availability
+                directly with the dental office before visiting.
+              </p>
 
-      </div>
+            </div>
 
-    </details>
+          </details>
 
 
-    {/* INSURANCE */}
+          {/* INSURANCE */}
 
-    <details className="city-faq-item">
+          <details className="city-faq-item">
 
-      <summary>
+            <summary>
 
-        <span>
-          How can I find a dentist in Houston that accepts
-          my insurance?
-        </span>
+              <span>
+                How can I find a dentist in Houston that accepts
+                my insurance?
+              </span>
 
-        <span
-          className="city-faq-icon"
-          aria-hidden="true"
-        >
-        </span>
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
 
-      </summary>
+            </summary>
 
-      <div className="city-faq-answer">
+            <div className="city-faq-answer">
 
-        <p>
-          Use the Insurance filter to narrow Houston dental
-          practices using the insurance information
-          available on TexasDentalHub. Insurance
-          participation, networks, and coverage can change,
-          so verify your specific plan and benefits with
-          the dental office or your insurance company
-          before receiving treatment.
-        </p>
+              <p>
+                Use the Insurance filter to narrow Houston dental
+                practices using the insurance information
+                available on TexasDentalHub. Insurance
+                participation, networks, and coverage can change,
+                so verify your specific plan and benefits with
+                the dental office or your insurance company
+                before receiving treatment.
+              </p>
 
-      </div>
+            </div>
 
-    </details>
+          </details>
 
 
-    {/* SERVICES */}
+          {/* SERVICES */}
 
-    <details className="city-faq-item">
+          <details className="city-faq-item">
 
-      <summary>
+            <summary>
 
-        <span>
-          What dental services can I find in Houston?
-        </span>
+              <span>
+                What dental services can I find in Houston?
+              </span>
 
-        <span
-          className="city-faq-icon"
-          aria-hidden="true"
-        >
-        </span>
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
 
-      </summary>
+            </summary>
 
-      <div className="city-faq-answer">
+            <div className="city-faq-answer">
 
-        <p>
-          TexasDentalHub lets you compare Houston dental
-          practices using the services listed for each
-          office. Depending on the practice, these may
-          include general dentistry, cosmetic dentistry,
-          orthodontics, dental implants, pediatric
-          dentistry, and other dental services. Contact
-          the dental office to confirm that the specific
-          treatment you need is currently offered.
-        </p>
+              <p>
+                TexasDentalHub lets you compare Houston dental
+                practices using the services listed for each
+                office. Depending on the practice, these may
+                include general dentistry, cosmetic dentistry,
+                orthodontics, dental implants, pediatric
+                dentistry, and other dental services. Contact
+                the dental office to confirm that the specific
+                treatment you need is currently offered.
+              </p>
 
-      </div>
+            </div>
 
-    </details>
+          </details>
 
 
-    {/* APPOINTMENT REQUEST */}
+          {/* APPOINTMENT REQUEST */}
 
-    <details className="city-faq-item">
+          <details className="city-faq-item">
 
-      <summary>
+            <summary>
 
-        <span>
-          How does requesting an appointment through
-          TexasDentalHub work?
-        </span>
+              <span>
+                How does requesting an appointment through
+                TexasDentalHub work?
+              </span>
 
-        <span
-          className="city-faq-icon"
-          aria-hidden="true"
-        >
-        </span>
+              <span
+                className="city-faq-icon"
+                aria-hidden="true"
+              >
+              </span>
 
-      </summary>
+            </summary>
 
-      <div className="city-faq-answer">
+            <div className="city-faq-answer">
 
-        <p>
-          When you submit an appointment request through
-          TexasDentalHub, you are sending a request for the
-          selected dental practice rather than booking a
-          confirmed appointment. The dental office should
-          confirm availability, the appointment date and
-          time, and any other details with you directly.
-        </p>
+              <p>
+                When you submit an appointment request through
+                TexasDentalHub, you are sending a request for the
+                selected dental practice rather than booking a
+                confirmed appointment. The dental office should
+                confirm availability, the appointment date and
+                time, and any other details with you directly.
+              </p>
 
-      </div>
+            </div>
 
-    </details>
+          </details>
 
-  </div>
+        </div>
 
-</section>
-
+      </section>
 
 
       {/* =====================================================
@@ -444,7 +511,6 @@ export default function HomePage({
                   className="city-link-arrow"
                   aria-hidden="true"
                 >
-                  
                 </span>
 
               </a>
