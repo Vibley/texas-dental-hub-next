@@ -2,6 +2,9 @@ import { notFound } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import CardCTA from "@/app/components/CardCTA"
 
+/* -------------------------------- */
+/* Helpers */
+/* -------------------------------- */
 
 function slugify(text: string) {
   return text
@@ -26,6 +29,23 @@ function formatCity(city: string) {
         word.slice(1).toLowerCase()
     )
     .join(" ")
+}
+
+function cleanWebsiteUrl(website?: string | null) {
+  if (!website) return null
+
+  const trimmed = website.trim()
+
+  if (!trimmed) return null
+
+  if (
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://")
+  ) {
+    return trimmed
+  }
+
+  return `https://${trimmed}`
 }
 
 /* -------------------------------- */
@@ -69,16 +89,11 @@ export async function generateMetadata({
   const canonicalUrl =
     `https://texasdentalhub.com/dentists/${city}/${slug}`
 
-  /*
-   * Missing clinic:
-   * Keep metadata minimal.
-   * The actual page render below will call notFound().
-   */
   if (!clinic) {
     return {
-      title: `Dental Practice Not Found | TexasDentalHub`,
+      title: "Dental Practice Not Found | TexasDentalHub",
       description:
-        `This dental practice listing could not be found on TexasDentalHub.`,
+        "This dental practice listing could not be found on TexasDentalHub.",
       robots: {
         index: false,
         follow: false,
@@ -97,7 +112,7 @@ export async function generateMetadata({
 
   if (clinic.google_rating) {
     description +=
-      `, Google rating ${clinic.google_rating.toFixed(1)}`
+      `, Google rating ${Number(clinic.google_rating).toFixed(1)}`
   }
 
   if (clinic.google_review_count) {
@@ -106,9 +121,11 @@ export async function generateMetadata({
   }
 
   if (serviceText) {
-    description += `, and services including ${serviceText}`
+    description +=
+      `, and services including ${serviceText}`
   } else {
-    description += `, dental services, insurance information, and practice details`
+    description +=
+      ", dental services, insurance information, and practice details"
   }
 
   description += "."
@@ -126,11 +143,8 @@ export async function generateMetadata({
     openGraph: {
       title:
         `${clinic.name} in ${formattedCity}, TX | TexasDentalHub`,
-
       description,
-
       url: canonicalUrl,
-
       type: "website",
     },
 
@@ -138,7 +152,6 @@ export async function generateMetadata({
       card: "summary",
       title:
         `${clinic.name} in ${formattedCity}, TX | TexasDentalHub`,
-
       description,
     },
   }
@@ -178,12 +191,12 @@ export default async function ClinicDetail({
     notFound()
   }
 
-  const services =
+  const services: string[] =
     Array.isArray(clinic.services)
       ? clinic.services
       : []
 
-  const insurances =
+  const insurances: string[] =
     Array.isArray(clinic.insurances)
       ? clinic.insurances
       : []
@@ -197,8 +210,9 @@ export default async function ClinicDetail({
 
     if (clinic.hours.raw) {
       try {
-        const parsed =
-          JSON.parse(clinic.hours.raw)
+        const parsed = JSON.parse(
+          clinic.hours.raw
+        )
 
         return parsed.text || clinic.hours.raw
       } catch {
@@ -209,11 +223,40 @@ export default async function ClinicDetail({
     return ""
   })()
 
+  const address =
+    clinic.google_formatted_address
+      ? clinic.google_formatted_address.replace(
+          ", USA",
+          ""
+        )
+      : clinic.address
+
+  const mapsUrl =
+    clinic.google_maps_url ||
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      clinic.google_formatted_address ||
+        clinic.address
+    )}`
+
+  const websiteUrl =
+    cleanWebsiteUrl(clinic.website)
+
+  const weekendOpen =
+    clinic.weekend_open &&
+    String(
+      clinic.weekend_open
+    ).toLowerCase() === "yes"
+
+  const hasAvailabilityBadges =
+    clinic.accepts_new_patients === true ||
+    clinic.emergency_available === true ||
+    weekendOpen
+
   const canonicalUrl =
     `https://texasdentalhub.com/dentists/${city}/${slug}`
 
   /* -------------------------------- */
-  /* Clinic Structured Data */
+  /* Structured Data */
   /* -------------------------------- */
 
   const structuredData = {
@@ -228,16 +271,16 @@ export default async function ClinicDetail({
     telephone:
       clinic.phone || undefined,
 
+    ...(websiteUrl
+      ? {
+          sameAs: [websiteUrl],
+        }
+      : {}),
+
     address: {
       "@type": "PostalAddress",
 
-      streetAddress:
-        clinic.google_formatted_address
-          ? clinic.google_formatted_address.replace(
-              ", USA",
-              ""
-            )
-          : clinic.address,
+      streetAddress: address,
 
       addressLocality:
         formattedCity,
@@ -268,261 +311,640 @@ export default async function ClinicDetail({
 
   return (
     <>
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html:
+            JSON.stringify(structuredData),
+        }}
+      />
 
-      <main className="clinic-detail">
+      <main className="tdh-clinic-detail">
 
-        {/* BACK LINK */}
+        {/* -------------------------------- */}
+        {/* Back navigation */}
+        {/* -------------------------------- */}
 
-        <div className="back-link">
-          <a
-            href={`/dentists/${city}`}
-            className="back-btn"
-          >
-            ← Back to dentists in {formattedCity}
+        <div className="tdh-clinic-back">
+          <a href={`/dentists/${city}`}>
+            ← Back to dentists in{" "}
+            {formattedCity}
           </a>
         </div>
 
-        {/* CLINIC HERO */}
+        {/* -------------------------------- */}
+        {/* Hero */}
+        {/* -------------------------------- */}
 
-        <div className="clinic-hero">
+        <section className="tdh-clinic-hero">
 
-          <div className="clinic-hero-content">
+          <div className="tdh-clinic-hero-main">
 
-            <h1 className="clinic-title">
-              {clinic.name}
-            </h1>
-
-            <div className="clinic-subtitle">
+            <div className="tdh-clinic-location-label">
+              Dental Practice in{" "}
               {formattedCity}, TX
             </div>
 
+            <h1 className="tdh-clinic-title">
+              {clinic.name}
+            </h1>
+
             {clinic.google_rating != null && (
-              <div className="hero-rating">
+              <div className="tdh-clinic-rating">
 
-                ⭐{" "}
-                {Number(
-                  clinic.google_rating
-                ).toFixed(1)}
+                <span
+                  className="tdh-clinic-star"
+                  aria-hidden="true"
+                >
+                  ★
+                </span>
 
-                {clinic.google_review_count != null &&
-                  ` (${clinic.google_review_count.toLocaleString()} Google reviews)`}
+                <strong>
+                  {Number(
+                    clinic.google_rating
+                  ).toFixed(1)}
+                </strong>
+
+                {clinic.google_review_count != null && (
+                  <span className="tdh-clinic-review-count">
+                    {clinic.google_review_count.toLocaleString()}{" "}
+                    Google reviews
+                  </span>
+                )}
+
+              </div>
+            )}
+
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tdh-clinic-hero-address"
+            >
+              {address}
+            </a>
+
+            {hasAvailabilityBadges && (
+              <div className="tdh-clinic-badges">
+
+                {clinic.accepts_new_patients ===
+                  true && (
+                  <span className="tdh-clinic-badge">
+                    ✓ Accepting new patients
+                  </span>
+                )}
+
+                {clinic.emergency_available ===
+                  true && (
+                  <span className="tdh-clinic-badge">
+                    ✓ Emergency appointments
+                  </span>
+                )}
+
+                {weekendOpen && (
+                  <span className="tdh-clinic-badge">
+                    ✓ Open weekends
+                  </span>
+                )}
 
               </div>
             )}
 
           </div>
 
-        </div>
+          {/* CTA panel */}
 
-        {/* CALL / APPOINTMENT CTA */}
+          <aside className="tdh-clinic-cta-panel">
 
-        <div className="space-y-4">
+            <div className="tdh-clinic-cta-heading">
+              Contact this practice
+            </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-              marginTop: "10px",
-            }}
-            className="card-actions responsive-cta"
-          >
+            <p className="tdh-clinic-cta-copy">
+              Call the dental office or send
+              an appointment request.
+            </p>
 
-            <CardCTA
-              phone={clinic.phone}
-              city={city}
-              clinicName={clinic.name}
-            />
+            <div className="tdh-clinic-card-cta">
+              <CardCTA
+                phone={clinic.phone}
+                city={city}
+                clinicName={clinic.name}
+              />
+            </div>
 
-          </div>
+            <p className="tdh-clinic-request-note">
+              Appointment requests are not
+              confirmed bookings. The dental
+              office will confirm availability
+              directly with you.
+            </p>
 
-          {/* PRACTICE INFORMATION */}
+          </aside>
 
-          <section className="clinic-card">
+        </section>
 
-            <div className="info-row">
+        {/* -------------------------------- */}
+        {/* Main content */}
+        {/* -------------------------------- */}
 
-              <div className="info-label">
-                Address
+        <div className="tdh-clinic-layout">
+
+          <div className="tdh-clinic-main-column">
+
+            {/* PRACTICE INFORMATION */}
+
+            <section className="tdh-clinic-section">
+
+              <div className="tdh-clinic-section-header">
+                <h2>Practice Information</h2>
+
+                <p>
+                  Contact and location
+                  information for{" "}
+                  {clinic.name}.
+                </p>
               </div>
 
-              <div className="info-value">
+              <div className="tdh-clinic-info-list">
+
+                <div className="tdh-clinic-info-row">
+
+                  <div className="tdh-clinic-info-label">
+                    Address
+                  </div>
+
+                  <div className="tdh-clinic-info-value">
+
+                    <a
+                      href={mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {address}
+                    </a>
+
+                  </div>
+
+                </div>
+
+                {clinic.phone && (
+                  <div className="tdh-clinic-info-row">
+
+                    <div className="tdh-clinic-info-label">
+                      Phone
+                    </div>
+
+                    <div className="tdh-clinic-info-value">
+                      <a
+                        href={`tel:${clinic.phone}`}
+                      >
+                        {clinic.phone}
+                      </a>
+                    </div>
+
+                  </div>
+                )}
+
+                {websiteUrl && (
+                  <div className="tdh-clinic-info-row">
+
+                    <div className="tdh-clinic-info-label">
+                      Website
+                    </div>
+
+                    <div className="tdh-clinic-info-value">
+
+                      <a
+                        href={websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Visit practice website ↗
+                      </a>
+
+                    </div>
+
+                  </div>
+                )}
+
+                {hours && (
+                  <div className="tdh-clinic-info-row">
+
+                    <div className="tdh-clinic-info-label">
+                      Hours
+                    </div>
+
+                    <div className="tdh-clinic-info-value tdh-clinic-hours">
+                      {hours}
+                    </div>
+
+                  </div>
+                )}
+
+              </div>
+
+            </section>
+
+            {/* SERVICES */}
+
+            {services.length > 0 && (
+              <section className="tdh-clinic-section">
+
+                <div className="tdh-clinic-section-header">
+
+                  <h2>Dental Services</h2>
+
+                  <p>
+                    Services listed for this
+                    dental practice.
+                  </p>
+
+                </div>
+
+                <div className="tdh-clinic-chip-list">
+
+                  {services.map(
+                    (
+                      service: string,
+                      index: number
+                    ) => (
+                      <span
+                        className="tdh-clinic-chip"
+                        key={`${service}-${index}`}
+                      >
+                        {service}
+                      </span>
+                    )
+                  )}
+
+                </div>
+
+                <p className="tdh-clinic-disclaimer">
+                  Contact the dental office to
+                  confirm that the specific
+                  treatment you need is currently
+                  offered.
+                </p>
+
+              </section>
+            )}
+
+            {/* INSURANCE */}
+
+            {insurances.length > 0 && (
+              <section className="tdh-clinic-section">
+
+                <div className="tdh-clinic-section-header">
+
+                  <h2>Insurance Information</h2>
+
+                  <p>
+                    Insurance plans listed for{" "}
+                    {clinic.name}.
+                  </p>
+
+                </div>
+
+                <div className="tdh-clinic-chip-list">
+
+                  {insurances.map(
+                    (
+                      insurance: string,
+                      index: number
+                    ) => (
+                      <span
+                        className="tdh-clinic-chip tdh-clinic-insurance-chip"
+                        key={`${insurance}-${index}`}
+                      >
+                        {insurance}
+                      </span>
+                    )
+                  )}
+
+                </div>
+
+                <p className="tdh-clinic-disclaimer">
+                  Insurance participation,
+                  networks, and coverage can
+                  change. Verify your specific
+                  plan and benefits with the
+                  dental office or your insurance
+                  company before receiving
+                  treatment.
+                </p>
+
+              </section>
+            )}
+
+            {/* LOCATION */}
+
+            <section className="tdh-clinic-section">
+
+              <div className="tdh-clinic-section-header">
+                <h2>Location</h2>
+              </div>
+
+              <div className="tdh-clinic-location-card">
+
+                <div>
+
+                  <div className="tdh-clinic-location-name">
+                    {clinic.name}
+                  </div>
+
+                  <div className="tdh-clinic-location-address">
+                    {address}
+                  </div>
+
+                </div>
 
                 <a
-                  href={
-                    clinic.google_maps_url ||
-                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                      clinic.google_formatted_address ||
-                        clinic.address
-                    )}`
-                  }
+                  href={mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="tdh-clinic-map-button"
                 >
-
-                  {clinic.google_formatted_address
-                    ? clinic.google_formatted_address.replace(
-                        ", USA",
-                        ""
-                      )
-                    : clinic.address}
-
+                  Get Directions ↗
                 </a>
 
               </div>
 
-            </div>
+            </section>
 
-            {services.length > 0 && (
-              <div className="info-row">
+            {/* ABOUT */}
 
-                <div className="info-label">
-                  Services
-                </div>
+            <section className="tdh-clinic-section">
 
-                <div className="info-value">
-                  {services.join(", ")}
-                </div>
+              <div className="tdh-clinic-section-header">
+                <h2>
+                  About {clinic.name}
+                </h2>
+              </div>
+
+              <div className="tdh-clinic-about-text">
+
+                <p>
+                  {clinic.name} is a dental
+                  practice located in{" "}
+                  {formattedCity}, Texas.
+                  TexasDentalHub provides
+                  practice information to help
+                  patients compare local dental
+                  offices and contact practices
+                  directly.
+                </p>
+
+                <p>
+                  Practice information,
+                  availability, services,
+                  insurance participation, and
+                  office hours can change.
+                  Contact the dental office
+                  directly to confirm details
+                  before scheduling treatment.
+                </p>
 
               </div>
-            )}
 
-            {insurances.length > 0 && (
-              <div className="info-row">
+            </section>
 
-                <div className="info-label">
-                  Insurance
-                </div>
+            {/* FAQ */}
 
-                <div className="info-value">
+            <section className="tdh-clinic-section">
 
-                  <div className="insurance-pills">
+              <div className="tdh-clinic-section-header">
+                <h2>
+                  Frequently Asked Questions
+                </h2>
+              </div>
 
-                    {insurances.map(
-                      (
-                        insurance: string,
-                        index: number
-                      ) => (
-                        <span
-                          key={index}
-                          className="pill"
-                        >
-                          {insurance}
-                        </span>
-                      )
-                    )}
+              <div className="tdh-clinic-faq">
+
+                <details>
+                  <summary>
+                    How do I request an
+                    appointment with{" "}
+                    {clinic.name}?
+                  </summary>
+
+                  <p>
+                    You can use the Request
+                    Appointment option on this
+                    page to send an appointment
+                    request. The request is not a
+                    confirmed booking. The
+                    dental office should contact
+                    you to confirm availability,
+                    date, time, and other
+                    appointment details.
+                  </p>
+                </details>
+
+                {clinic.accepts_new_patients ===
+                  true && (
+                  <details>
+
+                    <summary>
+                      Is {clinic.name} accepting
+                      new patients?
+                    </summary>
+
+                    <p>
+                      This practice is listed on
+                      TexasDentalHub as accepting
+                      new patients. Availability
+                      can change, so confirm
+                      current availability
+                      directly with the dental
+                      office.
+                    </p>
+
+                  </details>
+                )}
+
+                {clinic.emergency_available ===
+                  true && (
+                  <details>
+
+                    <summary>
+                      Does {clinic.name} offer
+                      emergency dental
+                      appointments?
+                    </summary>
+
+                    <p>
+                      This practice is listed as
+                      offering emergency dental
+                      availability. This does not
+                      guarantee immediate or
+                      same-day treatment. Contact
+                      the office to confirm that
+                      it can see you and treat
+                      your specific dental need.
+                    </p>
+
+                  </details>
+                )}
+
+                {insurances.length > 0 && (
+                  <details>
+
+                    <summary>
+                      Does {clinic.name} accept
+                      my dental insurance?
+                    </summary>
+
+                    <p>
+                      TexasDentalHub displays
+                      insurance information
+                      available for this
+                      practice. Insurance
+                      participation and coverage
+                      can change, so verify your
+                      specific plan with the
+                      dental office or your
+                      insurance company before
+                      treatment.
+                    </p>
+
+                  </details>
+                )}
+
+              </div>
+
+            </section>
+
+          </div>
+
+          {/* -------------------------------- */}
+          {/* Sidebar */}
+          {/* -------------------------------- */}
+
+          <aside className="tdh-clinic-sidebar">
+
+            <div className="tdh-clinic-sidebar-card">
+
+              <h2>
+                Practice at a glance
+              </h2>
+
+              <div className="tdh-clinic-glance-list">
+
+                {clinic.google_rating != null && (
+                  <div className="tdh-clinic-glance-row">
+
+                    <span>Google rating</span>
+
+                    <strong>
+                      ★{" "}
+                      {Number(
+                        clinic.google_rating
+                      ).toFixed(1)}
+                    </strong>
 
                   </div>
+                )}
 
-                </div>
+                {clinic.google_review_count !=
+                  null && (
+                  <div className="tdh-clinic-glance-row">
 
-              </div>
-            )}
+                    <span>Google reviews</span>
 
-            {hours && (
-              <div className="info-row">
+                    <strong>
+                      {clinic.google_review_count.toLocaleString()}
+                    </strong>
 
-                <div className="info-label">
-                  Hours
-                </div>
-
-                <div className="info-value">
-                  {hours}
-                </div>
-
-              </div>
-            )}
-
-            {clinic.accepts_new_patients != null && (
-              <div className="info-row">
-
-                <div className="info-label">
-                  New Patients
-                </div>
-
-                <div className="info-value">
-
-                  {clinic.accepts_new_patients
-                    ? "Accepting new patients"
-                    : "Not currently marked as accepting new patients"}
-
-                </div>
-
-              </div>
-            )}
-
-            {clinic.emergency_available === true && (
-              <div className="info-row">
-
-                <div className="info-label">
-                  Emergency Care
-                </div>
-
-                <div className="info-value">
-                  Emergency dental availability listed
-                </div>
-
-              </div>
-            )}
-
-            {clinic.weekend_open &&
-              String(
-                clinic.weekend_open
-              ).toLowerCase() === "yes" && (
-                <div className="info-row">
-
-                  <div className="info-label">
-                    Weekend Availability
                   </div>
+                )}
 
-                  <div className="info-value">
-                    Weekend hours available
+                {clinic.accepts_new_patients ===
+                  true && (
+                  <div className="tdh-clinic-glance-positive">
+                    ✓ Accepting new patients
                   </div>
+                )}
 
-                </div>
+                {clinic.emergency_available ===
+                  true && (
+                  <div className="tdh-clinic-glance-positive">
+                    ✓ Emergency appointments
+                  </div>
+                )}
+
+                {weekendOpen && (
+                  <div className="tdh-clinic-glance-positive">
+                    ✓ Weekend hours
+                  </div>
+                )}
+
+              </div>
+
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tdh-clinic-sidebar-link"
+              >
+                View on Google Maps ↗
+              </a>
+
+              {websiteUrl && (
+                <a
+                  href={websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tdh-clinic-sidebar-link"
+                >
+                  Visit practice website ↗
+                </a>
               )}
 
-          </section>
+            </div>
+
+            {/* CLAIM LISTING */}
+
+            <div className="tdh-clinic-claim-card">
+
+              <div className="tdh-clinic-claim-eyebrow">
+                FOR DENTAL PRACTICES
+              </div>
+
+              <h2>
+                Own this dental practice?
+              </h2>
+
+              <p>
+                Claim your listing to manage
+                practice information and receive
+                appointment requests.
+              </p>
+
+              <a
+                href={`/contact?type=Claim%20Listing&clinic=${encodeURIComponent(
+                  clinic.name
+                )}`}
+                className="tdh-clinic-claim-button"
+              >
+                Claim This Listing
+              </a>
+
+            </div>
+
+          </aside>
 
         </div>
 
-        {/* INTERNAL LINK */}
+        {/* -------------------------------- */}
+        {/* Bottom navigation */}
+        {/* -------------------------------- */}
 
-        <div
-          style={{
-            marginTop: "24px",
-          }}
-        >
-          <a
-            href={`/dentists/${city}`}
-            className="back-btn"
-          >
-            View all dentists in {formattedCity} →
-          </a>
-        </div>
+        <div className="tdh-clinic-bottom-nav">
 
-        {/* CLAIM LISTING */}
-
-        <div className="claim-listing-box premium">
-
-          <div className="claim-listing-title">
-            Own this dental practice?
-          </div>
-
-          <div className="claim-listing-text">
-            Get more patients, manage your
-            listing, and receive appointment
-            requests.
-          </div>
-
-          <a
-            href={`/contact?type=Claim%20Listing&clinic=${encodeURIComponent(
-              clinic.name
-            )}`}
-            className="claim-listing-btn"
-          >
-            Claim This Listing
+          <a href={`/dentists/${city}`}>
+            ← View all dentists in{" "}
+            {formattedCity}
           </a>
 
         </div>

@@ -5593,3 +5593,820 @@ select:focus, input:focus {
   color: #64748b;
   font-size: 13px;
 }
+
+
+/* =========================================================
+   TEXASDENTALHUB - CLINIC DETAIL PAGE V2
+   ========================================================= */
+
+.tdh-clinic-detail {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 28px 0 60px;
+  color: #172033;
+}
+
+
+/* -------------------------
+   BACK LINK
+   ------------------------- */
+
+.tdh-clinic-back {
+  margin-bottom: 18px;
+}
+
+.tdh-clinic-back a,
+.tdh-clinic-bottom-nav a {
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tdh-clinic-back a:hover,
+.tdh-clinic-bottom-nav a:hover {
+  text-decoration: underline;
+}
+
+
+/* -------------------------
+   HERO
+   ------------------------- */
+
+.tdh-clinic-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 30px;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+
+  padding: 30px;
+
+  box-shadow:
+    0 2px 4px rgba(15, 23, 42, 0.02),
+    0 12px 30px rgba(15, 23, 42, 0.05);
+}
+
+.tdh-clinic-hero-main {
+  min-width: 0;
+}
+
+.tdh-clinic-location-label {
+  margin-bottom: 8px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tdh-clinic-title {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 32px;
+  line-height: 1.18;
+  font-weight: 750;
+
+  letter-spacing: -0.6px;
+}
+
+.tdh-clinic-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-top: 14px;
+
+  color: #334155;
+  font-size: 15px;
+}
+
+.tdh-clinic-star {
+  color: #f59e0b;
+  font-size: 17px;
+}
+
+.tdh-clinic-review-count {
+  color: #64748b;
+}
+
+.tdh-clinic-hero-address {
+  display: inline-block;
+
+  margin-top: 13px;
+
+  color: #475569;
+
+  font-size: 15px;
+  line-height: 1.5;
+
+  text-decoration: none;
+}
+
+.tdh-clinic-hero-address:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+
+/* -------------------------
+   AVAILABILITY BADGES
+   ------------------------- */
+
+.tdh-clinic-badges {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 18px;
+}
+
+.tdh-clinic-badge {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 30px;
+
+  padding: 6px 10px;
+
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+
+  background: #f0fdf4;
+  color: #166534;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* -------------------------
+   HERO CTA
+   ------------------------- */
+
+.tdh-clinic-cta-panel {
+  align-self: start;
+
+  padding: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.tdh-clinic-cta-heading {
+  color: #172033;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.tdh-clinic-cta-copy {
+  margin: 5px 0 15px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tdh-clinic-card-cta {
+  width: 100%;
+}
+
+.tdh-clinic-request-note {
+  margin: 12px 0 0;
+
+  color: #64748b;
+
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+
+/* -------------------------
+   MAIN TWO-COLUMN LAYOUT
+   ------------------------- */
+
+.tdh-clinic-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    300px;
+
+  gap: 26px;
+
+  margin-top: 26px;
+
+  align-items: start;
+}
+
+.tdh-clinic-main-column {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  min-width: 0;
+}
+
+
+/* -------------------------
+   CONTENT SECTIONS
+   ------------------------- */
+
+.tdh-clinic-section {
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  padding: 24px;
+}
+
+.tdh-clinic-section-header {
+  margin-bottom: 18px;
+}
+
+.tdh-clinic-section-header h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 750;
+
+  letter-spacing: -0.2px;
+}
+
+.tdh-clinic-section-header p {
+  margin: 5px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* -------------------------
+   PRACTICE INFORMATION
+   ------------------------- */
+
+.tdh-clinic-info-list {
+  border-top: 1px solid #eef2f7;
+}
+
+.tdh-clinic-info-row {
+  display: grid;
+
+  grid-template-columns: 125px minmax(0, 1fr);
+
+  gap: 20px;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.tdh-clinic-info-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.tdh-clinic-info-label {
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.tdh-clinic-info-value {
+  min-width: 0;
+
+  color: #334155;
+
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.tdh-clinic-info-value a {
+  color: #2563eb;
+
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+.tdh-clinic-info-value a:hover {
+  text-decoration: underline;
+}
+
+.tdh-clinic-hours {
+  white-space: pre-line;
+}
+
+
+/* -------------------------
+   SERVICE / INSURANCE CHIPS
+   ------------------------- */
+
+.tdh-clinic-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.tdh-clinic-chip {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 7px 11px;
+
+  background: #f1f5f9;
+  color: #334155;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.tdh-clinic-insurance-chip {
+  background: #eff6ff;
+  color: #1d4ed8;
+
+  border-color: #dbeafe;
+}
+
+.tdh-clinic-disclaimer {
+  margin: 17px 0 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+
+/* -------------------------
+   LOCATION
+   ------------------------- */
+
+.tdh-clinic-location-card {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding: 18px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.tdh-clinic-location-name {
+  margin-bottom: 4px;
+
+  color: #172033;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tdh-clinic-location-address {
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tdh-clinic-map-button {
+  flex-shrink: 0;
+
+  padding: 9px 13px;
+
+  color: #2563eb;
+  background: #ffffff;
+
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.tdh-clinic-map-button:hover {
+  background: #eff6ff;
+}
+
+
+/* -------------------------
+   ABOUT
+   ------------------------- */
+
+.tdh-clinic-about-text {
+  color: #475569;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.tdh-clinic-about-text p {
+  margin: 0 0 12px;
+}
+
+.tdh-clinic-about-text p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* -------------------------
+   FAQ
+   ------------------------- */
+
+.tdh-clinic-faq {
+  border-top: 1px solid #e2e8f0;
+}
+
+.tdh-clinic-faq details {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tdh-clinic-faq summary {
+  position: relative;
+
+  padding: 16px 34px 16px 0;
+
+  color: #172033;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  list-style: none;
+}
+
+.tdh-clinic-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.tdh-clinic-faq summary::after {
+  content: "+";
+
+  position: absolute;
+
+  right: 3px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #2563eb;
+
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.tdh-clinic-faq details[open] summary::after {
+  content: "−";
+}
+
+.tdh-clinic-faq p {
+  margin: -3px 0 17px;
+
+  padding-right: 24px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+
+/* -------------------------
+   SIDEBAR
+   ------------------------- */
+
+.tdh-clinic-sidebar {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.tdh-clinic-sidebar-card,
+.tdh-clinic-claim-card {
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  padding: 20px;
+}
+
+.tdh-clinic-sidebar-card h2,
+.tdh-clinic-claim-card h2 {
+  margin: 0 0 15px;
+
+  color: #172033;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.tdh-clinic-glance-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0;
+}
+
+.tdh-clinic-glance-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 10px 0;
+
+  border-bottom: 1px solid #eef2f7;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.tdh-clinic-glance-row strong {
+  color: #334155;
+}
+
+.tdh-clinic-glance-positive {
+  padding: 10px 0;
+
+  border-bottom: 1px solid #eef2f7;
+
+  color: #15803d;
+
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.tdh-clinic-sidebar-link {
+  display: block;
+
+  margin-top: 13px;
+
+  color: #2563eb;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  text-decoration: none;
+}
+
+.tdh-clinic-sidebar-link:hover {
+  text-decoration: underline;
+}
+
+
+/* -------------------------
+   CLAIM LISTING
+   ------------------------- */
+
+.tdh-clinic-claim-card {
+  background:
+    linear-gradient(
+      145deg,
+      #eff6ff 0%,
+      #ffffff 70%
+    );
+
+  border-color: #dbeafe;
+}
+
+.tdh-clinic-claim-eyebrow {
+  margin-bottom: 8px;
+
+  color: #2563eb;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+}
+
+.tdh-clinic-claim-card h2 {
+  margin-bottom: 8px;
+}
+
+.tdh-clinic-claim-card p {
+  margin: 0 0 16px;
+
+  color: #64748b;
+
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.tdh-clinic-claim-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  padding: 10px 14px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.tdh-clinic-claim-button:hover {
+  background: #1d4ed8;
+}
+
+
+/* -------------------------
+   BOTTOM NAVIGATION
+   ------------------------- */
+
+.tdh-clinic-bottom-nav {
+  margin-top: 28px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .tdh-clinic-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .tdh-clinic-cta-panel {
+    width: 100%;
+  }
+
+  .tdh-clinic-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tdh-clinic-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .tdh-clinic-detail {
+    width: min(100% - 28px, 1180px);
+
+    padding-top: 18px;
+    padding-bottom: 40px;
+  }
+
+  .tdh-clinic-back {
+    margin-bottom: 14px;
+  }
+
+  .tdh-clinic-hero {
+    gap: 20px;
+
+    padding: 20px 18px;
+
+    border-radius: 14px;
+  }
+
+  .tdh-clinic-location-label {
+    font-size: 11px;
+  }
+
+  .tdh-clinic-title {
+    font-size: 25px;
+    line-height: 1.22;
+
+    letter-spacing: -0.35px;
+  }
+
+  .tdh-clinic-rating {
+    margin-top: 12px;
+
+    font-size: 14px;
+  }
+
+  .tdh-clinic-hero-address {
+    font-size: 14px;
+  }
+
+  .tdh-clinic-badges {
+    margin-top: 15px;
+  }
+
+  .tdh-clinic-badge {
+    font-size: 11.5px;
+  }
+
+  .tdh-clinic-cta-panel {
+    padding: 16px;
+  }
+
+  .tdh-clinic-layout {
+    gap: 16px;
+
+    margin-top: 16px;
+  }
+
+  .tdh-clinic-main-column {
+    gap: 16px;
+  }
+
+  .tdh-clinic-section {
+    padding: 19px 17px;
+
+    border-radius: 14px;
+  }
+
+  .tdh-clinic-section-header h2 {
+    font-size: 18px;
+  }
+
+  .tdh-clinic-info-row {
+    grid-template-columns: 1fr;
+
+    gap: 4px;
+
+    padding: 13px 0;
+  }
+
+  .tdh-clinic-info-label {
+    font-size: 12px;
+  }
+
+  .tdh-clinic-info-value {
+    font-size: 13.5px;
+  }
+
+  .tdh-clinic-location-card {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 14px;
+  }
+
+  .tdh-clinic-map-button {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .tdh-clinic-sidebar {
+    display: flex;
+  }
+
+  .tdh-clinic-sidebar-card,
+  .tdh-clinic-claim-card {
+    padding: 18px;
+  }
+
+}
